@@ -62,7 +62,7 @@ const Navigation = () => {
 
           {/* Mobile Menu Button */}
           <button
-            className={`md:hidden p-2 ${isScrolled ? 'text-gray-900' : 'text-white'}`}
+            className={`md:hidden p-2 z-60 relative ${isScrolled ? 'text-gray-900' : 'text-white'}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -71,19 +71,19 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-white/95 backdrop-blur-sm border-t border-gray-200">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-lg">
             <div className="px-6 py-4 space-y-4">
               {navItems.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="block font-medium text-gray-700 hover:text-emerald-600 transition-colors"
+                  className="block font-medium text-gray-700 hover:text-emerald-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
                 </a>
               ))}
-              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+              <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-4">
                 Invest Now
               </Button>
             </div>
