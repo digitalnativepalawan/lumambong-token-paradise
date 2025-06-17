@@ -1,17 +1,24 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Users, TreePine } from "lucide-react";
+import ImageModal from "./ImageModal";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Images */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/lovable-uploads/a1fc026f-cd39-470f-84ea-bc9facbe2548.png" 
+        <ImageModal 
+          src="/lovable-uploads/a1fc026f-cd39-470f-84ea-bc9facbe2548.png"
           alt="Pristine Lumambong Beach, Palawan"
-          className="w-full h-full object-cover"
-        />
+          className="w-full h-full"
+        >
+          <img 
+            src="/lovable-uploads/a1fc026f-cd39-470f-84ea-bc9facbe2548.png" 
+            alt="Pristine Lumambong Beach, Palawan"
+            className="w-full h-full object-cover"
+          />
+        </ImageModal>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
       </div>
 

@@ -1,8 +1,8 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Navigation, Compass, ExternalLink } from "lucide-react";
+import ImageModal from "./ImageModal";
 
 const LocationSection = () => {
   const mapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1lRgpf0rzovejTPzeIg-5S6M-vRQoil0&usp=sharing";
@@ -41,11 +41,17 @@ const LocationSection = () => {
 
         {/* Main Location Image */}
         <div className="mb-12">
-          <img 
+          <ImageModal 
             src="/lovable-uploads/0aac491a-0d13-4df3-bab3-171547cf214c.png"
             alt="Aerial view of Lumambong Beach with pristine waters and mountain backdrop"
-            className="w-full h-96 md:h-[600px] object-cover rounded-2xl shadow-2xl"
-          />
+            className="w-full h-96 md:h-[600px] rounded-2xl shadow-2xl overflow-hidden"
+          >
+            <img 
+              src="/lovable-uploads/0aac491a-0d13-4df3-bab3-171547cf214c.png"
+              alt="Aerial view of Lumambong Beach with pristine waters and mountain backdrop"
+              className="w-full h-96 md:h-[600px] object-cover rounded-2xl shadow-2xl"
+            />
+          </ImageModal>
         </div>
 
         {/* Location Features */}
@@ -66,34 +72,58 @@ const LocationSection = () => {
         {/* Image Gallery */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           <div className="lg:col-span-2">
-            <img 
+            <ImageModal 
               src="/lovable-uploads/6765833f-55ed-4467-8686-f4c4a1c3b8ea.png"
               alt="Stunning beachfront view with pristine sand and crystal clear waters"
-              className="w-full h-80 object-cover rounded-2xl shadow-lg"
-            />
+              className="w-full h-80 rounded-2xl shadow-lg overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/6765833f-55ed-4467-8686-f4c4a1c3b8ea.png"
+                alt="Stunning beachfront view with pristine sand and crystal clear waters"
+                className="w-full h-80 object-cover rounded-2xl shadow-lg"
+              />
+            </ImageModal>
           </div>
           <div className="space-y-6">
-            <img 
+            <ImageModal 
               src="/lovable-uploads/2008ab24-ffec-4f30-8947-cd49732d03ba.png"
               alt="Tropical development area surrounded by coconut palms"
-              className="w-full h-36 object-cover rounded-2xl shadow-lg"
-            />
-            <img 
+              className="w-full h-36 rounded-2xl shadow-lg overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/2008ab24-ffec-4f30-8947-cd49732d03ba.png"
+                alt="Tropical development area surrounded by coconut palms"
+                className="w-full h-36 object-cover rounded-2xl shadow-lg"
+              />
+            </ImageModal>
+            <ImageModal 
               src="/lovable-uploads/f63a7feb-19f0-4b58-ba86-ee624f96d4ce.png"
               alt="Aerial view of the beachfront property development site"
-              className="w-full h-36 object-cover rounded-2xl shadow-lg"
-            />
+              className="w-full h-36 rounded-2xl shadow-lg overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/f63a7feb-19f0-4b58-ba86-ee624f96d4ce.png"
+                alt="Aerial view of the beachfront property development site"
+                className="w-full h-36 object-cover rounded-2xl shadow-lg"
+              />
+            </ImageModal>
           </div>
         </div>
 
         {/* Property Map & Google Maps Integration */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <img 
+            <ImageModal 
               src="/lovable-uploads/0c9cafed-2589-4a20-bbcf-ea629cdf2ae5.png"
               alt="Official property map showing lot divisions and location details"
-              className="w-full rounded-2xl shadow-lg"
-            />
+              className="w-full rounded-2xl shadow-lg overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/0c9cafed-2589-4a20-bbcf-ea629cdf2ae5.png"
+                alt="Official property map showing lot divisions and location details"
+                className="w-full rounded-2xl shadow-lg"
+              />
+            </ImageModal>
           </div>
           <div className="space-y-6">
             <div>

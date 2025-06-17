@@ -2,6 +2,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Home, Waves, Leaf } from "lucide-react";
+import ImageModal from "./ImageModal";
 
 const PropertyShowcase = () => {
   const specifications = [
@@ -48,11 +49,17 @@ const PropertyShowcase = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
           {/* Property Image */}
           <div className="relative">
-            <img 
+            <ImageModal 
               src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
               alt="GLAMNI G50 Modular Home"
-              className="w-full rounded-2xl shadow-2xl"
-            />
+              className="w-full rounded-2xl shadow-2xl overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
+                alt="GLAMNI G50 Modular Home"
+                className="w-full rounded-2xl shadow-2xl"
+              />
+            </ImageModal>
             <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg">
               <p className="text-sm text-gray-500">Inspired by</p>
               <p className="text-xl font-bold text-gray-900">GLAMNI G50</p>
@@ -83,23 +90,41 @@ const PropertyShowcase = () => {
         {/* Location Gallery */}
         <div className="grid md:grid-cols-3 gap-6">
           <div className="md:col-span-2">
-            <img 
+            <ImageModal 
               src="/lovable-uploads/989d0adb-6926-4aa6-a71c-ee9ec4a225ff.png"
               alt="Lumambong Beach aerial view"
-              className="w-full h-80 object-cover rounded-2xl"
-            />
+              className="w-full h-80 rounded-2xl overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/989d0adb-6926-4aa6-a71c-ee9ec4a225ff.png"
+                alt="Lumambong Beach aerial view"
+                className="w-full h-80 object-cover rounded-2xl"
+              />
+            </ImageModal>
           </div>
           <div className="space-y-6">
-            <img 
+            <ImageModal 
               src="/lovable-uploads/f0db1d35-d1fe-4ed6-92e6-7acbfb205fae.png"
               alt="Tropical landscape"
-              className="w-full h-36 object-cover rounded-2xl"
-            />
-            <img 
+              className="w-full h-36 rounded-2xl overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/f0db1d35-d1fe-4ed6-92e6-7acbfb205fae.png"
+                alt="Tropical landscape"
+                className="w-full h-36 object-cover rounded-2xl"
+              />
+            </ImageModal>
+            <ImageModal 
               src="/lovable-uploads/efb4871e-72b3-40d6-a146-5b063d52502b.png"
               alt="Beachfront development area"
-              className="w-full h-36 object-cover rounded-2xl"
-            />
+              className="w-full h-36 rounded-2xl overflow-hidden"
+            >
+              <img 
+                src="/lovable-uploads/efb4871e-72b3-40d6-a146-5b063d52502b.png"
+                alt="Beachfront development area"
+                className="w-full h-36 object-cover rounded-2xl"
+              />
+            </ImageModal>
           </div>
         </div>
       </div>
