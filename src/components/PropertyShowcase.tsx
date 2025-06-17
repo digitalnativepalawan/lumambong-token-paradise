@@ -1,7 +1,8 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Zap, Home, Waves, Leaf } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Zap, Home, Waves, Leaf, ExternalLink } from "lucide-react";
 import ImageModal from "./ImageModal";
 
 const PropertyShowcase = () => {
@@ -63,6 +64,24 @@ const PropertyShowcase = () => {
             <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg">
               <p className="text-sm text-gray-500">Inspired by</p>
               <p className="text-xl font-bold text-gray-900">GLAMNI G50</p>
+            </div>
+            
+            {/* Specs Button */}
+            <div className="mt-6 flex justify-center">
+              <Button 
+                asChild
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              >
+                <a 
+                  href="https://drive.google.com/file/d/1HENB7iH63UPx32MGdvusblQd-ZSIb1_m/view?usp=sharing"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  View Complete Specs Sheet
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </Button>
             </div>
           </div>
 
