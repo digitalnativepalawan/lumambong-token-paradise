@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Users, TreePine } from "lucide-react";
+import { ArrowRight, MapPin, Users, TreePine, Shield, Globe } from "lucide-react";
 import ImageModal from "./ImageModal";
 
 const Hero = () => {
@@ -75,6 +75,39 @@ const Hero = () => {
             <p className="text-sm text-gray-300 mb-2">Total Investment Per Unit</p>
             <p className="text-3xl font-bold text-emerald-400">$230,000 USD</p>
             <p className="text-sm text-gray-300">Fully turnkey ownership - Land, home, solar & legal setup</p>
+          </div>
+
+          {/* Tokenized Ownership Structure */}
+          <div className="mt-8 p-6 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+            <div className="flex items-center gap-2 mb-4">
+              <Shield className="w-5 h-5 text-blue-400" />
+              <h3 className="text-lg font-semibold">Tokenized Ownership Structure</h3>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-emerald-400 rounded-full"></div>
+                  <span className="text-sm text-gray-300">Filipino Ownership</span>
+                </div>
+                <p className="text-2xl font-bold text-emerald-400">60%</p>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Globe className="w-4 h-4 text-blue-400" />
+                  <span className="text-sm text-gray-300">Foreign Ownership</span>
+                </div>
+                <p className="text-2xl font-bold text-blue-400">40%</p>
+              </div>
+            </div>
+            
+            <div className="w-full bg-white/20 rounded-full h-3 mb-3">
+              <div className="bg-gradient-to-r from-emerald-400 to-emerald-500 h-3 rounded-l-full" style={{width: '60%'}}></div>
+            </div>
+            
+            <p className="text-sm text-gray-300">
+              Compliant with Philippine law • Blockchain transparency • Community-first development
+            </p>
           </div>
         </div>
       </div>
