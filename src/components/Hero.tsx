@@ -4,21 +4,7 @@ import { ArrowRight, MapPin, Users, TreePine, Shield, Globe } from "lucide-react
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0">
-        <div className="w-full h-full relative">
-          <iframe
-            className="absolute top-1/2 left-1/2 w-[177.77777778vh] h-[56.25vw] min-h-full min-w-full transform -translate-x-1/2 -translate-y-1/2"
-            src="https://www.youtube.com/embed/6U84QH4WDuM?autoplay=1&mute=1&loop=1&playlist=6U84QH4WDuM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
-            title="Lumambong Beach Palawan"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
-      </div>
-
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-700">
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 text-white">
         <div className="max-w-3xl">
@@ -28,10 +14,6 @@ const Hero = () => {
             <span className="text-sm font-medium">Lumambong Beach, Palawan</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-            Luxe <span className="text-emerald-400">Lumambong</span>
-          </h1>
-          
           <p className="text-xl md:text-2xl mb-4 font-light text-gray-200">
             Own Your Secluded Palawan Paradise
           </p>
@@ -56,14 +38,11 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* CTA Buttons */}
+          {/* CTA Button */}
           <div className="flex flex-col sm:flex-row gap-4">
             <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 text-lg">
               View Investment Details
               <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-4 text-lg">
-              Download Prospectus
             </Button>
           </div>
 
