@@ -9,14 +9,14 @@ const Hero = () => {
       {/* Background Images */}
       <div className="absolute inset-0 z-0">
         <ImageModal 
-          src="/lovable-uploads/a1fc026f-cd39-470f-84ea-bc9facbe2548.png"
+          src="/lovable-uploads/5fcc4493-f1e1-4aca-9517-67f5c714ce56.png"
           alt="Pristine Lumambong Beach, Palawan"
           className="w-full h-full"
         >
           <img 
-            src="/lovable-uploads/a1fc026f-cd39-470f-84ea-bc9facbe2548.png" 
+            src="/lovable-uploads/5fcc4493-f1e1-4aca-9517-67f5c714ce56.png" 
             alt="Pristine Lumambong Beach, Palawan"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </ImageModal>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
