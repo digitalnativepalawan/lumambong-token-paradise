@@ -1,24 +1,21 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Users, TreePine, Shield, Globe } from "lucide-react";
-import ImageModal from "./ImageModal";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Images */}
+      {/* Background Video */}
       <div className="absolute inset-0 z-0">
-        <ImageModal 
-          src="/lovable-uploads/5fcc4493-f1e1-4aca-9517-67f5c714ce56.png"
-          alt="Pristine Lumambong Beach, Palawan"
-          className="w-full h-full"
-        >
-          <img 
-            src="/lovable-uploads/5fcc4493-f1e1-4aca-9517-67f5c714ce56.png" 
-            alt="Pristine Lumambong Beach, Palawan"
-            className="w-full h-full object-cover object-center"
+        <div className="w-full h-full relative">
+          <iframe
+            className="absolute top-1/2 left-1/2 w-[177.77777778vh] h-[56.25vw] min-h-full min-w-full transform -translate-x-1/2 -translate-y-1/2"
+            src="https://www.youtube.com/embed/6U84QH4WDuM?autoplay=1&mute=1&loop=1&playlist=6U84QH4WDuM&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
+            title="Lumambong Beach Palawan"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
           />
-        </ImageModal>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
       </div>
 
