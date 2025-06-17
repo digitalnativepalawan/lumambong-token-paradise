@@ -47,36 +47,42 @@ const PropertyShowcase = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
           {/* Property Image */}
-          <div className="relative">
-            <ImageModal 
-              src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
-              alt="GLAMNI G50 Modular Home"
-              className="w-full rounded-2xl shadow-2xl overflow-hidden"
-            >
-              <img 
+          <div className="space-y-6">
+            <div className="relative">
+              <ImageModal 
                 src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
                 alt="GLAMNI G50 Modular Home"
-                className="w-full rounded-2xl shadow-2xl"
-              />
-            </ImageModal>
-            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg">
-              <p className="text-sm text-gray-500">Inspired by</p>
-              <p className="text-xl font-bold text-gray-900">GLAMNI G50</p>
+                className="w-full rounded-2xl shadow-2xl overflow-hidden"
+              >
+                <img 
+                  src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
+                  alt="GLAMNI G50 Modular Home"
+                  className="w-full rounded-2xl shadow-2xl"
+                />
+              </ImageModal>
+            </div>
+            
+            {/* Inspired by badge - moved below image */}
+            <div className="flex justify-center">
+              <div className="bg-white p-4 rounded-xl shadow-lg border">
+                <p className="text-sm text-gray-500">Inspired by</p>
+                <p className="text-lg font-bold text-gray-900">GLAMNI G50</p>
+              </div>
             </div>
             
             {/* Specs Button */}
-            <div className="mt-6 flex justify-center">
+            <div className="flex justify-center">
               <Button 
                 asChild
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto"
               >
                 <a 
                   href="https://drive.google.com/file/d/1HENB7iH63UPx32MGdvusblQd-ZSIb1_m/view?usp=sharing"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2"
+                  className="flex items-center justify-center gap-2"
                 >
                   View Complete Specs Sheet
                   <ExternalLink className="w-4 h-4" />
