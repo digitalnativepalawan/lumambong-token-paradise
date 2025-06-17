@@ -6,6 +6,7 @@ import ImageModal from "./ImageModal";
 
 const LocationSection = () => {
   const mapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1lRgpf0rzovejTPzeIg-5S6M-vRQoil0&usp=sharing";
+  const futureProjectMapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1dbLajOIGAHjaaGKfAUNivBT5YJQl5kM&usp=sharing";
 
   const locationFeatures = [
     {
@@ -150,13 +151,24 @@ const LocationSection = () => {
               </div>
             </div>
 
-            <Button 
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
-              onClick={() => window.open(mapUrl, '_blank')}
-            >
-              View Interactive Map
-              <ExternalLink className="ml-2 w-4 h-4" />
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button 
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                onClick={() => window.open(mapUrl, '_blank')}
+              >
+                View Interactive Map
+                <ExternalLink className="ml-2 w-4 h-4" />
+              </Button>
+              
+              <Button 
+                variant="outline"
+                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                onClick={() => window.open(futureProjectMapUrl, '_blank')}
+              >
+                Future Project Map
+                <ExternalLink className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
