@@ -2,6 +2,7 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import PropertyShowcase from "@/components/PropertyShowcase";
+import LocationSection from "@/components/LocationSection";
 import InvestmentBreakdown from "@/components/InvestmentBreakdown";
 import ContactSection from "@/components/ContactSection";
 
@@ -12,6 +13,9 @@ const Index = () => {
       <Hero />
       <div id="property">
         <PropertyShowcase />
+      </div>
+      <div id="location">
+        <LocationSection />
       </div>
       <div id="investment">
         <InvestmentBreakdown />
