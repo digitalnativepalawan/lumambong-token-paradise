@@ -19,12 +19,34 @@ const ContactSection = () => {
   
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Create email content
+    const emailSubject = `Investment Interest - ${formData.name}`;
+    const emailBody = `
+New investment interest received:
+
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Investment Amount: ${formData.investmentAmount}
+Message: ${formData.message}
+
+Submitted on: ${new Date().toLocaleString()}
+    `.trim();
+
+    // Create mailto link
+    const mailtoLink = `mailto:info@palawancollective.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Open email client
+    window.location.href = mailtoLink;
+    
     toast({
       title: "Interest Registered",
-      description: "Thank you for your interest. Our team will contact you within 24 hours.",
+      description: "Your email client will open to send your information to our team.",
     });
+    
     setFormData({ name: '', email: '', phone: '', investmentAmount: '', message: '' });
   };
 
@@ -119,14 +141,14 @@ const ContactSection = () => {
                     <Mail className="w-5 h-5 text-emerald-400" />
                     <div>
                       <p className="text-gray-300">Email</p>
-                      <p className="text-white">investments@luxelumambong.com</p>
+                      <p className="text-white">info@palawancollective.com</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <Phone className="w-5 h-5 text-emerald-400" />
                     <div>
                       <p className="text-gray-300">Phone</p>
-                      <p className="text-white">+63 XXX XXXX XXX</p>
+                      <p className="text-white">+63 947 444 3597</p>
                     </div>
                   </div>
                 </div>
