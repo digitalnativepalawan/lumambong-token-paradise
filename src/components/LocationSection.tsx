@@ -70,47 +70,6 @@ const LocationSection = () => {
           ))}
         </div>
 
-        {/* Image Gallery */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          <div className="lg:col-span-2">
-            <ImageModal 
-              src="/lovable-uploads/6765833f-55ed-4467-8686-f4c4a1c3b8ea.png"
-              alt="Stunning beachfront view with pristine sand and crystal clear waters"
-              className="w-full h-80 rounded-2xl shadow-lg overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/6765833f-55ed-4467-8686-f4c4a1c3b8ea.png"
-                alt="Stunning beachfront view with pristine sand and crystal clear waters"
-                className="w-full h-80 object-cover rounded-2xl shadow-lg"
-              />
-            </ImageModal>
-          </div>
-          <div className="space-y-6">
-            <ImageModal 
-              src="/lovable-uploads/2008ab24-ffec-4f30-8947-cd49732d03ba.png"
-              alt="Tropical development area surrounded by coconut palms"
-              className="w-full h-36 rounded-2xl shadow-lg overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/2008ab24-ffec-4f30-8947-cd49732d03ba.png"
-                alt="Tropical development area surrounded by coconut palms"
-                className="w-full h-36 object-cover rounded-2xl shadow-lg"
-              />
-            </ImageModal>
-            <ImageModal 
-              src="/lovable-uploads/f63a7feb-19f0-4b58-ba86-ee624f96d4ce.png"
-              alt="Aerial view of the beachfront property development site"
-              className="w-full h-36 rounded-2xl shadow-lg overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/f63a7feb-19f0-4b58-ba86-ee624f96d4ce.png"
-                alt="Aerial view of the beachfront property development site"
-                className="w-full h-36 object-cover rounded-2xl shadow-lg"
-              />
-            </ImageModal>
-          </div>
-        </div>
-
         {/* Property Map & Google Maps Integration */}
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
