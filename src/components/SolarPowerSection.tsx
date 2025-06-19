@@ -1,26 +1,27 @@
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import ImageModal from "./ImageModal";
 
 const SolarPowerSection = () => {
   const solarImages = [
     {
-      src: "/lovable-uploads/f95efb8e-bfb7-4f0f-86cb-26eaa0f270e6.png",
-      alt: "580W Solar Panel N-Type Dual Glass - Technical Specifications and Efficiency Details",
-      title: "580W Solar Panel Specifications",
-      description: "High-efficiency monocrystalline solar panel with dual glass technology"
+      src: "/lovable-uploads/a4a1abb4-d19c-474f-8c55-0073a7c3ed83.png",
+      alt: "Anern Hybrid Solar Inverter EVO-10200 - 10.2KW/48V Dual MPPT System with PH Stock",
+      title: "Hybrid Solar Inverter EVO-10200",
+      description: "10.2KW rated output power with dual AC output and dual PV input capabilities"
     },
     {
-      src: "/lovable-uploads/1bd949c6-4f51-4049-b7ef-726a0faf54a8.png",
-      alt: "IP65 Single Phase Hybrid Solar Inverter 6KW-12KW - Performance Comparison and Features",
-      title: "Hybrid Solar Inverter Series",
-      description: "Advanced single phase hybrid inverters with multiple operation modes"
+      src: "/lovable-uploads/ff4fbce5-6c18-4f4b-9982-c555cfbadcc6.png",
+      alt: "SCI-EVO-10200 Hybrid Solar Inverter - Multiple Views and Installation Components",
+      title: "SCI-EVO-10200 Installation Views",
+      description: "Comprehensive view of the hybrid solar inverter installation components and design"
     },
     {
-      src: "/lovable-uploads/9a062edc-7317-4893-a40f-556a4989f66b.png",
-      alt: "48V200AH Wall-mounted Lithium Battery - Smart BMS System and Technical Specifications",
-      title: "Lithium Battery Storage System",
-      description: "Wall-mounted lithium battery with advanced BMS and safety features"
+      src: "/lovable-uploads/69c86e8e-ee37-4927-a0f4-7b5f4cf0d98d.png",
+      alt: "Complete Solar Power System Kit - Solar Panels, Inverter, Lithium Battery and Cables",
+      title: "Complete Solar Power System Kit",
+      description: "Integrated solar solution with panels, inverter, lithium battery storage and installation cables"
     }
   ];
 
@@ -79,6 +80,43 @@ const SolarPowerSection = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Specification Buttons */}
+        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="bg-white hover:bg-blue-50 border-blue-200 text-blue-700 font-medium"
+          >
+            <a
+              href="https://cdn.shopify.com/s/files/1/0564/8049/7832/files/Anern_25.6_V_51.2_V_Lithium_Battery_Manual.pdf?v=1750225989"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <span>🔋</span>
+              Battery Specs
+            </a>
+          </Button>
+          
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="bg-white hover:bg-green-50 border-green-200 text-green-700 font-medium"
+          >
+            <a
+              href="https://cdn.shopify.com/s/files/1/0564/8049/7832/files/Anern_Solar_Power_System_Manual.pdf?v=1750225994"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <span>⚡</span>
+              Off Grid Hybrid
+            </a>
+          </Button>
         </div>
 
         {/* Additional Technical Info */}
