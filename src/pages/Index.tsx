@@ -3,6 +3,7 @@ import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import PropertyShowcase from "@/components/PropertyShowcase";
 import LocationSection from "@/components/LocationSection";
+import SolarPowerSection from "@/components/SolarPowerSection";
 import UnitsGrid from "@/components/UnitsGrid";
 import InvestmentBreakdown from "@/components/InvestmentBreakdown";
 import ContactSection from "@/components/ContactSection";
@@ -17,6 +18,9 @@ const Index = () => {
       </div>
       <div id="location">
         <LocationSection />
+      </div>
+      <div id="solar">
+        <SolarPowerSection />
       </div>
       <div id="units">
         <UnitsGrid />
