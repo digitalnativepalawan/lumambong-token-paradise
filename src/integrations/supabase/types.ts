@@ -9,188 +9,18 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      kyc_documents: {
+      "Binga Beach New Projects": {
         Row: {
-          document_type: string | null
-          document_url: string
-          id: string
-          uploaded_at: string | null
-          user_id: string
-          verified_at: string | null
-          verified_by_admin: boolean | null
+          created_at: string
+          id: number
         }
         Insert: {
-          document_type?: string | null
-          document_url: string
-          id?: string
-          uploaded_at?: string | null
-          user_id: string
-          verified_at?: string | null
-          verified_by_admin?: boolean | null
+          created_at?: string
+          id?: number
         }
         Update: {
-          document_type?: string | null
-          document_url?: string
-          id?: string
-          uploaded_at?: string | null
-          user_id?: string
-          verified_at?: string | null
-          verified_by_admin?: boolean | null
-        }
-        Relationships: []
-      }
-      lots: {
-        Row: {
-          available_tokens: number | null
-          created_at: string | null
-          description: string | null
-          id: string
-          image_url: string | null
-          name: string
-          status: string | null
-          token_price_usd: number | null
-          total_tokens: number | null
-        }
-        Insert: {
-          available_tokens?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          name: string
-          status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Update: {
-          available_tokens?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          name?: string
-          status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Relationships: []
-      }
-      ownerships: {
-        Row: {
-          created_at: string | null
-          id: string
-          lot_id: string
-          purchase_price_usd: number | null
-          tokens_owned: number | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          lot_id: string
-          purchase_price_usd?: number | null
-          tokens_owned?: number | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          lot_id?: string
-          purchase_price_usd?: number | null
-          tokens_owned?: number | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "ownerships_lot_id_fkey"
-            columns: ["lot_id"]
-            isOneToOne: false
-            referencedRelation: "lots"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      profiles: {
-        Row: {
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string
-          kyc_status: string | null
-          nationality: string | null
-          role: string | null
-          updated_at: string | null
-          uploaded_id_url: string | null
-          wallet_address: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id: string
-          kyc_status?: string | null
-          nationality?: string | null
-          role?: string | null
-          updated_at?: string | null
-          uploaded_id_url?: string | null
-          wallet_address?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id?: string
-          kyc_status?: string | null
-          nationality?: string | null
-          role?: string | null
-          updated_at?: string | null
-          uploaded_id_url?: string | null
-          wallet_address?: string | null
-        }
-        Relationships: []
-      }
-      property_projects: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          filipino_quota: number | null
-          filipinos_tokens_sold: number | null
-          foreign_quota: number | null
-          foreign_tokens_sold: number | null
-          id: string
-          location: string | null
-          name: string
-          project_status: string | null
-          token_price_usd: number | null
-          total_tokens: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          filipino_quota?: number | null
-          filipinos_tokens_sold?: number | null
-          foreign_quota?: number | null
-          foreign_tokens_sold?: number | null
-          id?: string
-          location?: string | null
-          name: string
-          project_status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          filipino_quota?: number | null
-          filipinos_tokens_sold?: number | null
-          foreign_quota?: number | null
-          foreign_tokens_sold?: number | null
-          id?: string
-          location?: string | null
-          name?: string
-          project_status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
+          created_at?: string
+          id?: number
         }
         Relationships: []
       }
@@ -199,22 +29,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_admin_user: {
-        Args: { user_email: string }
-        Returns: undefined
-      }
-      validate_token_purchase: {
-        Args: {
-          p_user_id: string
-          p_project_id: string
-          p_token_quantity: number
-        }
-        Returns: {
-          is_valid: boolean
-          error_message: string
-          available_tokens: number
-        }[]
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
