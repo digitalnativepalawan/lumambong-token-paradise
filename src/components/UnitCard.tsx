@@ -2,6 +2,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 
 interface Unit {
   id: number;
@@ -22,6 +24,8 @@ interface UnitCardProps {
 }
 
 const UnitCard = ({ unit, onClick }: UnitCardProps) => {
+  const { openModal } = useInvestmentModal();
+
   const getUnitTypeColor = (type: string) => {
     switch (type) {
       case "BEACHFRONT PREMIUM":
@@ -55,6 +59,17 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
     if (percentage >= 75) return "bg-orange-500";
     if (percentage >= 50) return "bg-yellow-500";
     return "bg-green-500";
+  };
+
+  const handleInvestClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    openModal({
+      id: unit.id.toString(),
+      name: `Unit ${unit.unit_number} - ${unit.unit_type}`,
+      token_price_usd: unit.invest_flow,
+      unit_type: unit.unit_type,
+      ownership_type: unit.ownership_type
+    });
   };
 
   return (
@@ -113,17 +128,28 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
           </span>
         </div>
 
-        {/* Status Indicator */}
-        <div className="mt-3 flex justify-between items-center">
-          <span className={`text-xs px-2 py-1 rounded-full ${
-            unit.status === 'available' 
-              ? 'bg-green-100 text-green-800' 
-              : 'bg-gray-100 text-gray-800'
-          }`}>
-            {unit.status === 'available' ? '✅ Available' : '🔒 Sold Out'}
-          </span>
-          {unit.funded_percentage >= 100 && (
-            <span className="text-xs text-red-600 font-semibold">FULLY FUNDED</span>
+        {/* Status and Investment Button */}
+        <div className="mt-3 space-y-3">
+          <div className="flex justify-between items-center">
+            <span className={`text-xs px-2 py-1 rounded-full ${
+              unit.status === 'available' 
+                ? 'bg-green-100 text-green-800' 
+                : 'bg-gray-100 text-gray-800'
+            }`}>
+              {unit.status === 'available' ? '✅ Available' : '🔒 Sold Out'}
+            </span>
+            {unit.funded_percentage >= 100 && (
+              <span className="text-xs text-red-600 font-semibold">FULLY FUNDED</span>
+            )}
+          </div>
+          
+          {unit.status === 'available' && unit.funded_percentage < 100 && (
+            <Button 
+              onClick={handleInvestClick}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm py-2"
+            >
+              Invest Now - ${unit.invest_flow}
+            </Button>
           )}
         </div>
       </CardContent>
