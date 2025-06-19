@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Waves } from "lucide-react";
+import { Menu, X, Waves, User, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import PaymentModal from "./PaymentModal";
 import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 
@@ -9,6 +11,8 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
+  const { user, userProfile, signOut, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +21,19 @@ const Navigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
+
+  const handleInvestClick = () => {
+    if (!isAuthenticated) {
+      navigate('/auth');
+      return;
+    }
+    openModal();
+  };
 
   const navItems = [
     { label: "Property", href: "#property" },
@@ -53,16 +70,56 @@ const Navigation = () => {
                   {item.label}
                 </a>
               ))}
-              <Button 
-                onClick={() => openModal()}
-                className={`${
-                  isScrolled 
-                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                    : 'bg-white text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                Invest Now
-              </Button>
+
+              {/* User Authentication */}
+              {isAuthenticated ? (
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <User className={`w-4 h-4 ${isScrolled ? 'text-gray-600' : 'text-white'}`} />
+                    <span className={`text-sm ${isScrolled ? 'text-gray-600' : 'text-white'}`}>
+                      {userProfile?.full_name || user?.email}
+                    </span>
+                  </div>
+                  <Button 
+                    onClick={handleInvestClick}
+                    className={`${
+                      isScrolled 
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                        : 'bg-white text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    Invest Now
+                  </Button>
+                  <Button
+                    onClick={handleSignOut}
+                    variant="ghost"
+                    size="sm"
+                    className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={() => navigate('/auth')}
+                    variant="ghost"
+                    className={`${isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                  >
+                    Sign In
+                  </Button>
+                  <Button 
+                    onClick={handleInvestClick}
+                    className={`${
+                      isScrolled 
+                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                        : 'bg-white text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    Invest Now
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -88,15 +145,56 @@ const Navigation = () => {
                     {item.label}
                   </a>
                 ))}
-                <Button 
-                  onClick={() => {
-                    openModal();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-4"
-                >
-                  Invest Now
-                </Button>
+                
+                {isAuthenticated ? (
+                  <div className="space-y-3 pt-3 border-t">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <User className="w-4 h-4" />
+                      <span className="text-sm">{userProfile?.full_name || user?.email}</span>
+                    </div>
+                    <Button 
+                      onClick={() => {
+                        handleInvestClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                      Invest Now
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Sign Out
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-3 pt-3 border-t">
+                    <Button
+                      onClick={() => {
+                        navigate('/auth');
+                        setIsMobileMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full"
+                    >
+                      Sign In
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        handleInvestClick();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                    >
+                      Invest Now
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           )}
