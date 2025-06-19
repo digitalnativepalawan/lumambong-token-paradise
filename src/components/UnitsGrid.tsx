@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import UnitCard from "./UnitCard";
 import OwnershipDashboard from "./OwnershipDashboard";
+import UnitInvestmentStatus from "./UnitInvestmentStatus";
 import { useRealTimeUnits } from "@/hooks/useRealTimeUnits";
 import { Loader2 } from "lucide-react";
 
@@ -73,22 +74,31 @@ const UnitsGrid = () => {
         {/* Units Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
           {units.map((unit) => (
-            <UnitCard
-              key={unit.id}
-              unit={{
-                id: parseInt(unit.id),
-                unit_number: parseInt(unit.id.slice(-1)) || 1,
-                unit_type: unit.unit_type,
-                toring_solid: unit.total_tokens - unit.available_tokens,
-                lbbl: "LBBL",
-                annual_report: { regime: "RPM", volume: 4440 },
-                invest_flow: unit.token_price_usd,
-                ownership_type: unit.ownership_type,
-                status: unit.status,
-                funded_percentage: unit.funded_percentage
-              }}
-              onClick={() => setSelectedUnit(unit)}
-            />
+            <div key={unit.id} className="space-y-4">
+              <UnitCard
+                unit={{
+                  id: parseInt(unit.id),
+                  unit_number: parseInt(unit.id.slice(-1)) || 1,
+                  unit_type: unit.unit_type,
+                  toring_solid: unit.total_tokens - unit.available_tokens,
+                  lbbl: "LBBL",
+                  annual_report: { regime: "RPM", volume: 4440 },
+                  invest_flow: unit.token_price_usd,
+                  ownership_type: unit.ownership_type,
+                  status: unit.status,
+                  funded_percentage: unit.funded_percentage
+                }}
+                onClick={() => setSelectedUnit(unit)}
+              />
+              
+              {/* Show investment status for each unit */}
+              <UnitInvestmentStatus 
+                unit={{
+                  id: unit.id,
+                  name: unit.name
+                }}
+              />
+            </div>
           ))}
         </div>
 
