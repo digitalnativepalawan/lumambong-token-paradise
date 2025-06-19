@@ -25,29 +25,36 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
   const getUnitTypeColor = (type: string) => {
     switch (type) {
       case "BEACHFRONT PREMIUM":
-        return "bg-amber-50 border-amber-200";
+        return "bg-amber-50 border-amber-200 hover:border-amber-300";
       case "BEACH VIEW":
-        return "bg-blue-50 border-blue-200";
+        return "bg-blue-50 border-blue-200 hover:border-blue-300";
       case "GARDEN PARADISE":
-        return "bg-emerald-50 border-emerald-200";
+        return "bg-emerald-50 border-emerald-200 hover:border-emerald-300";
       default:
-        return "bg-white border-gray-200";
+        return "bg-white border-gray-200 hover:border-gray-300";
     }
   };
 
   const getOwnershipBadge = (ownershipType: string) => {
     if (ownershipType === "filipino_only") {
       return (
-        <Badge className="bg-blue-100 text-blue-800 text-xs">
-          Filipino Only
+        <Badge className="bg-blue-100 text-blue-800 text-xs flex items-center gap-1">
+          🇵🇭 Filipino Only
         </Badge>
       );
     }
     return (
-      <Badge className="bg-green-100 text-green-800 text-xs">
-        Foreign Allowed
+      <Badge className="bg-green-100 text-green-800 text-xs flex items-center gap-1">
+        🌍 Foreign Allowed
       </Badge>
     );
+  };
+
+  const getProgressColor = (percentage: number) => {
+    if (percentage >= 90) return "bg-red-500";
+    if (percentage >= 75) return "bg-orange-500";
+    if (percentage >= 50) return "bg-yellow-500";
+    return "bg-green-500";
   };
 
   return (
@@ -70,13 +77,19 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
         <div className="mb-4">
           <div className="flex justify-between items-center mb-1">
             <span className="text-xs text-gray-600 font-medium">
-              TORING SOLID {unit.toring_solid} / {unit.lbbl}
+              TOKENS SOLD {unit.toring_solid} / {unit.lbbl}
             </span>
             <span className="text-xs font-bold text-black">
               {unit.funded_percentage}% Funded
             </span>
           </div>
-          <Progress value={unit.funded_percentage} className="h-2 mb-2" />
+          <div className="relative">
+            <Progress value={unit.funded_percentage} className="h-2 mb-2" />
+            <div 
+              className={`absolute top-0 left-0 h-2 rounded-full transition-all duration-500 ${getProgressColor(unit.funded_percentage)}`}
+              style={{ width: `${unit.funded_percentage}%` }}
+            />
+          </div>
         </div>
 
         {/* Annual Report */}
@@ -88,7 +101,7 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
           </div>
           <div className="flex justify-between items-center text-xs mt-1">
             <span className="text-gray-600">
-              <strong>Filipino ({unit.ownership_type === "filipino_only" ? "60%" : "40%"}):</strong> 884 Volume
+              <strong>{unit.ownership_type === "filipino_only" ? "Filipino (60%)" : "Foreign (40%)"}:</strong> 884 Volume
             </span>
           </div>
         </div>
@@ -96,8 +109,22 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
         {/* Invest Flow */}
         <div className="flex justify-between items-center pt-4 border-t border-gray-200">
           <span className="text-xs text-gray-600">
-            <strong>Invest Flow - ${unit.invest_flow}/Volume</strong>
+            <strong>Price - ${unit.invest_flow}/Token</strong>
           </span>
+        </div>
+
+        {/* Status Indicator */}
+        <div className="mt-3 flex justify-between items-center">
+          <span className={`text-xs px-2 py-1 rounded-full ${
+            unit.status === 'available' 
+              ? 'bg-green-100 text-green-800' 
+              : 'bg-gray-100 text-gray-800'
+          }`}>
+            {unit.status === 'available' ? '✅ Available' : '🔒 Sold Out'}
+          </span>
+          {unit.funded_percentage >= 100 && (
+            <span className="text-xs text-red-600 font-semibold">FULLY FUNDED</span>
+          )}
         </div>
       </CardContent>
     </Card>
