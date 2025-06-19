@@ -10,49 +10,6 @@ interface QRCodePaymentProps {
 }
 
 const QRCodePayment = ({ amount, referenceCode, paymentMethod }: QRCodePaymentProps) => {
-  // Generate QR code data based on payment method
-  const generateQRData = () => {
-    const baseData = {
-      amount: amount,
-      reference: referenceCode,
-      merchant: "Luxe Lumambong Investment"
-    };
-
-    switch (paymentMethod) {
-      case 'gcash':
-        return `gcash://pay?amount=${amount}&reference=${referenceCode}&merchant=LuxeLumambong`;
-      case 'paymaya':
-        return `paymaya://pay?amount=${amount}&reference=${referenceCode}&merchant=LuxeLumambong`;
-      case 'coins_ph':
-        return `coins://pay?amount=${amount}&reference=${referenceCode}&merchant=LuxeLumambong`;
-      default:
-        return JSON.stringify(baseData);
-    }
-  };
-
-  const qrData = generateQRData();
-
-  // For demo purposes, we'll show a placeholder QR code
-  // In production, you'd use a QR code library like qrcode.js
-  const QRCodePlaceholder = () => (
-    <div className="w-64 h-64 bg-white border-2 border-gray-300 flex items-center justify-center mx-auto">
-      <div className="text-center p-4">
-        <div className="grid grid-cols-8 gap-1 mb-4">
-          {[...Array(64)].map((_, i) => (
-            <div
-              key={i}
-              className={`w-2 h-2 ${Math.random() > 0.5 ? 'bg-black' : 'bg-white'}`}
-            />
-          ))}
-        </div>
-        <p className="text-xs text-gray-600">QR Code</p>
-        <p className="text-xs text-gray-500 mt-1">
-          Scan with your {paymentMethod.replace('_', ' ').toUpperCase()} app
-        </p>
-      </div>
-    </div>
-  );
-
   const getPaymentMethodInfo = () => {
     switch (paymentMethod) {
       case 'gcash':
@@ -99,7 +56,15 @@ const QRCodePayment = ({ amount, referenceCode, paymentMethod }: QRCodePaymentPr
       </CardHeader>
       
       <CardContent className="space-y-6">
-        <QRCodePlaceholder />
+        <div className="flex justify-center">
+          <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm">
+            <img 
+              src="/lovable-uploads/d2c11454-3569-4892-b9b9-561db319c843.png" 
+              alt="Binga Beach Payment QR Code"
+              className="w-64 h-64 object-contain"
+            />
+          </div>
+        </div>
         
         <div className="space-y-4">
           <div className="text-center">
@@ -118,15 +83,16 @@ const QRCodePayment = ({ amount, referenceCode, paymentMethod }: QRCodePaymentPr
               <li>1. Open your {paymentInfo.name} mobile app</li>
               <li>2. Tap "Scan QR" or "Pay QR"</li>
               <li>3. Point your camera at the QR code above</li>
-              <li>4. Confirm the amount and reference code</li>
-              <li>5. Complete the payment</li>
+              <li>4. Enter the amount: ${amount.toLocaleString()} USD</li>
+              <li>5. Add reference code: {referenceCode}</li>
+              <li>6. Complete the payment</li>
             </ol>
           </div>
 
           <div className="bg-amber-50 p-3 rounded-lg">
             <p className="text-xs text-amber-800">
               <strong>Important:</strong> Please save the reference code for your records. 
-              Payment confirmation may take 5-10 minutes to process.
+              Payment confirmation may take 5-10 minutes to process. Make sure to include the reference code in your payment.
             </p>
           </div>
         </div>
