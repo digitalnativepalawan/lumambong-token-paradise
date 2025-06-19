@@ -9,83 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      currency_rates: {
+      kyc_documents: {
         Row: {
-          base_currency: string
-          created_at: string | null
-          id: number
-          is_active: boolean | null
-          last_updated: string | null
-          rate: number
-          source: string | null
-          target_currency: string
-          updated_at: string | null
+          document_type: string | null
+          document_url: string
+          id: string
+          uploaded_at: string | null
+          user_id: string
+          verified_at: string | null
+          verified_by_admin: boolean | null
         }
         Insert: {
-          base_currency?: string
-          created_at?: string | null
-          id?: never
-          is_active?: boolean | null
-          last_updated?: string | null
-          rate: number
-          source?: string | null
-          target_currency: string
-          updated_at?: string | null
+          document_type?: string | null
+          document_url: string
+          id?: string
+          uploaded_at?: string | null
+          user_id: string
+          verified_at?: string | null
+          verified_by_admin?: boolean | null
         }
         Update: {
-          base_currency?: string
-          created_at?: string | null
-          id?: never
-          is_active?: boolean | null
-          last_updated?: string | null
-          rate?: number
-          source?: string | null
-          target_currency?: string
-          updated_at?: string | null
+          document_type?: string | null
+          document_url?: string
+          id?: string
+          uploaded_at?: string | null
+          user_id?: string
+          verified_at?: string | null
+          verified_by_admin?: boolean | null
         }
         Relationships: []
       }
-      kyc_documents: {
-        Row: {
-          created_at: string | null
-          document_type: string
-          document_url: string
-          id: string
-          status: string | null
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          document_type: string
-          document_url: string
-          id?: string
-          status?: string | null
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          document_type?: string
-          document_url?: string
-          id?: string
-          status?: string | null
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "kyc_documents_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       lots: {
         Row: {
-          available_tokens: number
+          available_tokens: number | null
           created_at: string | null
           description: string | null
           id: string
@@ -93,10 +49,10 @@ export type Database = {
           name: string
           status: string | null
           token_price_usd: number | null
-          total_tokens: number
+          total_tokens: number | null
         }
         Insert: {
-          available_tokens?: number
+          available_tokens?: number | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -104,10 +60,10 @@ export type Database = {
           name: string
           status?: string | null
           token_price_usd?: number | null
-          total_tokens?: number
+          total_tokens?: number | null
         }
         Update: {
-          available_tokens?: number
+          available_tokens?: number | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -115,44 +71,41 @@ export type Database = {
           name?: string
           status?: string | null
           token_price_usd?: number | null
-          total_tokens?: number
+          total_tokens?: number | null
         }
         Relationships: []
       }
-      otp_verifications: {
+      ownerships: {
         Row: {
           created_at: string | null
-          expires_at: string
           id: string
-          otp_code: string
-          phone_number: string
+          lot_id: string
+          purchase_price_usd: number | null
+          tokens_owned: number | null
           user_id: string
-          verified: boolean | null
         }
         Insert: {
           created_at?: string | null
-          expires_at: string
           id?: string
-          otp_code: string
-          phone_number: string
+          lot_id: string
+          purchase_price_usd?: number | null
+          tokens_owned?: number | null
           user_id: string
-          verified?: boolean | null
         }
         Update: {
           created_at?: string | null
-          expires_at?: string
           id?: string
-          otp_code?: string
-          phone_number?: string
+          lot_id?: string
+          purchase_price_usd?: number | null
+          tokens_owned?: number | null
           user_id?: string
-          verified?: boolean | null
         }
         Relationships: [
           {
-            foreignKeyName: "otp_verifications_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "ownerships_lot_id_fkey"
+            columns: ["lot_id"]
             isOneToOne: false
-            referencedRelation: "profiles"
+            referencedRelation: "lots"
             referencedColumns: ["id"]
           },
         ]
@@ -160,32 +113,38 @@ export type Database = {
       profiles: {
         Row: {
           created_at: string | null
+          email: string | null
           full_name: string | null
           id: string
           kyc_status: string | null
-          nationality: string
-          phone_number: string | null
+          nationality: string | null
+          role: string | null
           updated_at: string | null
+          uploaded_id_url: string | null
           wallet_address: string | null
         }
         Insert: {
           created_at?: string | null
+          email?: string | null
           full_name?: string | null
           id: string
           kyc_status?: string | null
-          nationality: string
-          phone_number?: string | null
+          nationality?: string | null
+          role?: string | null
           updated_at?: string | null
+          uploaded_id_url?: string | null
           wallet_address?: string | null
         }
         Update: {
           created_at?: string | null
+          email?: string | null
           full_name?: string | null
           id?: string
           kyc_status?: string | null
-          nationality?: string
-          phone_number?: string | null
+          nationality?: string | null
+          role?: string | null
           updated_at?: string | null
+          uploaded_id_url?: string | null
           wallet_address?: string | null
         }
         Relationships: []
@@ -199,13 +158,11 @@ export type Database = {
           foreign_quota: number | null
           foreign_tokens_sold: number | null
           id: string
-          image_url: string | null
           location: string | null
           name: string
           project_status: string | null
           token_price_usd: number | null
-          total_tokens: number
-          updated_at: string | null
+          total_tokens: number | null
         }
         Insert: {
           created_at?: string | null
@@ -215,13 +172,11 @@ export type Database = {
           foreign_quota?: number | null
           foreign_tokens_sold?: number | null
           id?: string
-          image_url?: string | null
           location?: string | null
           name: string
           project_status?: string | null
           token_price_usd?: number | null
-          total_tokens?: number
-          updated_at?: string | null
+          total_tokens?: number | null
         }
         Update: {
           created_at?: string | null
@@ -231,99 +186,34 @@ export type Database = {
           foreign_quota?: number | null
           foreign_tokens_sold?: number | null
           id?: string
-          image_url?: string | null
           location?: string | null
           name?: string
           project_status?: string | null
           token_price_usd?: number | null
-          total_tokens?: number
-          updated_at?: string | null
+          total_tokens?: number | null
         }
         Relationships: []
-      }
-      token_pools: {
-        Row: {
-          created_at: string | null
-          id: number
-          pool_type: string
-          sold_tokens: number | null
-          token_price_usd: number | null
-          total_tokens: number
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          id?: number
-          pool_type: string
-          sold_tokens?: number | null
-          token_price_usd?: number | null
-          total_tokens: number
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: number
-          pool_type?: string
-          sold_tokens?: number | null
-          token_price_usd?: number | null
-          total_tokens?: number
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      transactions: {
-        Row: {
-          amount_usd: number
-          created_at: string | null
-          id: string
-          investor_id: string
-          status: string | null
-          token_amount: number
-          tx_hash: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          amount_usd: number
-          created_at?: string | null
-          id?: string
-          investor_id: string
-          status?: string | null
-          token_amount: number
-          tx_hash?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          amount_usd?: number
-          created_at?: string | null
-          id?: string
-          investor_id?: string
-          status?: string | null
-          token_amount?: number
-          tx_hash?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "transactions_investor_id_fkey"
-            columns: ["investor_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      check_token_availability: {
-        Args: { p_user_id: string; p_token_amount: number }
-        Returns: boolean
-      }
-      update_token_pool_sold_amount: {
-        Args: { pool_id: string; new_sold_amount: number }
+      create_admin_user: {
+        Args: { user_email: string }
         Returns: undefined
+      }
+      validate_token_purchase: {
+        Args: {
+          p_user_id: string
+          p_project_id: string
+          p_token_quantity: number
+        }
+        Returns: {
+          is_valid: boolean
+          error_message: string
+          available_tokens: number
+        }[]
       }
     }
     Enums: {
