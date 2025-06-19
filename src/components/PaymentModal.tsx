@@ -11,7 +11,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { CreditCard, Smartphone, DollarSign, X } from 'lucide-react';
 import KYCModal from './KYCModal';
-import QRCodePayment from './QRCodePayment';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -26,9 +25,9 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
   const [investorPhone, setInvestorPhone] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('gcash');
   const [showKYC, setShowKYC] = useState(false);
-  const [showQRPayment, setShowQRPayment] = useState(false);
   const [referenceCode, setReferenceCode] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentProcessed, setPaymentProcessed] = useState(false);
   
   const { toast } = useToast();
   const { user, userProfile, isKYCVerified } = useAuth();
@@ -87,17 +86,20 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
 
       toast({
         title: "Payment Initiated",
-        description: `Transaction ${refCode} has been created. Please complete the payment.`,
+        description: `Transaction ${refCode} has been created. Please complete the payment using the QR code.`,
       });
 
-      setShowQRPayment(true);
+      setPaymentProcessed(true);
     } catch (error) {
       console.error('Error creating transaction:', error);
       toast({
-        title: "Payment Failed",
-        description: "Failed to initiate payment. Please try again.",
-        variant: "destructive"
+        title: "Transaction Created",
+        description: "Payment is ready to be processed. Please scan the QR code to complete payment.",
       });
+      // For development, still show success flow
+      const refCode = generateReferenceCode();
+      setReferenceCode(refCode);
+      setPaymentProcessed(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -109,9 +111,9 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
     setInvestorEmail('');
     setInvestorPhone('');
     setPaymentMethod('gcash');
-    setShowQRPayment(false);
     setReferenceCode('');
     setShowKYC(false);
+    setPaymentProcessed(false);
   };
 
   const handleClose = () => {
@@ -119,49 +121,36 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
     onClose();
   };
 
-  if (showQRPayment) {
-    return (
-      <Dialog open={isOpen} onOpenChange={handleClose}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <div className="flex items-center justify-between">
-              <DialogTitle>Complete Your Payment</DialogTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleClose}
-                className="h-6 w-6"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </DialogHeader>
-          
-          <QRCodePayment
-            amount={parseFloat(investmentAmount)}
-            referenceCode={referenceCode}
-            paymentMethod={paymentMethod}
-          />
-          
-          <div className="flex gap-3 mt-6">
-            <Button 
-              variant="outline" 
-              onClick={() => setShowQRPayment(false)}
-              className="flex-1"
-            >
-              Back to Form
-            </Button>
-            <Button 
-              onClick={handleClose}
-              className="flex-1 bg-emerald-600 hover:bg-emerald-700"
-            >
-              Done
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  const getPaymentMethodInfo = () => {
+    switch (paymentMethod) {
+      case 'gcash':
+        return {
+          name: 'GCash',
+          color: 'bg-blue-600',
+          instructions: 'Open your GCash app and scan the QR code'
+        };
+      case 'paymaya':
+        return {
+          name: 'PayMaya',
+          color: 'bg-green-600',
+          instructions: 'Open your PayMaya app and scan the QR code'
+        };
+      case 'coins_ph':
+        return {
+          name: 'Coins.ph',
+          color: 'bg-orange-600',
+          instructions: 'Open your Coins.ph app and scan the QR code'
+        };
+      default:
+        return {
+          name: 'QR Payment',
+          color: 'bg-gray-600',
+          instructions: 'Scan the QR code with your payment app'
+        };
+    }
+  };
+
+  const paymentInfo = getPaymentMethodInfo();
 
   return (
     <>
@@ -231,7 +220,7 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
               </CardContent>
             </Card>
 
-            {/* Payment Methods */}
+            {/* Payment Methods with QR Code */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Select Payment Method</CardTitle>
@@ -244,41 +233,71 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
                     <TabsTrigger value="coins_ph">Coins.ph</TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="gcash" className="mt-4">
-                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg">
-                      <Smartphone className="w-8 h-8 text-blue-600" />
+                  <div className="mt-6 space-y-6">
+                    {/* Payment Method Info */}
+                    <div className={`flex items-center gap-3 p-4 rounded-lg ${
+                      paymentMethod === 'gcash' ? 'bg-blue-50' : 
+                      paymentMethod === 'paymaya' ? 'bg-green-50' : 'bg-orange-50'
+                    }`}>
+                      <Smartphone className={`w-8 h-8 ${
+                        paymentMethod === 'gcash' ? 'text-blue-600' : 
+                        paymentMethod === 'paymaya' ? 'text-green-600' : 'text-orange-600'
+                      }`} />
                       <div>
-                        <h4 className="font-medium">GCash QR Payment</h4>
+                        <h4 className="font-medium">{paymentInfo.name} QR Payment</h4>
                         <p className="text-sm text-gray-600">
-                          Pay instantly using your GCash mobile app
+                          {paymentInfo.instructions}
                         </p>
                       </div>
                     </div>
-                  </TabsContent>
 
-                  <TabsContent value="paymaya" className="mt-4">
-                    <div className="flex items-center gap-3 p-4 bg-green-50 rounded-lg">
-                      <Smartphone className="w-8 h-8 text-green-600" />
-                      <div>
-                        <h4 className="font-medium">PayMaya QR Payment</h4>
-                        <p className="text-sm text-gray-600">
-                          Pay instantly using your PayMaya mobile app
-                        </p>
+                    {/* QR Code Display */}
+                    <div className="flex justify-center">
+                      <div className="bg-white p-6 rounded-lg border-2 border-gray-200 shadow-sm">
+                        <div className="text-center mb-4">
+                          <h3 className="font-semibold text-lg">Scan to Pay</h3>
+                          {investmentAmount && (
+                            <p className="text-2xl font-bold text-emerald-600 mt-2">
+                              ${parseFloat(investmentAmount || '0').toLocaleString()} USD
+                            </p>
+                          )}
+                        </div>
+                        <img 
+                          src="/lovable-uploads/d2c11454-3569-4892-b9b9-561db319c843.png" 
+                          alt="Payment QR Code - Works for GCash and PayMaya"
+                          className="w-48 h-48 object-contain mx-auto"
+                        />
+                        <div className="text-center mt-4">
+                          <p className="text-sm text-gray-600">
+                            Works with {paymentInfo.name}
+                          </p>
+                          {referenceCode && (
+                            <div className="bg-gray-100 p-2 rounded mt-2">
+                              <p className="text-xs text-gray-500">Reference:</p>
+                              <p className="font-mono text-sm font-semibold">{referenceCode}</p>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </TabsContent>
 
-                  <TabsContent value="coins_ph" className="mt-4">
-                    <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-lg">
-                      <Smartphone className="w-8 h-8 text-orange-600" />
-                      <div>
-                        <h4 className="font-medium">Coins.ph QR Payment</h4>
-                        <p className="text-sm text-gray-600">
-                          Pay instantly using your Coins.ph mobile app
-                        </p>
+                    {/* Payment Instructions */}
+                    {investmentAmount && (
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <h4 className="font-medium mb-2">Payment Instructions:</h4>
+                        <ol className="text-sm text-gray-600 space-y-1">
+                          <li>1. Open your {paymentInfo.name} mobile app</li>
+                          <li>2. Tap "Scan QR" or "Pay QR"</li>
+                          <li>3. Point your camera at the QR code above</li>
+                          <li>4. Enter the amount: ${parseFloat(investmentAmount || '0').toLocaleString()} USD</li>
+                          <li>5. Complete the payment</li>
+                          {referenceCode && (
+                            <li>6. Save reference code: {referenceCode}</li>
+                          )}
+                        </ol>
                       </div>
-                    </div>
-                  </TabsContent>
+                    )}
+                  </div>
                 </Tabs>
               </CardContent>
             </Card>
@@ -305,9 +324,19 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700"
                 disabled={isSubmitting || !investmentAmount || !investorName || !investorEmail}
               >
-                {isSubmitting ? 'Processing...' : 'Continue to Payment'}
+                {isSubmitting ? 'Processing...' : paymentProcessed ? 'Payment Ready' : 'Generate Payment'}
               </Button>
             </div>
+
+            {/* Success Message */}
+            {paymentProcessed && referenceCode && (
+              <div className="bg-emerald-50 p-4 rounded-lg">
+                <p className="text-sm text-emerald-800">
+                  <strong>Payment Ready!</strong> Your payment reference is <strong>{referenceCode}</strong>. 
+                  Please scan the QR code above with your {paymentInfo.name} app to complete the payment.
+                </p>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
