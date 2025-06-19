@@ -4,12 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import UnitCard from "./UnitCard";
 import OwnershipDashboard from "./OwnershipDashboard";
 import UnitInvestmentStatus from "./UnitInvestmentStatus";
+import InvestmentModal from "./InvestmentModal";
 import { useRealTimeUnits } from "@/hooks/useRealTimeUnits";
+import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 import { Loader2 } from "lucide-react";
 
 const UnitsGrid = () => {
-  const [selectedUnit, setSelectedUnit] = useState<any>(null);
   const { units, tokenPools, loading, error } = useRealTimeUnits();
+  const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
 
   if (loading) {
     return (
@@ -88,7 +90,7 @@ const UnitsGrid = () => {
                   status: unit.status,
                   funded_percentage: unit.funded_percentage
                 }}
-                onClick={() => setSelectedUnit(unit)}
+                onClick={() => openModal(unit)}
               />
               
               {/* Show investment status for each unit */}
@@ -101,6 +103,13 @@ const UnitsGrid = () => {
             </div>
           ))}
         </div>
+
+        {/* Investment Modal */}
+        <InvestmentModal
+          isOpen={isOpen}
+          onClose={closeModal}
+          unit={selectedUnit}
+        />
 
         {/* Legal Disclaimer */}
         <div className="mt-16 p-6 bg-gray-50 rounded-lg border">
