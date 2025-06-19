@@ -24,6 +24,72 @@ export type Database = {
         }
         Relationships: []
       }
+      lots: {
+        Row: {
+          available_tokens: number
+          created_at: string
+          id: string
+          image_url: string | null
+          name: string
+          status: string | null
+          token_price_usd: number | null
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          available_tokens?: number
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name: string
+          status?: string | null
+          token_price_usd?: number | null
+          total_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          available_tokens?: number
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          name?: string
+          status?: string | null
+          token_price_usd?: number | null
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      token_pools: {
+        Row: {
+          created_at: string
+          id: number
+          pool_type: string
+          sold_tokens: number
+          token_price_usd: number | null
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          pool_type: string
+          sold_tokens?: number
+          token_price_usd?: number | null
+          total_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          pool_type?: string
+          sold_tokens?: number
+          token_price_usd?: number | null
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
