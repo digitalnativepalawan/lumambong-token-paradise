@@ -1,9 +1,8 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import UnitCard from "./UnitCard";
+import UnitsTable from "./UnitsTable";
 import OwnershipDashboard from "./OwnershipDashboard";
-import UnitInvestmentStatus from "./UnitInvestmentStatus";
 import InvestmentModal from "./InvestmentModal";
 import { useRealTimeUnits } from "@/hooks/useRealTimeUnits";
 import { useInvestmentModal } from "@/hooks/useInvestmentModal";
@@ -11,7 +10,7 @@ import { Loader2 } from "lucide-react";
 
 const UnitsGrid = () => {
   const { units, tokenPools, loading, error } = useRealTimeUnits();
-  const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
+  const { isOpen, selectedUnit, closeModal } = useInvestmentModal();
 
   if (loading) {
     return (
@@ -38,9 +37,6 @@ const UnitsGrid = () => {
     );
   }
 
-  const filipinoUnits = units.filter(unit => unit.ownership_type === "filipino_only");
-  const foreignUnits = units.filter(unit => unit.ownership_type === "foreign_allowed");
-
   // Calculate ownership stats from token pools
   const filipinoPool = tokenPools.find(pool => pool.pool_type === 'filipino');
   const foreignPool = tokenPools.find(pool => pool.pool_type === 'foreign');
@@ -51,7 +47,7 @@ const UnitsGrid = () => {
   const foreignTotal = foreignPool?.total_tokens || 4;
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-12">
           <Badge className="mb-4 bg-emerald-100 text-emerald-800">Investment Opportunities</Badge>
@@ -73,35 +69,9 @@ const UnitsGrid = () => {
           foreignTotal={foreignTotal}
         />
 
-        {/* Units Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-12">
-          {units.map((unit) => (
-            <div key={unit.id} className="space-y-4">
-              <UnitCard
-                unit={{
-                  id: parseInt(unit.id),
-                  unit_number: parseInt(unit.id.slice(-1)) || 1,
-                  unit_type: unit.unit_type,
-                  toring_solid: unit.total_tokens - unit.available_tokens,
-                  lbbl: "LBBL",
-                  annual_report: { regime: "RPM", volume: 4440 },
-                  invest_flow: unit.token_price_usd,
-                  ownership_type: unit.ownership_type,
-                  status: unit.status,
-                  funded_percentage: unit.funded_percentage
-                }}
-                onClick={() => openModal(unit)}
-              />
-              
-              {/* Show investment status for each unit */}
-              <UnitInvestmentStatus 
-                unit={{
-                  id: unit.id,
-                  name: unit.name
-                }}
-              />
-            </div>
-          ))}
+        {/* Modern Units Table */}
+        <div className="mt-12">
+          <UnitsTable units={units} />
         </div>
 
         {/* Investment Modal */}
@@ -112,7 +82,7 @@ const UnitsGrid = () => {
         />
 
         {/* Legal Disclaimer */}
-        <div className="mt-16 p-6 bg-gray-50 rounded-lg border">
+        <div className="mt-16 p-6 bg-white rounded-xl border border-gray-200 shadow-sm">
           <p className="text-sm text-gray-600 text-center">
             Legal Disclaimer: Investment is subject to Philippine property law. 
             Land ownership designed to foreign ownership laws, with design ownership 
