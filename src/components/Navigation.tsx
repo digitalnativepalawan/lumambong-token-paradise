@@ -53,9 +53,6 @@ const Navigation = () => {
             {/* Logo */}
             <div className="flex items-center gap-2">
               <Waves className={`w-8 h-8 ${isScrolled ? 'text-emerald-600' : 'text-white'}`} />
-              <span className={`text-2xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
-                Luxe Lumambong
-              </span>
             </div>
 
             {/* Desktop Navigation */}
