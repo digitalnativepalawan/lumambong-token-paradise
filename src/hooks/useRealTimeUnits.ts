@@ -2,25 +2,23 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-interface Unit {
+export interface Unit {
   id: string;
-  name: string;
-  unit_type: string;
-  total_tokens: number;
-  available_tokens: number;
-  token_price_usd: number;
-  status: string;
-  image_url?: string;
-  funded_percentage: number;
-  ownership_type: 'filipino_only' | 'foreign_allowed';
+  unit_number: string;
+  size_sqm: number;
+  price_usd: number;
+  status: 'available' | 'reserved' | 'sold';
+  ownership_type: 'filipino' | 'foreign';
+  amenities: string[];
 }
 
-interface TokenPool {
-  id: number;
+export interface TokenPool {
+  id: string;
   pool_type: string;
   total_tokens: number;
   sold_tokens: number;
-  token_price_usd: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export const useRealTimeUnits = () => {
@@ -29,88 +27,112 @@ export const useRealTimeUnits = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchUnits = async () => {
-    try {
-      const { data: lotsData, error: lotsError } = await supabase
-        .from('lots')
-        .select('*');
-
-      if (lotsError) throw lotsError;
-
-      // Transform lots data to match Unit interface
-      const transformedUnits: Unit[] = (lotsData || []).map((lot, index) => ({
-        id: lot.id,
-        name: lot.name,
-        unit_type: lot.name.includes('BEACHFRONT') ? 'BEACHFRONT PREMIUM' :
-                   lot.name.includes('BEACH') ? 'BEACH VIEW' : 'GARDEN PARADISE',
-        total_tokens: lot.total_tokens,
-        available_tokens: lot.available_tokens,
-        token_price_usd: Number(lot.token_price_usd || 450),
-        status: lot.status || 'available',
-        image_url: lot.image_url,
-        funded_percentage: lot.total_tokens > 0 ? 
-          Math.round(((lot.total_tokens - lot.available_tokens) / lot.total_tokens) * 100) : 0,
-        ownership_type: index % 2 === 0 ? 'filipino_only' : 'foreign_allowed'
-      }));
-
-      setUnits(transformedUnits);
-    } catch (err) {
-      console.error('Error fetching units:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch units');
-    }
-  };
-
-  const fetchTokenPools = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('token_pools')
-        .select('*');
-
-      if (error) throw error;
-      setTokenPools(data || []);
-    } catch (err) {
-      console.error('Error fetching token pools:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch token pools');
-    }
-  };
-
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([fetchUnits(), fetchTokenPools()]);
-      setLoading(false);
+      try {
+        setLoading(true);
+        
+        // Fetch units
+        const { data: unitsData, error: unitsError } = await supabase
+          .from('units')
+          .select('*');
+
+        if (unitsError) throw unitsError;
+
+        // Fetch token pools
+        const { data: poolsData, error: poolsError } = await supabase
+          .from('token_pools')
+          .select('*');
+
+        if (poolsError) throw poolsError;
+
+        // Transform units data to match interface
+        const transformedUnits: Unit[] = unitsData?.map(unit => ({
+          id: unit.id,
+          unit_number: unit.unit_number || `Unit ${unit.id}`,
+          size_sqm: unit.size_sqm || 50,
+          price_usd: unit.price_usd || 25000,
+          status: unit.status || 'available',
+          ownership_type: unit.ownership_type || 'filipino',
+          amenities: unit.amenities || []
+        })) || [];
+
+        setUnits(transformedUnits);
+        setTokenPools(poolsData || []);
+        
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        
+        // Fallback to mock data
+        setUnits([
+          {
+            id: '1',
+            unit_number: 'Unit 1',
+            size_sqm: 50,
+            price_usd: 25000,
+            status: 'available',
+            ownership_type: 'filipino',
+            amenities: ['Beach Access', 'Pool', 'Garden View']
+          },
+          {
+            id: '2',
+            unit_number: 'Unit 2',
+            size_sqm: 75,
+            price_usd: 37500,
+            status: 'reserved',
+            ownership_type: 'foreign',
+            amenities: ['Ocean View', 'Private Balcony', 'Pool']
+          }
+        ]);
+        
+        setTokenPools([
+          {
+            id: '1',
+            pool_type: 'filipino',
+            total_tokens: 6,
+            sold_tokens: 2,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          },
+          {
+            id: '2',
+            pool_type: 'foreign',
+            total_tokens: 4,
+            sold_tokens: 1,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchData();
 
     // Set up real-time subscriptions
-    const lotsSubscription = supabase
-      .channel('lots-changes')
+    const unitsSubscription = supabase
+      .channel('units_changes')
       .on('postgres_changes', 
-        { event: '*', schema: 'public', table: 'lots' },
-        () => {
-          console.log('Lots data changed, refetching...');
-          fetchUnits();
-        }
+        { event: '*', schema: 'public', table: 'units' }, 
+        () => fetchData()
       )
       .subscribe();
 
     const poolsSubscription = supabase
-      .channel('pools-changes')
-      .on('postgres_changes',
-        { event: '*', schema: 'public', table: 'token_pools' },
-        () => {
-          console.log('Token pools data changed, refetching...');
-          fetchTokenPools();
-        }
+      .channel('pools_changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'token_pools' }, 
+        () => fetchData()
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(lotsSubscription);
-      supabase.removeChannel(poolsSubscription);
+      unitsSubscription.unsubscribe();
+      poolsSubscription.unsubscribe();
     };
   }, []);
 
-  return { units, tokenPools, loading, error, refetch: () => Promise.all([fetchUnits(), fetchTokenPools()]) };
+  return { units, tokenPools, loading, error };
 };
