@@ -1,18 +1,19 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Waves, User, LogOut } from "lucide-react";
+import { Menu, X, Waves, User, LogOut, Volume2, VolumeX } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import PaymentModal from "./PaymentModal";
 import AdminPortal from "./AdminPortal";
 import { useInvestmentModal } from "@/hooks/useInvestmentModal";
+import { useAudio } from "@/hooks/useAudio";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
   const { user, userProfile, signOut, isAuthenticated } = useAuth();
+  const { isMuted, toggleMute } = useAudio();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -68,6 +69,16 @@ const Navigation = () => {
                   {item.label}
                 </a>
               ))}
+
+              {/* Audio Toggle Button */}
+              <Button
+                onClick={toggleMute}
+                variant="ghost"
+                size="sm"
+                className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+              >
+                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              </Button>
 
               {/* User Authentication */}
               {isAuthenticated ? (
@@ -147,6 +158,19 @@ const Navigation = () => {
                     {item.label}
                   </a>
                 ))}
+                
+                {/* Audio Toggle for Mobile */}
+                <div className="flex items-center justify-between pt-3 border-t">
+                  <span className="text-gray-700">Background Audio</span>
+                  <Button
+                    onClick={toggleMute}
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-600"
+                  >
+                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                  </Button>
+                </div>
                 
                 {isAuthenticated ? (
                   <div className="space-y-3 pt-3 border-t">

@@ -1,8 +1,19 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Users, TreePine, Shield, Globe } from "lucide-react";
+import { ArrowRight, MapPin, Users, TreePine, Shield, Globe, Play, Pause } from "lucide-react";
+import { useAudio } from "@/hooks/useAudio";
+import { useEffect } from "react";
 
 const Hero = () => {
+  const { isPlaying, isMuted, playAudio } = useAudio();
+
+  useEffect(() => {
+    // Auto-play audio when component mounts if not muted
+    if (!isMuted) {
+      playAudio();
+    }
+  }, [isMuted, playAudio]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-white py-8">
       {/* Content */}
@@ -16,6 +27,14 @@ const Hero = () => {
               className="w-64 sm:w-80 md:w-96 h-auto mx-auto"
             />
           </div>
+
+          {/* Audio Status Indicator */}
+          {isPlaying && !isMuted && (
+            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 mb-4">
+              <Play className="w-3 h-3 text-emerald-600" />
+              <span className="text-xs text-emerald-600">Ambient audio playing</span>
+            </div>
+          )}
 
           {/* Location Badge */}
           <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1 sm:px-4 sm:py-2 mb-4 sm:mb-8">
