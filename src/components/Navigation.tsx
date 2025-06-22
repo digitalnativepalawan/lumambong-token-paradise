@@ -5,6 +5,7 @@ import { Menu, X, Waves, User, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import PaymentModal from "./PaymentModal";
+import AdminPortal from "./AdminPortal";
 import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 
 const Navigation = () => {
@@ -80,6 +81,10 @@ const Navigation = () => {
                       {userProfile?.full_name || user?.email}
                     </span>
                   </div>
+                  
+                  {/* Admin Portal Button */}
+                  <AdminPortal />
+                  
                   <Button 
                     onClick={handleInvestClick}
                     className={`${
@@ -152,6 +157,12 @@ const Navigation = () => {
                       <User className="w-4 h-4" />
                       <span className="text-sm">{userProfile?.full_name || user?.email}</span>
                     </div>
+                    
+                    {/* Admin Portal Button for Mobile */}
+                    <div className="flex justify-center">
+                      <AdminPortal />
+                    </div>
+                    
                     <Button 
                       onClick={() => {
                         handleInvestClick();
