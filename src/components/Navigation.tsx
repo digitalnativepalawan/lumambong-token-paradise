@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
@@ -14,7 +15,7 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showVolumeControl, setShowVolumeControl] = useState(false);
   const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
-  const { user, userProfile, signOut, isAuthenticated } = useAuth();
+  const { user, userProfile, isAuthenticated } = useAuth();
   const { isMuted, volume, toggleMute, setVolume } = useAudio();
   const navigate = useNavigate();
 
@@ -26,16 +27,7 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
-
   const handleInvestClick = () => {
-    if (!isAuthenticated) {
-      navigate('/auth');
-      return;
-    }
     openModal();
   };
 
@@ -48,8 +40,22 @@ const Navigation = () => {
     { label: "Property", href: "#property" },
     { label: "Investment", href: "#investment" },
     { label: "Location", href: "#location" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "#contact" }
   ];
+
+  const handleNavClick = (href: string) => {
+    if (href.startsWith('/')) {
+      navigate(href);
+    } else {
+      // For hash links, scroll to section
+      const element = document.querySelector(href);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <>
@@ -66,15 +72,15 @@ const Navigation = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
-                <a
+                <button
                   key={item.label}
-                  href={item.href}
+                  onClick={() => handleNavClick(item.href)}
                   className={`font-medium transition-colors hover:text-emerald-600 ${
                     isScrolled ? 'text-gray-700' : 'text-white'
                   }`}
                 >
                   {item.label}
-                </a>
+                </button>
               ))}
 
               {/* Social Media Icons */}
@@ -130,59 +136,20 @@ const Navigation = () => {
                 )}
               </div>
 
-              {/* User Authentication */}
-              {isAuthenticated ? (
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <User className={`w-4 h-4 ${isScrolled ? 'text-gray-600' : 'text-white'}`} />
-                    <span className={`text-sm ${isScrolled ? 'text-gray-600' : 'text-white'}`}>
-                      {userProfile?.full_name || user?.email}
-                    </span>
-                  </div>
-                  
-                  {/* Admin Portal Button */}
-                  <AdminPortal />
-                  
-                  <Button 
-                    onClick={handleInvestClick}
-                    className={`${
-                      isScrolled 
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                        : 'bg-white text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    Invest Now
-                  </Button>
-                  <Button
-                    onClick={handleSignOut}
-                    variant="ghost"
-                    size="sm"
-                    className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <Button
-                    onClick={() => navigate('/auth')}
-                    variant="ghost"
-                    className={`${isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    onClick={handleInvestClick}
-                    className={`${
-                      isScrolled 
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                        : 'bg-white text-gray-900 hover:bg-gray-100'
-                    }`}
-                  >
-                    Invest Now
-                  </Button>
-                </div>
-              )}
+              {/* Always show admin and invest buttons */}
+              <div className="flex items-center gap-4">
+                <AdminPortal />
+                <Button 
+                  onClick={handleInvestClick}
+                  className={`${
+                    isScrolled 
+                      ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                      : 'bg-white text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  Invest Now
+                </Button>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -199,14 +166,13 @@ const Navigation = () => {
             <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-lg">
               <div className="px-6 py-4 space-y-4">
                 {navItems.map((item) => (
-                  <a
+                  <button
                     key={item.label}
-                    href={item.href}
-                    className="block font-medium text-gray-700 hover:text-emerald-600 transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() => handleNavClick(item.href)}
+                    className="block w-full text-left font-medium text-gray-700 hover:text-emerald-600 transition-colors py-2"
                   >
                     {item.label}
-                  </a>
+                  </button>
                 ))}
                 
                 {/* Social Media Icons for Mobile */}
@@ -246,61 +212,22 @@ const Navigation = () => {
                   </div>
                 </div>
                 
-                {isAuthenticated ? (
-                  <div className="space-y-3 pt-3 border-t">
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <User className="w-4 h-4" />
-                      <span className="text-sm">{userProfile?.full_name || user?.email}</span>
-                    </div>
-                    
-                    {/* Admin Portal Button for Mobile */}
-                    <div className="flex justify-center">
-                      <AdminPortal />
-                    </div>
-                    
-                    <Button 
-                      onClick={() => {
-                        handleInvestClick();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                    >
-                      Invest Now
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        handleSignOut();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Sign Out
-                    </Button>
+                <div className="space-y-3 pt-3 border-t">
+                  {/* Admin Portal Button for Mobile */}
+                  <div className="flex justify-center">
+                    <AdminPortal />
                   </div>
-                ) : (
-                  <div className="space-y-3 pt-3 border-t">
-                    <Button
-                      onClick={() => {
-                        navigate('/auth');
-                        setIsMobileMenuOpen(false);
-                      }}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Sign In
-                    </Button>
-                    <Button 
-                      onClick={() => {
-                        handleInvestClick();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                    >
-                      Invest Now
-                    </Button>
-                  </div>
-                )}
+                  
+                  <Button 
+                    onClick={() => {
+                      handleInvestClick();
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                  >
+                    Invest Now
+                  </Button>
+                </div>
               </div>
             </div>
           )}

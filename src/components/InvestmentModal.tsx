@@ -4,10 +4,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import KYCModal from './KYCModal';
 import UnitInvestmentStatus from './UnitInvestmentStatus';
 
@@ -43,17 +41,14 @@ const InvestmentModal = ({ isOpen, onClose, unit }: InvestmentModalProps) => {
       const percentage = parseFloat(investmentPercentage);
       const investmentAmount = calculateInvestmentAmount();
 
-      const { error } = await supabase
-        .from('investors')
-        .insert({
-          user_id: user.id,
-          unit_id: unit.id,
-          percentage: percentage,
-          nationality: userProfile.nationality,
-          investment_amount_usd: investmentAmount
-        });
-
-      if (error) throw error;
+      // Mock investment submission for frontend-only mode
+      console.log('Mock investment submission:', {
+        user_id: user.id,
+        unit_id: unit.id,
+        percentage: percentage,
+        nationality: userProfile.nationality,
+        investment_amount_usd: investmentAmount
+      });
 
       toast({
         title: "Investment Submitted!",
