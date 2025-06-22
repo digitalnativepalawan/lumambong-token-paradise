@@ -30,7 +30,7 @@ const UnitsGrid = () => {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center">
-            <p className="text-red-600">Error loading data: {error}</p>
+            <p className="text-red-600">Error loading data: {error?.message || 'Unknown error'}</p>
           </div>
         </div>
       </section>
