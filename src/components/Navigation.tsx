@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Waves, User, LogOut, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import PaymentModal from "./PaymentModal";
 import AdminPortal from "./AdminPortal";
+import SocialMediaIcons from "./SocialMediaIcons";
 import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 import { useAudio } from "@/hooks/useAudio";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showVolumeControl, setShowVolumeControl] = useState(false);
   const { isOpen, selectedUnit, openModal, closeModal } = useInvestmentModal();
   const { user, userProfile, signOut, isAuthenticated } = useAuth();
-  const { isMuted, toggleMute } = useAudio();
+  const { isMuted, volume, toggleMute, setVolume } = useAudio();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,11 @@ const Navigation = () => {
       return;
     }
     openModal();
+  };
+
+  const adjustVolume = (delta: number) => {
+    const newVolume = Math.max(0, Math.min(1, volume + delta));
+    setVolume(newVolume);
   };
 
   const navItems = [
@@ -70,15 +77,58 @@ const Navigation = () => {
                 </a>
               ))}
 
-              {/* Audio Toggle Button */}
-              <Button
-                onClick={toggleMute}
-                variant="ghost"
-                size="sm"
-                className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
-              >
-                {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              </Button>
+              {/* Social Media Icons */}
+              <SocialMediaIcons 
+                variant="header" 
+                className={isScrolled ? 'text-gray-600' : 'text-white'} 
+              />
+
+              {/* Audio Controls */}
+              <div className="relative flex items-center gap-2">
+                <Button
+                  onClick={() => setShowVolumeControl(!showVolumeControl)}
+                  variant="ghost"
+                  size="sm"
+                  className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                >
+                  {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                </Button>
+                
+                {showVolumeControl && (
+                  <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border p-3 flex items-center gap-2 min-w-[150px]">
+                    <Button
+                      onClick={() => adjustVolume(-0.1)}
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </Button>
+                    <div className="flex-1 bg-gray-200 rounded-full h-2 relative">
+                      <div 
+                        className="bg-emerald-600 h-2 rounded-full transition-all"
+                        style={{ width: `${volume * 100}%` }}
+                      />
+                    </div>
+                    <Button
+                      onClick={() => adjustVolume(0.1)}
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      onClick={toggleMute}
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6"
+                    >
+                      {isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                    </Button>
+                  </div>
+                )}
+              </div>
 
               {/* User Authentication */}
               {isAuthenticated ? (
@@ -159,17 +209,41 @@ const Navigation = () => {
                   </a>
                 ))}
                 
+                {/* Social Media Icons for Mobile */}
+                <div className="flex items-center justify-between pt-3 border-t">
+                  <span className="text-gray-700">Follow Us</span>
+                  <SocialMediaIcons variant="footer" className="text-gray-600" />
+                </div>
+                
                 {/* Audio Toggle for Mobile */}
                 <div className="flex items-center justify-between pt-3 border-t">
                   <span className="text-gray-700">Background Audio</span>
-                  <Button
-                    onClick={toggleMute}
-                    variant="ghost"
-                    size="sm"
-                    className="text-gray-600"
-                  >
-                    {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      onClick={() => adjustVolume(-0.1)}
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6"
+                    >
+                      <Minus className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      onClick={() => adjustVolume(0.1)}
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </Button>
+                    <Button
+                      onClick={toggleMute}
+                      variant="ghost"
+                      size="sm"
+                      className="text-gray-600"
+                    >
+                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </Button>
+                  </div>
                 </div>
                 
                 {isAuthenticated ? (

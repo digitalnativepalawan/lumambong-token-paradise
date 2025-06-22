@@ -4,9 +4,11 @@ import React, { createContext, useContext, useState, useRef, useEffect } from 'r
 interface AudioContextType {
   isPlaying: boolean;
   isMuted: boolean;
+  volume: number;
   toggleMute: () => void;
   playAudio: () => void;
   pauseAudio: () => void;
+  setVolume: (volume: number) => void;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
@@ -22,12 +24,13 @@ export const useAudio = () => {
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolumeState] = useState(0.3);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     audioRef.current = new Audio('https://d3ctxlq1ktw2nl.cloudfront.net/staging/2025-5-22/402583470-44100-2-bdbb722118c58.m4a');
     audioRef.current.loop = true;
-    audioRef.current.volume = 0.3;
+    audioRef.current.volume = volume;
 
     const audio = audioRef.current;
     
@@ -71,8 +74,16 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const setVolume = (newVolume: number) => {
+    const clampedVolume = Math.max(0, Math.min(1, newVolume));
+    setVolumeState(clampedVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = clampedVolume;
+    }
+  };
+
   return (
-    <AudioContext.Provider value={{ isPlaying, isMuted, toggleMute, playAudio, pauseAudio }}>
+    <AudioContext.Provider value={{ isPlaying, isMuted, volume, toggleMute, playAudio, pauseAudio, setVolume }}>
       {children}
     </AudioContext.Provider>
   );
