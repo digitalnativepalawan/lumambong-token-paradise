@@ -1,113 +1,119 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
-import { useState, useEffect } from 'react';
-import { User, Session } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-
-interface UserProfile {
+interface User {
   id: string;
-  email: string | null;
-  full_name: string | null;
-  nationality: string | null;
-  kyc_verified: boolean | null;
-  is_admin: boolean | null;
+  email: string;
 }
 
-export const useAuth = () => {
+interface UserProfile {
+  email: string;
+  full_name: string;
+  nationality: 'ph' | 'foreign';
+  kyc_verified: boolean;
+  is_admin: boolean;
+}
+
+interface AuthContextType {
+  user: User | null;
+  userProfile: UserProfile | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  updateProfile: (profile: Partial<UserProfile>) => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  const fetchUserProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
-
-      if (error && error.code !== 'PGRST116') { // Not found is ok
-        throw error;
-      }
-      
-      setUserProfile(data);
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-    }
-  };
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        fetchUserProfile(session.user.id);
-      }
-      
-      setLoading(false);
-    });
+    // Mock admin user for frontend development
+    const mockUser: User = {
+      id: 'admin-123',
+      email: 'admin@lumambong.com'
+    };
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          // Defer profile fetch to avoid potential deadlocks
-          setTimeout(() => {
-            fetchUserProfile(session.user.id);
-          }, 0);
-        } else {
-          setUserProfile(null);
-        }
-        
-        setLoading(false);
-      }
-    );
+    const mockProfile: UserProfile = {
+      email: 'admin@lumambong.com',
+      full_name: 'Admin User',
+      nationality: 'ph',
+      kyc_verified: true,
+      is_admin: true
+    };
 
-    return () => subscription.unsubscribe();
+    setUser(mockUser);
+    setUserProfile(mockProfile);
   }, []);
 
+  const signUp = async (email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      // Mock sign up for frontend
+      console.log('Mock sign up:', { email, password });
+      // In real implementation, this would create a user
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      // Mock sign in for frontend
+      console.log('Mock sign in:', { email, password });
+      // In real implementation, this would authenticate user
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Error signing out:', error);
+    setIsLoading(true);
+    try {
+      // Mock sign out for frontend
+      console.log('Mock sign out');
+      // Keep user logged in for frontend development
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user) return;
-
-    const { error } = await supabase
-      .from('users')
-      .upsert({
-        id: user.id,
-        email: user.email,
-        ...updates,
-        updated_at: new Date().toISOString()
-      });
-
-    if (error) {
-      console.error('Error updating profile:', error);
-      throw error;
+  const updateProfile = async (profile: Partial<UserProfile>) => {
+    setIsLoading(true);
+    try {
+      // Mock profile update for frontend
+      console.log('Mock profile update:', profile);
+      if (userProfile) {
+        setUserProfile({ ...userProfile, ...profile });
+      }
+    } finally {
+      setIsLoading(false);
     }
-
-    // Refresh profile
-    await fetchUserProfile(user.id);
   };
 
-  return {
+  const value = {
     user,
-    session,
     userProfile,
-    loading,
+    isAuthenticated: !!user,
+    isLoading,
+    signUp,
+    signIn,
     signOut,
     updateProfile,
-    isAuthenticated: !!user,
-    isKYCVerified: userProfile?.kyc_verified || false,
-    isAdmin: userProfile?.is_admin || false
   };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
