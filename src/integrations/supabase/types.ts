@@ -9,6 +9,78 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author: string
+          content: string
+          created_at: string
+          created_by: string | null
+          excerpt: string | null
+          id: string
+          published: boolean
+          published_date: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          content: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          published?: boolean
+          published_date?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          excerpt?: string | null
+          id?: string
+          published?: boolean
+          published_date?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      investors: {
+        Row: {
+          created_at: string
+          id: string
+          investment_amount_usd: number
+          nationality: string
+          percentage: number
+          unit_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          investment_amount_usd: number
+          nationality: string
+          percentage: number
+          unit_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          investment_amount_usd?: number
+          nationality?: string
+          percentage?: number
+          unit_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       kyc_documents: {
         Row: {
           document_type: string | null
@@ -191,6 +263,141 @@ export type Database = {
           project_status?: string | null
           token_price_usd?: number | null
           total_tokens?: number | null
+        }
+        Relationships: []
+      }
+      token_pools: {
+        Row: {
+          created_at: string
+          id: string
+          pool_type: string
+          sold_tokens: number
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pool_type: string
+          sold_tokens?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pool_type?: string
+          sold_tokens?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount_usd: number
+          created_at: string
+          id: string
+          investor_email: string
+          investor_name: string
+          investor_phone: string | null
+          notes: string | null
+          payment_method: string
+          reference_code: string
+          status: string
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          amount_usd: number
+          created_at?: string
+          id?: string
+          investor_email: string
+          investor_name: string
+          investor_phone?: string | null
+          notes?: string | null
+          payment_method: string
+          reference_code: string
+          status?: string
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          amount_usd?: number
+          created_at?: string
+          id?: string
+          investor_email?: string
+          investor_name?: string
+          investor_phone?: string | null
+          notes?: string | null
+          payment_method?: string
+          reference_code?: string
+          status?: string
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      units: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          status: string
+          token_price_usd: number
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          status?: string
+          token_price_usd?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          status?: string
+          token_price_usd?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          is_admin: boolean | null
+          kyc_verified: boolean | null
+          nationality: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean | null
+          kyc_verified?: boolean | null
+          nationality?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean | null
+          kyc_verified?: boolean | null
+          nationality?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
