@@ -18,8 +18,8 @@ const App = () => (
       <AudioProvider>
         <Toaster />
         <Sonner />
+        <DisclaimerHeader />
         <BrowserRouter>
-          <DisclaimerHeader />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
