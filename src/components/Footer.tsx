@@ -1,77 +1,68 @@
 
-import { Waves, Mail, Phone, MapPin } from "lucide-react";
+import { Waves, MapPin, Mail, Phone } from "lucide-react";
 import SocialMediaIcons from "./SocialMediaIcons";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-gray-900 text-white py-16">
+    <footer className="bg-gray-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Logo and Description */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Waves className="w-8 h-8 text-emerald-500" />
-              <span className="text-xl font-bold">Lumambong</span>
+              <Waves className="w-8 h-8 text-emerald-400" />
+              <span className="text-xl font-bold">Palawan Collective</span>
             </div>
-            <p className="text-gray-400 text-sm">
-              Your gateway to owning paradise in Palawan through innovative tokenized investment opportunities.
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Own your secluded Palawan paradise through innovative tokenized crowdfunding 
+              on one of the world's most beautiful islands.
             </p>
+            <SocialMediaIcons variant="footer" className="text-gray-300" />
+          </div>
+
+          {/* Contact Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Contact</h3>
+            <div className="space-y-3 text-sm text-gray-300">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-emerald-400" />
+                <span>Lumambong Beach, Palawan, Philippines</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="w-4 h-4 text-emerald-400" />
+                <a href="mailto:info@palawancollective.com" className="hover:text-white transition-colors">
+                  info@palawancollective.com
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-emerald-400" />
+                <span>+63 (0) 123 456 7890</span>
+              </div>
+            </div>
           </div>
 
           {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-2 text-sm">
-              <li><a href="#property" className="text-gray-400 hover:text-white transition-colors">Property</a></li>
-              <li><a href="#investment" className="text-gray-400 hover:text-white transition-colors">Investment</a></li>
-              <li><a href="#location" className="text-gray-400 hover:text-white transition-colors">Location</a></li>
-              <li><a href="/blog" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
-            </ul>
-          </div>
-
-          {/* Investment Info */}
-          <div>
-            <h4 className="font-semibold mb-4">Investment</h4>
-            <ul className="space-y-2 text-sm">
-              <li className="text-gray-400">Units Available: 10</li>
-              <li className="text-gray-400">Price: $230,000 USD</li>
-              <li className="text-gray-400">60/40 Ownership</li>
-              <li className="text-gray-400">Off-Grid Solar</li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-emerald-500" />
-                <span className="text-gray-400">invest@lumambong.com</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-emerald-500" />
-                <span className="text-gray-400">+63 (2) 123-4567</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-emerald-500" />
-                <span className="text-gray-400">Lumambong Beach, Palawan</span>
-              </div>
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Quick Links</h3>
+            <div className="space-y-2 text-sm">
+              <a href="#property" className="block text-gray-300 hover:text-white transition-colors">
+                Property Details
+              </a>
+              <a href="#investment" className="block text-gray-300 hover:text-white transition-colors">
+                Investment Options
+              </a>
+              <a href="#location" className="block text-gray-300 hover:text-white transition-colors">
+                Location & Amenities
+              </a>
+              <a href="#contact" className="block text-gray-300 hover:text-white transition-colors">
+                Contact Us
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} Lumambong Beach Resort. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <SocialMediaIcons variant="footer" className="text-gray-400" />
-            </div>
-          </div>
+        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-400">
+          <p>&copy; 2025 Palawan Collective. All rights reserved.</p>
         </div>
       </div>
     </footer>

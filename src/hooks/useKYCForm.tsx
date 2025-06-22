@@ -1,137 +1,121 @@
 
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
-export interface KYCFormData {
-  fullName: string;
-  email: string;
-  phone: string;
-  dateOfBirth: string;
-  nationality: 'ph' | 'foreign';
-  address: string;
-  city: string;
-  postalCode: string;
-  country: string;
-  idType: 'passport' | 'drivers_license' | 'national_id';
-  idNumber: string;
-  sourceOfFunds: string;
-  investmentExperience: 'none' | 'limited' | 'moderate' | 'extensive';
-  riskTolerance: 'low' | 'medium' | 'high';
-}
-
-interface UseKYCFormParams {
-  user?: any;
+interface UseKYCFormProps {
+  user: any;
   unit?: any;
-  onComplete?: () => void;
-  onClose?: () => void;
+  onComplete: () => void;
+  onClose: () => void;
 }
 
-export const useKYCForm = (params?: UseKYCFormParams) => {
-  const [formData, setFormData] = useState<KYCFormData>({
-    fullName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    nationality: 'ph',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-    idType: 'passport',
-    idNumber: '',
-    sourceOfFunds: '',
-    investmentExperience: 'none',
-    riskTolerance: 'medium',
-  });
-
-  const [uploadedDocuments, setUploadedDocuments] = useState<File[]>([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [nationality, setNationality] = useState<'ph' | 'foreign'>('ph');
+export const useKYCForm = ({ user, unit, onComplete, onClose }: UseKYCFormProps) => {
+  const [nationality, setNationality] = useState('');
   const [document, setDocument] = useState<File | null>(null);
   const [fullName, setFullName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const updateFormData = (updates: Partial<KYCFormData>) => {
-    setFormData(prev => ({ ...prev, ...updates }));
-  };
-
-  const handleDocumentUpload = (files: File[]) => {
-    setUploadedDocuments(prev => [...prev, ...files]);
-  };
-
-  const removeDocument = (index: number) => {
-    setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
+  const validateFile = (file: File): boolean => {
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload a file smaller than 5MB",
+        variant: "destructive"
+      });
+      return false;
+    }
+    return true;
   };
 
   const handleFileChange = (file: File | null) => {
+    if (file && !validateFile(file)) {
+      return;
+    }
     setDocument(file);
   };
 
-  const handleNationalityChange = (newNationality: 'ph' | 'foreign') => {
-    setNationality(newNationality);
+  const validateForm = (): boolean => {
+    if (!nationality || !document || !fullName) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields and upload a document",
+        variant: "destructive"
+      });
+      return false;
+    }
+    return true;
+  };
+
+  const uploadDocument = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${user.id}/${unit?.id || 'general'}_kyc_${Date.now()}.${fileExt}`;
+    
+    const { data: fileData, error: uploadError } = await supabase.storage
+      .from('kyc-docs')
+      .upload(fileName, file);
+
+    if (uploadError) throw uploadError;
+    return fileName;
+  };
+
+  const updateUserProfile = async () => {
+    const { error: profileError } = await supabase
+      .from('users')
+      .upsert({
+        id: user.id,
+        email: user.email,
+        full_name: fullName,
+        nationality: nationality,
+        kyc_verified: false, // Admin needs to review
+        updated_at: new Date().toISOString()
+      });
+
+    if (profileError) throw profileError;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
     
-    try {
-      // Mock KYC submission for frontend
-      console.log('Mock KYC submission:', {
-        formData: { ...formData, fullName, nationality },
-        document: document?.name
-      });
+    if (!validateForm()) return;
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsSubmitting(true);
+
+    try {
+      await uploadDocument(document!);
+      await updateUserProfile();
 
       toast({
-        title: "KYC Submitted Successfully",
-        description: "Your KYC application has been submitted and is under review.",
+        title: "KYC Documents Submitted!",
+        description: "Your documents have been uploaded for review. You'll be notified once verification is complete.",
       });
 
-      if (params?.onComplete) {
-        params.onComplete();
-      }
-      if (params?.onClose) {
-        params.onClose();
-      }
-
-      return { success: true };
+      onComplete();
+      onClose();
     } catch (error) {
       console.error('Error submitting KYC:', error);
       toast({
         title: "Submission Failed",
-        description: "There was an error submitting your KYC. Please try again.",
-        variant: "destructive",
+        description: "Failed to submit KYC documents. Please try again.",
+        variant: "destructive"
       });
-      return { success: false };
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const submitKYCForm = async () => {
-    return handleSubmit({ preventDefault: () => {} } as React.FormEvent);
-  };
-
-  const isFormValid = fullName.trim() !== '' && document !== null;
+  const isFormValid = nationality && document && fullName && !isSubmitting;
 
   return {
-    formData,
-    updateFormData,
-    uploadedDocuments,
-    handleDocumentUpload,
-    removeDocument,
-    submitKYCForm,
-    isSubmitting,
     nationality,
-    setNationality: handleNationalityChange,
+    setNationality,
     document,
     handleFileChange,
     fullName,
     setFullName,
+    isSubmitting,
     handleSubmit,
-    isFormValid,
+    isFormValid
   };
 };

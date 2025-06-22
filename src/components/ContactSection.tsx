@@ -1,139 +1,198 @@
 
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Mail, Phone, Download, Calendar } from "lucide-react";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    investmentAmount: '',
     message: ''
   });
+  
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Contact form submitted:', formData);
+    
+    // Create email content
+    const emailSubject = `Investment Interest - ${formData.name}`;
+    const emailBody = `
+New investment interest received:
+
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Investment Amount: ${formData.investmentAmount}
+Message: ${formData.message}
+
+Submitted on: ${new Date().toLocaleString()}
+    `.trim();
+
+    // Create mailto link
+    const mailtoLink = `mailto:info@palawancollective.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+    
+    // Open email client
+    window.location.href = mailtoLink;
+    
     toast({
-      title: "Message Sent",
-      description: "Thank you for your interest! We'll contact you soon.",
+      title: "Interest Registered",
+      description: "Your email client will open to send your information to our team.",
     });
-    setFormData({ name: '', email: '', message: '' });
+    
+    setFormData({ name: '', email: '', phone: '', investmentAmount: '', message: '' });
   };
 
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email Us",
-      content: "invest@lumambong.com",
-      action: "mailto:invest@lumambong.com"
-    },
-    {
-      icon: Phone,
-      title: "Call Us",
-      content: "+63 (2) 123-4567",
-      action: "tel:+6321234567"
-    },
-    {
-      icon: MapPin,
-      title: "Visit Us",
-      content: "Lumambong Beach, Palawan",
-      action: "#"
-    }
-  ];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
 
   return (
-    <section id="contact" className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-blue-100 text-blue-800">Get In Touch</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-            Ready to Own Your Paradise?
+          <Badge className="mb-4 bg-emerald-600 text-white">Limited Opportunity</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Secure Your Paradise Today
           </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Contact our investment team to learn more about Lumambong Beach opportunities.
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Only 10 founding token holders will own a piece of this secluded Palawan paradise. 
+            Join the exclusive community of sustainable luxury investors.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <Card className="p-8">
-            <CardContent className="p-0">
-              <h3 className="text-2xl font-bold mb-6">Send us a Message</h3>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+            <CardHeader>
+              <CardTitle className="text-2xl text-white">Express Your Interest</CardTitle>
+              <p className="text-gray-300">Get priority access to the tokenized offering</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
                   <Input
-                    placeholder="Your Name"
+                    name="name"
+                    placeholder="Full Name"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={handleInputChange}
                     required
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                   />
-                </div>
-                <div>
                   <Input
+                    name="email"
                     type="email"
-                    placeholder="Your Email"
+                    placeholder="Email Address"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={handleInputChange}
                     required
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                   />
                 </div>
-                <div>
-                  <Textarea
-                    placeholder="Tell us about your investment interests..."
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    rows={5}
-                    required
+                <div className="grid md:grid-cols-2 gap-4">
+                  <Input
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                  />
+                  <Input
+                    name="investmentAmount"
+                    placeholder="Investment Interest ($)"
+                    value={formData.investmentAmount}
+                    onChange={handleInputChange}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                   />
                 </div>
-                <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700">
-                  <Send className="w-4 h-4 mr-2" />
-                  Send Message
+                <Textarea
+                  name="message"
+                  placeholder="Tell us about your investment goals and any questions you have..."
+                  rows={4}
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
+                />
+                <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-lg py-6">
+                  Submit Interest
                 </Button>
               </form>
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
+          {/* Contact Information & Actions */}
           <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
-              <div className="space-y-6">
-                {contactInfo.map((info, index) => (
-                  <div key={index} className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <info.icon className="w-5 h-5 text-emerald-600" />
-                    </div>
+            {/* Contact Details */}
+            <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+              <CardContent className="p-8">
+                <h3 className="text-xl font-semibold text-white mb-6">Direct Contact</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <Mail className="w-5 h-5 text-emerald-400" />
                     <div>
-                      <h4 className="font-semibold mb-1">{info.title}</h4>
-                      <a 
-                        href={info.action}
-                        className="text-gray-600 hover:text-emerald-600 transition-colors"
-                      >
-                        {info.content}
-                      </a>
+                      <p className="text-gray-300">Email</p>
+                      <p className="text-white">info@palawancollective.com</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                  <div className="flex items-center gap-4">
+                    <Phone className="w-5 h-5 text-emerald-400" />
+                    <div>
+                      <p className="text-gray-300">Phone</p>
+                      <p className="text-white">+63 947 444 3597</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-            <div className="p-6 bg-emerald-50 rounded-xl border border-emerald-200">
-              <h4 className="font-semibold mb-2 text-emerald-800">Investment Inquiry?</h4>
-              <p className="text-emerald-700 text-sm mb-4">
-                Schedule a consultation with our investment team to discuss your Palawan paradise opportunity.
-              </p>
-              <Button variant="outline" className="border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white">
-                Schedule Consultation
+            {/* Quick Actions */}
+            <div className="space-y-4">
+              <Button 
+                variant="outline" 
+                className="w-full border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-gray-900 py-6"
+              >
+                <Download className="mr-2 w-5 h-5" />
+                Download Full Prospectus
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900 py-6"
+              >
+                <Calendar className="mr-2 w-5 h-5" />
+                Schedule Virtual Site Tour
               </Button>
             </div>
+
+            {/* Investment Urgency */}
+            <Card className="bg-gradient-to-r from-emerald-600 to-blue-600 border-none">
+              <CardContent className="p-6 text-center">
+                <h4 className="text-lg font-semibold text-white mb-2">Limited Time Offer</h4>
+                <p className="text-emerald-100 mb-4">Early investors receive priority lot selection</p>
+                <div className="text-3xl font-bold text-white">10 Units Only</div>
+                <p className="text-emerald-100 text-sm">Secure your legacy on Lumambong Beach</p>
+              </CardContent>
+            </Card>
           </div>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-16 pt-8 border-t border-white/20">
+          <p className="text-sm text-gray-400 text-center max-w-4xl mx-auto">
+            <strong>Disclaimer:</strong> This is a conceptual presentation. Actual offering would require 
+            full legal documentation, SEC registration (if applicable), detailed feasibility studies, 
+            and environmental impact assessments. Prices are illustrative and subject to final detailed 
+            costing and market conditions. Past performance does not guarantee future results.
+          </p>
         </div>
       </div>
     </section>

@@ -2,16 +2,14 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 
 interface QRCodePaymentProps {
   amount: number;
-  referenceCode?: string;
-  paymentMethod?: string;
-  onPaymentComplete?: () => void;
+  referenceCode: string;
+  paymentMethod: string;
 }
 
-const QRCodePayment = ({ amount, referenceCode = 'REF-' + Date.now(), paymentMethod = 'crypto', onPaymentComplete }: QRCodePaymentProps) => {
+const QRCodePayment = ({ amount, referenceCode, paymentMethod }: QRCodePaymentProps) => {
   const getPaymentMethodInfo = () => {
     switch (paymentMethod) {
       case 'gcash':
@@ -34,9 +32,9 @@ const QRCodePayment = ({ amount, referenceCode = 'REF-' + Date.now(), paymentMet
         };
       default:
         return {
-          name: 'Crypto Payment',
+          name: 'QR Payment',
           color: 'bg-gray-600',
-          instructions: 'Scan the QR code with your crypto wallet'
+          instructions: 'Scan the QR code with your payment app'
         };
     }
   };
@@ -82,7 +80,7 @@ const QRCodePayment = ({ amount, referenceCode = 'REF-' + Date.now(), paymentMet
           <div className="border-t pt-4">
             <h4 className="font-medium mb-2">Payment Instructions:</h4>
             <ol className="text-sm text-gray-600 space-y-1">
-              <li>1. Open your {paymentInfo.name} app</li>
+              <li>1. Open your {paymentInfo.name} mobile app</li>
               <li>2. Tap "Scan QR" or "Pay QR"</li>
               <li>3. Point your camera at the QR code above</li>
               <li>4. Enter the amount: ${amount.toLocaleString()} USD</li>
@@ -90,15 +88,6 @@ const QRCodePayment = ({ amount, referenceCode = 'REF-' + Date.now(), paymentMet
               <li>6. Complete the payment</li>
             </ol>
           </div>
-
-          {onPaymentComplete && (
-            <Button 
-              onClick={onPaymentComplete}
-              className="w-full bg-green-600 hover:bg-green-700"
-            >
-              I've Completed Payment
-            </Button>
-          )}
 
           <div className="bg-amber-50 p-3 rounded-lg">
             <p className="text-xs text-amber-800">
