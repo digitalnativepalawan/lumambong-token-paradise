@@ -67,6 +67,10 @@ export const useKYCForm = (params?: UseKYCFormParams) => {
     setDocument(file);
   };
 
+  const handleNationalityChange = (newNationality: 'ph' | 'foreign') => {
+    setNationality(newNationality);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -111,7 +115,7 @@ export const useKYCForm = (params?: UseKYCFormParams) => {
     return handleSubmit({ preventDefault: () => {} } as React.FormEvent);
   };
 
-  const isFormValid = fullName.trim() !== '' && nationality !== '' && document !== null;
+  const isFormValid = fullName.trim() !== '' && document !== null;
 
   return {
     formData,
@@ -122,7 +126,7 @@ export const useKYCForm = (params?: UseKYCFormParams) => {
     submitKYCForm,
     isSubmitting,
     nationality,
-    setNationality,
+    setNationality: handleNationalityChange,
     document,
     handleFileChange,
     fullName,
