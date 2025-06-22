@@ -19,7 +19,14 @@ export interface KYCFormData {
   riskTolerance: 'low' | 'medium' | 'high';
 }
 
-export const useKYCForm = () => {
+interface UseKYCFormParams {
+  user?: any;
+  unit?: any;
+  onComplete?: () => void;
+  onClose?: () => void;
+}
+
+export const useKYCForm = (params?: UseKYCFormParams) => {
   const [formData, setFormData] = useState<KYCFormData>({
     fullName: '',
     email: '',
@@ -39,6 +46,9 @@ export const useKYCForm = () => {
 
   const [uploadedDocuments, setUploadedDocuments] = useState<File[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [nationality, setNationality] = useState<'ph' | 'foreign'>('ph');
+  const [document, setDocument] = useState<File | null>(null);
+  const [fullName, setFullName] = useState('');
   const { toast } = useToast();
 
   const updateFormData = (updates: Partial<KYCFormData>) => {
@@ -53,14 +63,19 @@ export const useKYCForm = () => {
     setUploadedDocuments(prev => prev.filter((_, i) => i !== index));
   };
 
-  const submitKYCForm = async () => {
+  const handleFileChange = (file: File | null) => {
+    setDocument(file);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsSubmitting(true);
     
     try {
       // Mock KYC submission for frontend
       console.log('Mock KYC submission:', {
-        formData,
-        documents: uploadedDocuments.map(f => f.name)
+        formData: { ...formData, fullName, nationality },
+        document: document?.name
       });
 
       // Simulate API delay
@@ -70,6 +85,13 @@ export const useKYCForm = () => {
         title: "KYC Submitted Successfully",
         description: "Your KYC application has been submitted and is under review.",
       });
+
+      if (params?.onComplete) {
+        params.onComplete();
+      }
+      if (params?.onClose) {
+        params.onClose();
+      }
 
       return { success: true };
     } catch (error) {
@@ -85,6 +107,12 @@ export const useKYCForm = () => {
     }
   };
 
+  const submitKYCForm = async () => {
+    return handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+  };
+
+  const isFormValid = fullName.trim() !== '' && nationality !== '' && document !== null;
+
   return {
     formData,
     updateFormData,
@@ -93,5 +121,13 @@ export const useKYCForm = () => {
     removeDocument,
     submitKYCForm,
     isSubmitting,
+    nationality,
+    setNationality,
+    document,
+    handleFileChange,
+    fullName,
+    setFullName,
+    handleSubmit,
+    isFormValid,
   };
 };

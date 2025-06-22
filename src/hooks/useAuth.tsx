@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface User {
@@ -17,6 +18,7 @@ interface AuthContextType {
   user: User | null;
   userProfile: UserProfile | null;
   isAuthenticated: boolean;
+  isKYCVerified: boolean;
   isLoading: boolean;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -100,6 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     user,
     userProfile,
     isAuthenticated: !!user,
+    isKYCVerified: userProfile?.kyc_verified || false,
     isLoading,
     signUp,
     signIn,
