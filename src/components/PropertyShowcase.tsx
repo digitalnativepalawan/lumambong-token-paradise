@@ -1,155 +1,67 @@
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Zap, Home, Waves, Leaf, ExternalLink } from "lucide-react";
-import ImageModal from "./ImageModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Bed, Bath, Square } from "lucide-react";
 
 const PropertyShowcase = () => {
-  const specifications = [
-    {
-      icon: <Home className="w-6 h-6" />,
-      title: "Living Space",
-      value: "31.4 sqm",
-      description: "Intelligently designed for comfort (338 sqft)"
-    },
-    {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Solar Power",
-      value: "10kVA System",
-      description: "Complete off-grid independence"
-    },
-    {
-      icon: <Waves className="w-6 h-6" />,
-      title: "Private Lot",
-      value: "528 sqm",
-      description: "Your slice of beachfront paradise"
-    },
-    {
-      icon: <Leaf className="w-6 h-6" />,
-      title: "Sustainability",
-      value: "100% Green",
-      description: "Eco-conscious materials & systems"
-    }
-  ];
-
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="property" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-emerald-100 text-emerald-800">Premium Modular Homes</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Your Private Palawan Sanctuary
+          <Badge className="mb-4 bg-emerald-100 text-emerald-800">Property Showcase</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+            Your Palawan Paradise Awaits
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Inspired by GLAMNI G50 premium features, each home combines elegant design 
-            with complete off-grid independence on your own titled beachfront lot.
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Discover luxury beachfront living with sustainable design and modern amenities.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
-          {/* Property Image */}
-          <div className="space-y-6">
-            <div className="relative">
-              <ImageModal 
-                src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
-                alt="GLAMNI G50 Modular Home"
-                className="w-full rounded-2xl shadow-2xl overflow-hidden"
-              >
-                <img 
-                  src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png"
-                  alt="GLAMNI G50 Modular Home"
-                  className="w-full rounded-2xl shadow-2xl"
-                />
-              </ImageModal>
-            </div>
-            
-            {/* Inspired by badge - moved below image */}
-            <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-xl shadow-lg border">
-                <p className="text-sm text-gray-500">Inspired by</p>
-                <p className="text-lg font-bold text-gray-900">GLAMNI G50</p>
-              </div>
-            </div>
-            
-            {/* Specs Button */}
-            <div className="flex justify-center">
-              <Button 
-                asChild
-                className="bg-emerald-600 hover:bg-emerald-700 text-white w-full sm:w-auto"
-              >
-                <a 
-                  href="https://drive.google.com/file/d/1HENB7iH63UPx32MGdvusblQd-ZSIb1_m/view?usp=sharing"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2"
-                >
-                  View Complete Specs Sheet
-                  <ExternalLink className="w-4 h-4" />
-                </a>
-              </Button>
-            </div>
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <img 
+              src="/lovable-uploads/69c86e8e-ee37-4927-a0f4-7b5f4cf0d98d.png" 
+              alt="Beachfront Property" 
+              className="w-full h-96 object-cover rounded-xl shadow-lg"
+            />
           </div>
+          
+          <div className="space-y-6">
+            <Card className="p-6">
+              <CardContent className="p-0">
+                <div className="flex items-center gap-2 mb-3">
+                  <MapPin className="w-5 h-5 text-emerald-600" />
+                  <span className="font-semibold">Prime Beachfront Location</span>
+                </div>
+                <p className="text-gray-600">
+                  Direct access to pristine white sand beaches with crystal clear waters.
+                </p>
+              </CardContent>
+            </Card>
 
-          {/* Specifications */}
-          <div className="space-y-6">
-            {specifications.map((spec, index) => (
-              <Card key={index} className="border-none shadow-sm hover:shadow-md transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 bg-emerald-100 rounded-lg text-emerald-600">
-                      {spec.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 mb-1">{spec.title}</h3>
-                      <p className="text-2xl font-bold text-emerald-600 mb-1">{spec.value}</p>
-                      <p className="text-gray-600">{spec.description}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+            <Card className="p-6">
+              <CardContent className="p-0">
+                <div className="flex items-center gap-2 mb-3">
+                  <Bed className="w-5 h-5 text-emerald-600" />
+                  <span className="font-semibold">Luxury Accommodations</span>
+                </div>
+                <p className="text-gray-600">
+                  Modern villas with premium finishes and panoramic ocean views.
+                </p>
+              </CardContent>
+            </Card>
 
-        {/* Location Gallery */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <ImageModal 
-              src="/lovable-uploads/989d0adb-6926-4aa6-a71c-ee9ec4a225ff.png"
-              alt="Lumambong Beach aerial view"
-              className="w-full h-80 rounded-2xl overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/989d0adb-6926-4aa6-a71c-ee9ec4a225ff.png"
-                alt="Lumambong Beach aerial view"
-                className="w-full h-80 object-cover rounded-2xl"
-              />
-            </ImageModal>
-          </div>
-          <div className="space-y-6">
-            <ImageModal 
-              src="/lovable-uploads/f0db1d35-d1fe-4ed6-92e6-7acbfb205fae.png"
-              alt="Tropical landscape"
-              className="w-full h-36 rounded-2xl overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/f0db1d35-d1fe-4ed6-92e6-7acbfb205fae.png"
-                alt="Tropical landscape"
-                className="w-full h-36 object-cover rounded-2xl"
-              />
-            </ImageModal>
-            <ImageModal 
-              src="/lovable-uploads/efb4871e-72b3-40d6-a146-5b063d52502b.png"
-              alt="Beachfront development area"
-              className="w-full h-36 rounded-2xl overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/efb4871e-72b3-40d6-a146-5b063d52502b.png"
-                alt="Beachfront development area"
-                className="w-full h-36 object-cover rounded-2xl"
-              />
-            </ImageModal>
+            <Card className="p-6">
+              <CardContent className="p-0">
+                <div className="flex items-center gap-2 mb-3">
+                  <Square className="w-5 h-5 text-emerald-600" />
+                  <span className="font-semibold">5,282 sqm Total Area</span>
+                </div>
+                <p className="text-gray-600">
+                  Spacious grounds with room for recreation and relaxation.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

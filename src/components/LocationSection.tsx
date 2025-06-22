@@ -1,28 +1,27 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Navigation, Compass, ExternalLink } from "lucide-react";
-import ImageModal from "./ImageModal";
+import { Card, CardContent } from "@/components/ui/card";
+import { MapPin, Plane, Car, Ship } from "lucide-react";
 
 const LocationSection = () => {
-  const mapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1lRgpf0rzovejTPzeIg-5S6M-vRQoil0&usp=sharing";
-  const futureProjectMapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1dbLajOIGAHjaaGKfAUNivBT5YJQl5kM&usp=sharing";
-
-  const locationFeatures = [
+  const transportOptions = [
     {
-      icon: <MapPin className="w-5 h-5" />,
-      title: "Pristine Beachfront",
-      description: "Direct access to untouched white sand beach"
+      icon: Plane,
+      title: "Fly to Puerto Princesa",
+      description: "1.5 hour flight from Manila",
+      time: "1.5 hrs"
     },
     {
-      icon: <Navigation className="w-5 h-5" />,
-      title: "Strategic Location",
-      description: "Close to El Nido's world-famous attractions"
+      icon: Car,
+      title: "Drive to Lumambong",
+      description: "Scenic coastal drive",
+      time: "2 hrs"
     },
     {
-      icon: <Compass className="w-5 h-5" />,
-      title: "Secluded Paradise",
-      description: "Private bay surrounded by lush tropical mountains"
+      icon: Ship,
+      title: "Private Boat Access",
+      description: "Direct beach arrival",
+      time: "30 mins"
     }
   ];
 
@@ -31,103 +30,75 @@ const LocationSection = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
           <Badge className="mb-4 bg-emerald-100 text-emerald-800">Prime Location</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Discover Lumambong Beach
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+            Lumambong Beach, Palawan
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Nestled in the heart of Palawan, our exclusive development sits on one of the Philippines' 
-            most pristine and secluded beaches, offering unparalleled natural beauty and tranquility.
+          <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Discover one of the Philippines' last untouched paradise destinations.
           </p>
         </div>
 
-        {/* Main Location Image */}
-        <div className="mb-12">
-          <ImageModal 
-            src="/lovable-uploads/0aac491a-0d13-4df3-bab3-171547cf214c.png"
-            alt="Aerial view of Lumambong Beach with pristine waters and mountain backdrop"
-            className="w-full h-96 md:h-[600px] rounded-2xl shadow-2xl overflow-hidden"
-          >
-            <img 
-              src="/lovable-uploads/0aac491a-0d13-4df3-bab3-171547cf214c.png"
-              alt="Aerial view of Lumambong Beach with pristine waters and mountain backdrop"
-              className="w-full h-96 md:h-[600px] object-cover rounded-2xl shadow-2xl"
-            />
-          </ImageModal>
-        </div>
-
-        {/* Location Features */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {locationFeatures.map((feature, index) => (
-            <Card key={index} className="border-none shadow-sm hover:shadow-md transition-shadow">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-                  {feature.icon}
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Property Map & Google Maps Integration */}
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
           <div>
-            <ImageModal 
-              src="/lovable-uploads/0c9cafed-2589-4a20-bbcf-ea629cdf2ae5.png"
-              alt="Official property map showing lot divisions and location details"
-              className="w-full rounded-2xl shadow-lg overflow-hidden"
-            >
-              <img 
-                src="/lovable-uploads/0c9cafed-2589-4a20-bbcf-ea629cdf2ae5.png"
-                alt="Official property map showing lot divisions and location details"
-                className="w-full rounded-2xl shadow-lg"
-              />
-            </ImageModal>
+            <img 
+              src="/lovable-uploads/f63a7feb-19f0-4b58-ba86-ee624f96d4ce.png" 
+              alt="Lumambong Beach Location" 
+              className="w-full h-96 object-cover rounded-xl shadow-lg"
+            />
           </div>
+          
           <div className="space-y-6">
-            <div>
-              <h3 className="text-3xl font-bold mb-4">Exact Location & Property Map</h3>
-              <p className="text-gray-600 mb-6">
-                Our 5,282 sqm beachfront property is strategically located in Barangay Binga, 
-                San Vicente, Palawan. The development is divided into 10 exclusive lots, 
-                each approximately 528 sqm, ensuring privacy and exclusivity for all owners.
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span className="text-gray-700">Lot 3947-E, Barangay Binga, San Vicente, Palawan</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span className="text-gray-700">Direct beachfront access with titled land</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                <span className="text-gray-700">10 individual subdivided lots available</span>
+            <div className="flex items-start gap-4">
+              <MapPin className="w-6 h-6 text-emerald-600 mt-1" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Pristine Natural Beauty</h3>
+                <p className="text-gray-600">
+                  Lumambong Beach offers crystal-clear waters, white sand beaches, and lush tropical surroundings 
+                  that remain largely untouched by mass tourism.
+                </p>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button 
-                className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                onClick={() => window.open(mapUrl, '_blank')}
-              >
-                View Interactive Map
-                <ExternalLink className="ml-2 w-4 h-4" />
-              </Button>
-              
-              <Button 
-                variant="outline"
-                className="border-emerald-600 text-emerald-600 hover:bg-emerald-50"
-                onClick={() => window.open(futureProjectMapUrl, '_blank')}
-              >
-                Future Project Map
-                <ExternalLink className="ml-2 w-4 h-4" />
-              </Button>
+            <div className="flex items-start gap-4">
+              <MapPin className="w-6 h-6 text-emerald-600 mt-1" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Strategic Investment Location</h3>
+                <p className="text-gray-600">
+                  Located in Palawan, consistently ranked as one of the world's best islands, 
+                  offering exceptional long-term value appreciation potential.
+                </p>
+              </div>
             </div>
+
+            <div className="flex items-start gap-4">
+              <MapPin className="w-6 h-6 text-emerald-600 mt-1" />
+              <div>
+                <h3 className="text-xl font-semibold mb-2">Exclusive Community</h3>
+                <p className="text-gray-600">
+                  Join a select group of investors who value sustainability, privacy, 
+                  and authentic tropical living experiences.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Transportation Options */}
+        <div className="text-center mb-12">
+          <h3 className="text-2xl font-bold mb-8 text-black">How to Get There</h3>
+          <div className="grid md:grid-cols-3 gap-6">
+            {transportOptions.map((option, index) => (
+              <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <option.icon className="w-6 h-6 text-emerald-600" />
+                  </div>
+                  <h4 className="font-semibold mb-2">{option.title}</h4>
+                  <p className="text-sm text-gray-600 mb-2">{option.description}</p>
+                  <p className="text-emerald-600 font-semibold">{option.time}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </div>

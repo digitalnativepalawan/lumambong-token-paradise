@@ -1,153 +1,79 @@
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import ImageModal from "./ImageModal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Zap, Battery, Sun, Leaf } from "lucide-react";
 
 const SolarPowerSection = () => {
-  const solarImages = [
+  const solarFeatures = [
     {
-      src: "/lovable-uploads/a4a1abb4-d19c-474f-8c55-0073a7c3ed83.png",
-      alt: "Anern Hybrid Solar Inverter EVO-10200 - 10.2KW/48V Dual MPPT System with PH Stock",
-      title: "Hybrid Solar Inverter EVO-10200",
-      description: "10.2KW rated output power with dual AC output and dual PV input capabilities"
+      icon: Sun,
+      title: "High-Efficiency Panels",
+      description: "Premium solar panels optimized for tropical conditions"
     },
     {
-      src: "/lovable-uploads/ff4fbce5-6c18-4f4b-9982-c555cfbadcc6.png",
-      alt: "SCI-EVO-10200 Hybrid Solar Inverter - Multiple Views and Installation Components",
-      title: "SCI-EVO-10200 Installation Views",
-      description: "Comprehensive view of the hybrid solar inverter installation components and design"
+      icon: Battery,
+      title: "Energy Storage",
+      description: "Advanced battery system for 24/7 power availability"
     },
     {
-      src: "/lovable-uploads/69c86e8e-ee37-4927-a0f4-7b5f4cf0d98d.png",
-      alt: "Complete Solar Power System Kit - Solar Panels, Inverter, Lithium Battery and Cables",
-      title: "Complete Solar Power System Kit",
-      description: "Integrated solar solution with panels, inverter, lithium battery storage and installation cables"
+      icon: Zap,
+      title: "Smart Grid System",
+      description: "Intelligent power management and distribution"
+    },
+    {
+      icon: Leaf,
+      title: "Carbon Neutral",
+      description: "100% renewable energy with zero emissions"
     }
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-blue-50 to-green-50">
+    <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <Badge className="mb-4 bg-green-100 text-green-800">
-            Solar Technology
-          </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">
-            Premium Solar Power Solutions
+          <Badge className="mb-4 bg-yellow-100 text-yellow-800">Sustainable Energy</Badge>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
+            100% Off-Grid Solar Power
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-            Explore our high-efficiency solar panels, advanced inverters, and smart 
-            battery storage systems designed for optimal energy production and reliability.
+            Live sustainably with cutting-edge solar technology that powers your paradise.
           </p>
         </div>
 
-        {/* Responsive Image Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {solarImages.map((image, index) => (
-            <div
-              key={index}
-              className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 bg-white"
-            >
-              <ImageModal
-                src={image.src}
-                alt={image.alt}
-                className="aspect-[4/3] w-full"
-              >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  {/* Overlay with zoom hint */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
-                    <div className="bg-white/90 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-sm font-medium text-gray-800">
-                      Click to enlarge
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <img 
+              src="/lovable-uploads/a37e0dbc-4399-45b0-82d5-d859062513e9.png" 
+              alt="Solar Power System" 
+              className="w-full h-96 object-cover rounded-xl shadow-lg"
+            />
+          </div>
+          
+          <div className="grid gap-6">
+            {solarFeatures.map((feature, index) => (
+              <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+                <CardHeader className="p-0 mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                      <feature.icon className="w-5 h-5 text-yellow-600" />
                     </div>
+                    <CardTitle className="text-lg">{feature.title}</CardTitle>
                   </div>
-                </div>
-              </ImageModal>
-              
-              {/* Image Info Card */}
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {image.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {image.description}
-                </p>
-              </div>
-            </div>
-          ))}
+                </CardHeader>
+                <CardContent className="p-0">
+                  <p className="text-gray-600">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
 
-        {/* Specification Buttons */}
-        <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="bg-white hover:bg-blue-50 border-blue-200 text-blue-700 font-medium"
-          >
-            <a
-              href="https://cdn.shopify.com/s/files/1/0564/8049/7832/files/Anern_25.6_V_51.2_V_Lithium_Battery_Manual.pdf?v=1750225989"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <span>🔋</span>
-              Battery Specs
-            </a>
-          </Button>
-          
-          <Button
-            asChild
-            variant="outline"
-            size="lg"
-            className="bg-white hover:bg-green-50 border-green-200 text-green-700 font-medium"
-          >
-            <a
-              href="https://cdn.shopify.com/s/files/1/0564/8049/7832/files/Anern_Solar_Power_System_Manual.pdf?v=1750225994"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <span>⚡</span>
-              Off Grid Hybrid
-            </a>
-          </Button>
-        </div>
-
-        {/* Additional Technical Info */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">⚡</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">High Efficiency</h3>
-            <p className="text-gray-600 text-sm">
-              Advanced monocrystalline technology delivers superior energy conversion rates
-            </p>
-          </div>
-          
-          <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🔋</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Smart Storage</h3>
-            <p className="text-gray-600 text-sm">
-              Intelligent battery management systems for optimal energy storage
-            </p>
-          </div>
-          
-          <div className="text-center p-6 bg-white rounded-xl shadow-sm">
-            <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🌱</span>
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Eco-Friendly</h3>
-            <p className="text-gray-600 text-sm">
-              Sustainable energy solutions with minimal environmental impact
+        <div className="mt-16 text-center">
+          <div className="inline-block p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+            <p className="text-lg font-semibold text-gray-900 mb-2">Energy Independence</p>
+            <p className="text-gray-700">
+              Never worry about power outages or rising electricity costs. Your solar system provides 
+              reliable, clean energy for decades to come.
             </p>
           </div>
         </div>
