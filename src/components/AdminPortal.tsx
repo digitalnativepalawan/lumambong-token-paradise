@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Shield, Calendar, Users, FileText, Settings } from 'lucide-react';
+import { Shield, Calendar, Users, FileText, Settings, Brain } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import AdminAuth from './AdminAuth';
 import SocialMediaTimeline from './SocialMediaTimeline';
+import MindMap from './MindMap';
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,10 +67,14 @@ const AdminPortal = () => {
               </div>
 
               <Tabs defaultValue="timeline" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="timeline" className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     Timeline
+                  </TabsTrigger>
+                  <TabsTrigger value="mindmap" className="flex items-center gap-2">
+                    <Brain className="w-4 h-4" />
+                    Mind Map
                   </TabsTrigger>
                   <TabsTrigger value="users" className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
@@ -87,6 +92,10 @@ const AdminPortal = () => {
 
                 <TabsContent value="timeline" className="mt-6">
                   <SocialMediaTimeline />
+                </TabsContent>
+
+                <TabsContent value="mindmap" className="mt-6">
+                  <MindMap />
                 </TabsContent>
 
                 <TabsContent value="users" className="mt-6">
