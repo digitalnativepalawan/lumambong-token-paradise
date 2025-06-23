@@ -4,10 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Play, TrendingUp, Users, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useState } from "react";
 
 const Hero = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const [showVideo, setShowVideo] = useState(false);
 
   const handleInvestClick = () => {
     if (!isAuthenticated) {
@@ -15,6 +17,12 @@ const Hero = () => {
       return;
     }
     navigate('/dashboard');
+  };
+
+  const handleWatchDemo = () => {
+    setShowVideo(!showVideo);
+    // Also open YouTube link in new tab
+    window.open('https://www.youtube.com/watch?v=mhoL96KXuSw', '_blank');
   };
 
   const stats = [
@@ -80,12 +88,28 @@ const Hero = () => {
           
           <Button 
             variant="outline" 
+            onClick={handleWatchDemo}
             className="px-8 py-4 text-lg h-auto rounded-xl border-gray-300 text-black hover:bg-gray-50 group font-medium"
           >
             <Play className="mr-2 w-5 h-5" />
             <span>Watch Demo</span>
           </Button>
         </div>
+
+        {/* Video Player */}
+        {showVideo && (
+          <div className="mb-12 max-w-4xl mx-auto">
+            <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
+              <iframe
+                src="https://www.youtube.com/embed/mhoL96KXuSw?autoplay=1&loop=1&playlist=mhoL96KXuSw&mute=1"
+                title="Binga Beach Demo Video"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        )}
 
         {/* Stats grid */}
         <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
