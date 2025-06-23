@@ -17,7 +17,43 @@ const FAQ = () => {
   const faqData = [
     {
       question: "What is tokenization and how does it apply to this real estate project?",
-      answer: "Tokenization is a way to turn real-world assets—like beachfront land and modular homes—into digital tokens recorded securely on a blockchain. Think of these tokens as tiny shares of the property that anyone can buy. Unlike Bitcoin or other cryptocurrencies, which are digital money, these tokens represent actual ownership rights in the resort.\n\nThis means you don't have to buy an entire property; you can invest a small amount and still become a partner. Your tokens give you a share of the property's value, rental income, and even a say in important decisions through voting. The blockchain technology behind it keeps everything transparent, secure, and easy to trade, so you can buy or sell your ownership anytime without the usual hassle of real estate transactions.\n\nIn short, tokenization lowers the entry barrier for real estate investment, allowing both small and large investors worldwide to participate and benefit from owning a piece of paradise."
+      answer: "Tokenization converts ownership rights of real assets like beachfront land and modular homes into digital tokens on a blockchain, enabling fractional ownership, easy trading, automated revenue sharing, and governance participation."
+    },
+    {
+      question: "How does blockchain technology benefit investors in this project?",
+      answer: "Blockchain ensures transparency, security, and automation by maintaining immutable ownership records, automating dividend payments, enforcing transfer restrictions, and enabling on-chain voting, reducing intermediaries and costs."
+    },
+    {
+      question: "Where else is real estate tokenization being successfully implemented?",
+      answer: "Real estate tokenization is growing worldwide in markets such as New York, Dubai, and Singapore, opening property investment to wider audiences and improving liquidity in traditionally illiquid assets."
+    },
+    {
+      question: "Who are Binga Beach Brothers Inc.?",
+      answer: "Binga Beach Brothers Inc. is the SEC-registered Philippine corporation behind this project. It owns titled beachfront land in Palawan, has secured all necessary permits, complies with environmental regulations, and is authorized for land buying and selling."
+    },
+    {
+      question: "What permits and environmental compliances does the project have?",
+      answer: "The project holds all required local and national permits for land development and resort operations. It adheres to strict environmental compliance through sustainable planning and continuous monitoring to protect Palawan's ecosystem."
+    },
+    {
+      question: "How does the timeshare and governance model work for token holders?",
+      answer: "Token holders receive proportional timeshare rights to use or rent their units annually. They also participate in governance by voting on key resort decisions through secure on-chain mechanisms, giving them a voice in property management and development."
+    },
+    {
+      question: "What makes this resort eco-friendly and sustainable?",
+      answer: "The resort features modular homes with low environmental footprints, powered by 10 kVA solar systems for off-grid energy. Wastewater is managed via PVC septic tanks, and water is sustainably sourced and pumped. All construction and operations prioritize minimal ecological impact."
+    },
+    {
+      question: "How can I buy tokens and what are the investment terms?",
+      answer: "Tokens are sold through a secure, KYC/AML-compliant online portal. Each token represents fractional ownership of a lot and entitles holders to revenue sharing and governance rights. The initial offering price is $25 per token, with a funding goal of $2.5 million."
+    },
+    {
+      question: "Where is Lumambong Beach located and why is it special?",
+      answer: "Lumambong Beach is in Sitio Lumambong, San Vicente, Palawan Island, Philippines—an area known for pristine beaches, rich biodiversity, and growing eco-tourism. It is part of the Tourism Infrastructure and Enterprise Zone Authority (TIEZA) program, which offers both foreign and Filipino investors significant incentives including VAT tax relief, import/export benefits, visa facilitation for families, and other government-supported tourism enterprise zone advantages."
+    },
+    {
+      question: "Who is the team behind this project?",
+      answer: "The project is led by partners of Binga Beach Brothers Inc., including David Le, who successfully created Binga Beach Resort and established the Lumambong Beach retreat with all permits and environmental compliance. Quennie Azarraga, also a partner, brings expertise from her glass and aluminum business as well as aggregates and construction ventures. Other key team members include:\n\nJulius Leuteric (Lead Solar Technician)\n\nJasper Arcinas (Survivalist, Conservation Guide, Researcher)\n\nRommel Cruz (Blue Bird Philippines, Mountain Expeditions)\n\nAlfie Laos (Pinoy Mountaineer, Researcher, Drone Cinematographer, Food Science Video Editor)\n\nCM Madrid (Environmental Planner, Consultant, Researcher)\n\nMelinda Acala (Accountant, TESDA Course Instructor)"
     }
   ];
 
@@ -55,7 +91,7 @@ const FAQ = () => {
               
               <div className={cn(
                 "overflow-hidden transition-all duration-300 ease-in-out",
-                openItems.includes(index) ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+                openItems.includes(index) ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
               )}>
                 <div className="px-8 pb-6">
                   <div className="text-gray-600 leading-relaxed whitespace-pre-line">
