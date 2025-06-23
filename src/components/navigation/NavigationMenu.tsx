@@ -11,6 +11,18 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
 
   const handleNavigation = (href: string, onClick?: () => void) => {
     if (onClick) {
+      // Special handling for contact button
+      if (href === "#contact") {
+        if (location.pathname !== '/') {
+          // If not on homepage, navigate to homepage with contact hash
+          navigate('/#contact');
+          return;
+        } else {
+          // If on homepage, use the scroll function
+          onClick();
+          return;
+        }
+      }
       onClick();
       return;
     }
