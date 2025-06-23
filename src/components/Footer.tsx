@@ -28,7 +28,11 @@ const Footer = () => {
           {/* Brand section */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-3">
-              <span className="text-2xl font-bold text-black">Binga Beach</span>
+              <img 
+                src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
+                alt="Binga Beach Logo" 
+                className="w-48 h-auto object-contain"
+              />
             </div>
             <p className="text-gray-600 text-lg leading-relaxed max-w-md">
               Own a fraction of paradise through innovative tokenized real estate. 

@@ -29,9 +29,9 @@ const Hero = () => {
         {/* Logo */}
         <div className="mb-12 animate-fade-in-up">
           <img 
-            src="/lovable-uploads/18c90c7f-c1fc-4f73-8b8b-00b55edca9d5.png" 
+            src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
             alt="Binga Beach Logo" 
-            className="w-32 h-32 mx-auto object-contain"
+            className="w-64 h-auto mx-auto object-contain"
           />
         </div>
 
