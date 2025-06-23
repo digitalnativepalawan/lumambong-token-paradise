@@ -1,6 +1,6 @@
 
 import { Badge } from "@/components/ui/badge";
-import { Home, Waves, Leaf, Users, TrendingUp, Shield, Zap } from "lucide-react";
+import { Home, Waves, Leaf, Users, TrendingUp, Shield, Zap, Ruler } from "lucide-react";
 
 const ProjectOverview = () => {
   const features = [
@@ -13,6 +13,11 @@ const ProjectOverview = () => {
       icon: Waves,
       title: "5,282 sqm Beachfront", 
       description: "Prime location in Lumambong (Binga) Beach, San Vicente, Palawan"
+    },
+    {
+      icon: Ruler,
+      title: "528 sqm Per Lot",
+      description: "Each exclusive lot offers ample space for privacy and luxury living"
     },
     {
       icon: Leaf,
@@ -100,7 +105,7 @@ const ProjectOverview = () => {
         </div>
 
         {/* Features grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
           {features.map((feature, index) => (
             <div 
               key={index} 
