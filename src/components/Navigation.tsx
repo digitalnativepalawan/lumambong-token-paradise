@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
+import { Menu, X, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import PaymentModal from "./PaymentModal";
@@ -62,12 +62,9 @@ const Navigation = () => {
       }`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-              <div className="p-2 rounded-xl bg-blue-600 group-hover:bg-blue-700 transition-colors">
-                <Waves className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-black">
+            {/* Navigation text only - no logo */}
+            <div className="flex items-center">
+              <span className="text-xl font-bold text-black cursor-pointer" onClick={() => navigate('/')}>
                 Binga Beach
               </span>
             </div>

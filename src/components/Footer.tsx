@@ -1,5 +1,5 @@
 
-import { Waves, MapPin, Mail, Phone, ArrowRight } from "lucide-react";
+import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialMediaIcons from "./SocialMediaIcons";
 
@@ -22,34 +22,31 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-4 gap-12">
           {/* Brand section */}
           <div className="lg:col-span-2 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="p-3 rounded-xl bg-blue-600">
-                <Waves className="w-8 h-8 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-white">Binga Beach</span>
+              <span className="text-2xl font-bold text-black">Binga Beach</span>
             </div>
-            <p className="text-gray-300 text-lg leading-relaxed max-w-md">
+            <p className="text-gray-600 text-lg leading-relaxed max-w-md">
               Own a fraction of paradise through innovative tokenized real estate. 
               BBT offers ownership, timeshare rights, and governance in premium 
               beachfront property in Palawan, Philippines.
             </p>
             
             {/* Newsletter signup */}
-            <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 max-w-md">
-              <h4 className="font-semibold text-white mb-3">Stay Updated</h4>
-              <p className="text-sm text-gray-400 mb-4">
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 max-w-md">
+              <h4 className="font-semibold text-black mb-3">Stay Updated</h4>
+              <p className="text-sm text-gray-600 mb-4">
                 Get the latest updates on development progress and investment opportunities.
               </p>
               <div className="flex gap-2">
                 <input 
                   type="email" 
                   placeholder="Enter your email"
-                  className="flex-1 px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-500"
+                  className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
                 <Button className="modern-button px-4 py-2 rounded-lg">
                   <ArrowRight className="w-4 h-4" />
@@ -57,40 +54,40 @@ const Footer = () => {
               </div>
             </div>
 
-            <SocialMediaIcons variant="footer" className="text-gray-400 hover:text-blue-400" />
+            <SocialMediaIcons variant="footer" className="text-gray-600 hover:text-blue-600" />
           </div>
 
           {/* Contact Information */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-white">Contact</h3>
+            <h3 className="text-xl font-semibold text-black">Contact</h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3 group">
-                <div className="p-2 rounded-lg bg-blue-600/20 group-hover:bg-blue-600/30 transition-colors">
-                  <MapPin className="w-5 h-5 text-blue-400" />
+                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors">
+                  <MapPin className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <div className="text-gray-300 group-hover:text-white transition-colors">
+                  <div className="text-gray-600 group-hover:text-black transition-colors">
                     Lumambong (Binga) Beach
                   </div>
-                  <div className="text-sm text-gray-400">San Vicente, Palawan</div>
+                  <div className="text-sm text-gray-500">San Vicente, Palawan</div>
                 </div>
               </div>
               <div className="flex items-center gap-3 group">
-                <div className="p-2 rounded-lg bg-blue-600/20 group-hover:bg-blue-600/30 transition-colors">
-                  <Mail className="w-5 h-5 text-blue-400" />
+                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors">
+                  <Mail className="w-5 h-5 text-blue-600" />
                 </div>
                 <a 
                   href="mailto:info@bingabeach.com" 
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-600 hover:text-black transition-colors"
                 >
                   info@bingabeach.com
                 </a>
               </div>
               <div className="flex items-center gap-3 group">
-                <div className="p-2 rounded-lg bg-green-600/20 group-hover:bg-green-600/30 transition-colors">
-                  <Phone className="w-5 h-5 text-green-400" />
+                <div className="p-2 rounded-lg bg-green-50 border border-green-200 group-hover:bg-green-100 transition-colors">
+                  <Phone className="w-5 h-5 text-green-600" />
                 </div>
-                <span className="text-gray-300 group-hover:text-white transition-colors">
+                <span className="text-gray-600 group-hover:text-black transition-colors">
                   +63 (0) 123 456 7890
                 </span>
               </div>
@@ -99,13 +96,13 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-white">Quick Links</h3>
+            <h3 className="text-xl font-semibold text-black">Quick Links</h3>
             <div className="space-y-3">
               {quickLinks.map((link, index) => (
                 <a 
                   key={index}
                   href={link.href} 
-                  className="block text-gray-400 hover:text-blue-400 transition-colors relative group"
+                  className="block text-gray-600 hover:text-blue-600 transition-colors relative group"
                 >
                   {link.label}
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -116,9 +113,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom section */}
-        <div className="border-t border-gray-800 mt-12 pt-8">
+        <div className="border-t border-gray-200 mt-12 pt-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <p className="text-gray-400">
+            <p className="text-gray-600">
               &copy; 2025 Binga Beach. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-6">
@@ -126,7 +123,7 @@ const Footer = () => {
                 <a 
                   key={index}
                   href={link.href} 
-                  className="text-sm text-gray-400 hover:text-blue-400 transition-colors"
+                  className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   {link.label}
                 </a>

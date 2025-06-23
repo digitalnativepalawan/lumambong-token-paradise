@@ -26,6 +26,15 @@ const Hero = () => {
   return (
     <section className="min-h-screen flex items-center justify-center bg-white">
       <div className="max-w-7xl mx-auto px-6 text-center">
+        {/* Logo */}
+        <div className="mb-12 animate-fade-in-up">
+          <img 
+            src="/lovable-uploads/18c90c7f-c1fc-4f73-8b8b-00b55edca9d5.png" 
+            alt="Binga Beach Logo" 
+            className="w-32 h-32 mx-auto object-contain"
+          />
+        </div>
+
         {/* Status badge */}
         <div className="mb-8 animate-fade-in-up">
           <Badge className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-50 text-green-700 border border-green-200">
