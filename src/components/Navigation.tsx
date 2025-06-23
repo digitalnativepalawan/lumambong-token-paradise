@@ -46,22 +46,8 @@ const Navigation = () => {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20">
-            {/* Logo/Brand Section */}
-            <div className="flex items-center">
-              <button 
-                onClick={() => navigate('/')}
-                className="flex-shrink-0"
-              >
-                <img 
-                  src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
-                  alt="Binga Beach Logo" 
-                  className="h-8 sm:h-10 w-auto object-contain"
-                />
-              </button>
-            </div>
-
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-4 xl:gap-6">
+            <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-1">
               <NavigationMenu scrollToContact={scrollToContact} />
 
               {/* Dashboard Link for Authenticated Users */}
