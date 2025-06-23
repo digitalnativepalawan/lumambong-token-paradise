@@ -40,7 +40,6 @@ const Footer = () => {
     { label: "Token Utility", href: "#utility" }, 
     { label: "Investment Opportunities", href: "#investment" },
     { label: "Location & Amenities", href: "#location" },
-    { label: "Contact Us", href: "#contact" },
     { label: "Business Plan", href: "/business-plan" },
     { label: "Governance", href: "/governance" },
     { label: "Marketplace", href: "/marketplace" }

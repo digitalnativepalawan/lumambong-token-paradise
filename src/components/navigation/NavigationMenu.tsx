@@ -70,7 +70,6 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
     { label: "Token Utility", href: "#utility" }, 
     { label: "Investment", href: "#investment" },
     { label: "Location", href: "#location" },
-    { label: "Contact", href: "#contact", onClick: scrollToContact },
     { label: "Business Plan", href: "/business-plan" }
   ];
 
