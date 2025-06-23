@@ -9,31 +9,7 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleNavigation = (href: string, onClick?: () => void) => {
-    if (onClick) {
-      // Special handling for contact button
-      if (href === "#contact") {
-        if (location.pathname !== '/') {
-          // If not on homepage, navigate to homepage with contact hash
-          navigate('/#contact');
-          // Use setTimeout to ensure navigation completes before scrolling
-          setTimeout(() => {
-            const contactSection = document.getElementById('contact');
-            if (contactSection) {
-              contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 100);
-          return;
-        } else {
-          // If on homepage, use the scroll function
-          onClick();
-          return;
-        }
-      }
-      onClick();
-      return;
-    }
-
+  const handleNavigation = (href: string) => {
     if (href.startsWith('/')) {
       navigate(href);
       return;
@@ -78,7 +54,7 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
       {navItems.map((item) => (
         <button
           key={item.label}
-          onClick={() => handleNavigation(item.href, item.onClick)}
+          onClick={() => handleNavigation(item.href)}
           className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer text-sm whitespace-nowrap"
         >
           {item.label}

@@ -65,11 +65,7 @@ const MobileMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen, scrollToContact }: 
             <a
               key={item.label}
               href={item.href}
-              onClick={(e) => {
-                if (item.onClick) {
-                  e.preventDefault();
-                  item.onClick();
-                }
+              onClick={() => {
                 setIsMobileMenuOpen(false);
               }}
               className="block font-medium text-gray-600 hover:text-black transition-colors py-2 cursor-pointer"
