@@ -6,6 +6,7 @@ import TokenUtility from "@/components/TokenUtility";
 import BingaUnitsGrid from "@/components/BingaUnitsGrid";
 import LocationSection from "@/components/LocationSection";
 import ContactSection from "@/components/ContactSection";
+import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -18,6 +19,7 @@ const Index = () => {
       <BingaUnitsGrid />
       <LocationSection />
       <ContactSection />
+      <FAQ />
       <Footer />
     </div>
   );
