@@ -46,7 +46,7 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-black;
     min-height: 100vh;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
@@ -109,6 +109,24 @@
   .section-alt {
     @apply py-20 bg-gray-50;
   }
+
+  /* Unified card styling for all components */
+  .utility-card {
+    @apply bg-white border border-gray-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all duration-200;
+  }
+
+  /* Text utilities */
+  .text-primary {
+    @apply text-black;
+  }
+
+  .text-secondary {
+    @apply text-gray-600;
+  }
+
+  .text-muted {
+    @apply text-gray-500;
+  }
 }
 
 @layer utilities {
@@ -126,18 +144,5 @@
 
   .animate-fade-in-up {
     animation: fade-in-up 0.6s ease-out;
-  }
-
-  /* Text utilities */
-  .text-primary {
-    @apply text-black;
-  }
-
-  .text-secondary {
-    @apply text-gray-600;
-  }
-
-  .text-muted {
-    @apply text-gray-500;
   }
 }

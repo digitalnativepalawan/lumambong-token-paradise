@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
@@ -56,17 +57,17 @@ const Navigation = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'glass border-b border-purple-500/20 shadow-2xl' 
-          : 'bg-transparent'
+          ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm' 
+          : 'bg-white/80 backdrop-blur-sm'
       }`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
-              <div className="p-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 group-hover:scale-110 transition-transform">
+              <div className="p-2 rounded-xl bg-blue-600 group-hover:bg-blue-700 transition-colors">
                 <Waves className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold gradient-text">
+              <span className="text-xl font-bold text-black">
                 Binga Beach
               </span>
             </div>
@@ -77,10 +78,10 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="font-medium text-gray-300 hover:text-purple-400 transition-colors relative group"
+                  className="font-medium text-gray-600 hover:text-black transition-colors relative group"
                 >
                   {item.label}
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 group-hover:w-full transition-all duration-300"></div>
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
                 </a>
               ))}
 
@@ -89,7 +90,7 @@ const Navigation = () => {
                 <Button
                   onClick={() => navigate('/dashboard')}
                   variant="ghost"
-                  className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
+                  className="text-gray-600 hover:text-black hover:bg-gray-100"
                 >
                   My Dashboard
                 </Button>
@@ -98,7 +99,7 @@ const Navigation = () => {
               {/* Social Media Icons */}
               <SocialMediaIcons 
                 variant="header" 
-                className="text-gray-300 hover:text-purple-400" 
+                className="text-gray-600 hover:text-black" 
               />
 
               {/* Audio Controls */}
@@ -107,13 +108,13 @@ const Navigation = () => {
                   onClick={() => setShowVolumeControl(!showVolumeControl)}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
+                  className="text-gray-600 hover:text-black hover:bg-gray-100"
                 >
                   {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                 </Button>
                 
                 {showVolumeControl && (
-                  <div className="absolute top-full right-0 mt-2 glass rounded-lg border border-purple-500/20 p-3 flex items-center gap-2 min-w-[150px]">
+                  <div className="absolute top-full right-0 mt-2 bg-white rounded-lg border border-gray-200 shadow-lg p-3 flex items-center gap-2 min-w-[150px]">
                     <Button
                       onClick={() => adjustVolume(-0.1)}
                       variant="ghost"
@@ -151,9 +152,9 @@ const Navigation = () => {
               {/* User Authentication */}
               {isAuthenticated ? (
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 glass px-3 py-2 rounded-lg">
-                    <User className="w-4 h-4 text-purple-400" />
-                    <span className="text-sm text-gray-300">
+                  <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
+                    <User className="w-4 h-4 text-blue-600" />
+                    <span className="text-sm text-black">
                       {userProfile?.full_name || user?.email}
                     </span>
                   </div>
@@ -163,7 +164,7 @@ const Navigation = () => {
                   
                   <Button 
                     onClick={handleInvestClick}
-                    className="gradient-button px-6 py-2 rounded-xl"
+                    className="modern-button px-6 py-2 rounded-xl"
                   >
                     My Paradise
                   </Button>
@@ -171,7 +172,7 @@ const Navigation = () => {
                     onClick={handleSignOut}
                     variant="ghost"
                     size="sm"
-                    className="text-gray-300 hover:text-red-400 hover:bg-red-500/10"
+                    className="text-gray-600 hover:text-red-600 hover:bg-red-50"
                   >
                     <LogOut className="w-4 h-4" />
                   </Button>
@@ -181,13 +182,13 @@ const Navigation = () => {
                   <Button
                     onClick={() => navigate('/auth')}
                     variant="ghost"
-                    className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
+                    className="text-gray-600 hover:text-black hover:bg-gray-100"
                   >
                     Sign In
                   </Button>
                   <Button 
                     onClick={handleInvestClick}
-                    className="gradient-button px-6 py-2 rounded-xl"
+                    className="modern-button px-6 py-2 rounded-xl"
                   >
                     Invest in BBT
                   </Button>
@@ -197,7 +198,7 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 z-60 relative text-gray-300 hover:text-purple-400"
+              className="md:hidden p-2 z-60 relative text-gray-600 hover:text-black"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -206,13 +207,13 @@ const Navigation = () => {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 glass border-t border-purple-500/20 shadow-2xl">
+            <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
               <div className="px-6 py-4 space-y-4">
                 {navItems.map((item) => (
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block font-medium text-gray-700 hover:text-blue-600 transition-colors py-2"
+                    className="block font-medium text-gray-600 hover:text-black transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
@@ -227,21 +228,21 @@ const Navigation = () => {
                       setIsMobileMenuOpen(false);
                     }}
                     variant="ghost"
-                    className="w-full justify-start text-gray-700 hover:text-blue-600"
+                    className="w-full justify-start text-gray-600 hover:text-black"
                   >
                     My Dashboard
                   </Button>
                 )}
                 
                 {/* Social Media Icons for Mobile */}
-                <div className="flex items-center justify-between pt-3 border-t">
-                  <span className="text-gray-700">Follow Us</span>
+                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  <span className="text-gray-600">Follow Us</span>
                   <SocialMediaIcons variant="footer" className="text-gray-600" />
                 </div>
                 
                 {/* Audio Toggle for Mobile */}
-                <div className="flex items-center justify-between pt-3 border-t">
-                  <span className="text-gray-700">Background Audio</span>
+                <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                  <span className="text-gray-600">Background Audio</span>
                   <div className="flex items-center gap-2">
                     <Button
                       onClick={() => adjustVolume(-0.1)}
@@ -271,7 +272,7 @@ const Navigation = () => {
                 </div>
                 
                 {isAuthenticated ? (
-                  <div className="space-y-3 pt-3 border-t">
+                  <div className="space-y-3 pt-3 border-t border-gray-200">
                     <div className="flex items-center gap-2 text-gray-600">
                       <User className="w-4 h-4" />
                       <span className="text-sm">{userProfile?.full_name || user?.email}</span>
@@ -287,7 +288,7 @@ const Navigation = () => {
                         handleInvestClick();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      className="w-full modern-button"
                     >
                       My Paradise
                     </Button>
@@ -303,7 +304,7 @@ const Navigation = () => {
                     </Button>
                   </div>
                 ) : (
-                  <div className="space-y-3 pt-3 border-t">
+                  <div className="space-y-3 pt-3 border-t border-gray-200">
                     <Button
                       onClick={() => {
                         navigate('/auth');
@@ -319,7 +320,7 @@ const Navigation = () => {
                         handleInvestClick();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      className="w-full modern-button"
                     >
                       Invest in BBT
                     </Button>
