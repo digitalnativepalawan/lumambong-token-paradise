@@ -21,8 +21,6 @@ const Hero = () => {
 
   const handleWatchDemo = () => {
     setShowVideo(!showVideo);
-    // Also open YouTube link in new tab
-    window.open('https://www.youtube.com/watch?v=mhoL96KXuSw', '_blank');
   };
 
   const stats = [
@@ -101,7 +99,7 @@ const Hero = () => {
           <div className="mb-12 max-w-4xl mx-auto">
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
               <iframe
-                src="https://www.youtube.com/embed/mhoL96KXuSw?autoplay=1&loop=1&playlist=mhoL96KXuSw&mute=1"
+                src="https://www.youtube.com/embed/mhoL96KXuSw?autoplay=1&loop=1&playlist=mhoL96KXuSw&mute=0&quality=hd1080"
                 title="Binga Beach Demo Video"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

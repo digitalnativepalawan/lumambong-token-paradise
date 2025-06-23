@@ -1,5 +1,5 @@
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavigationMenuProps {
   scrollToContact: () => void;
@@ -7,6 +7,37 @@ interface NavigationMenuProps {
 
 const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavigation = (href: string, onClick?: () => void) => {
+    if (onClick) {
+      onClick();
+      return;
+    }
+
+    if (href.startsWith('/')) {
+      navigate(href);
+      return;
+    }
+
+    // If we're on the business plan page and trying to access hash links, go to home first
+    if (location.pathname === '/business-plan' && href.startsWith('#')) {
+      navigate('/' + href);
+      return;
+    }
+
+    // For hash links on the same page
+    if (href.startsWith('#')) {
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    // For external links
+    window.open(href, '_blank');
+  };
 
   const navItems = [
     { label: "Project", href: "#project" },
@@ -20,26 +51,14 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
   return (
     <div className="hidden md:flex items-center gap-8">
       {navItems.map((item) => (
-        item.href.startsWith('/') ? (
-          <button
-            key={item.label}
-            onClick={() => navigate(item.href)}
-            className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
-          >
-            {item.label}
-            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-          </button>
-        ) : (
-          <a
-            key={item.label}
-            href={item.href}
-            onClick={item.onClick}
-            className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
-          >
-            {item.label}
-            <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-          </a>
-        )
+        <button
+          key={item.label}
+          onClick={() => handleNavigation(item.href, item.onClick)}
+          className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
+        >
+          {item.label}
+          <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+        </button>
       ))}
     </div>
   );
