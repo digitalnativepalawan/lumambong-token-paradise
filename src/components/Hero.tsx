@@ -24,10 +24,10 @@ const Hero = () => {
   ];
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-white">
+    <section className="min-h-screen flex items-center justify-center bg-white pt-20">
       <div className="max-w-7xl mx-auto px-6 text-center">
         {/* Logo */}
-        <div className="mb-12 animate-fade-in-up">
+        <div className="mb-8 animate-fade-in-up">
           <img 
             src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
             alt="Binga Beach Logo" 

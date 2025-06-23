@@ -45,12 +45,19 @@ const Navigation = () => {
     setVolume(newVolume);
   };
 
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const navItems = [
     { label: "Project", href: "#project" },
     { label: "Token Utility", href: "#utility" }, 
     { label: "Investment", href: "#investment" },
     { label: "Location", href: "#location" },
-    { label: "Contact", href: "#contact" }
+    { label: "Contact", href: "#contact", onClick: scrollToContact }
   ];
 
   return (
@@ -62,11 +69,8 @@ const Navigation = () => {
       }`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
-            {/* Navigation text only - no logo */}
+            {/* Empty left section for uniform spacing */}
             <div className="flex items-center">
-              <span className="text-xl font-bold text-black cursor-pointer" onClick={() => navigate('/')}>
-                Binga Beach
-              </span>
             </div>
 
             {/* Desktop Navigation */}
@@ -75,7 +79,8 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="font-medium text-gray-600 hover:text-black transition-colors relative group"
+                  onClick={item.onClick}
+                  className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
                 >
                   {item.label}
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -210,8 +215,14 @@ const Navigation = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block font-medium text-gray-600 hover:text-black transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        e.preventDefault();
+                        item.onClick();
+                      }
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="block font-medium text-gray-600 hover:text-black transition-colors py-2 cursor-pointer"
                   >
                     {item.label}
                   </a>
