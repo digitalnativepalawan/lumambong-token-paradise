@@ -3,50 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Modern Dark Theme Design System with improved readability */
+/* Modern Clean White Theme Design System */
 
 @layer base {
   :root {
-    /* Dark theme base colors with better contrast */
-    --background: 220 13% 9%;
-    --foreground: 220 13% 98%;
+    /* Clean white theme colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
 
-    --card: 220 13% 11%;
-    --card-foreground: 220 13% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
 
-    --popover: 220 13% 11%;
-    --popover-foreground: 220 13% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
 
-    /* Primary purple gradient with better contrast */
-    --primary: 270 91% 65%;
-    --primary-foreground: 220 13% 9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    /* Secondary with improved contrast */
-    --secondary: 220 13% 15%;
-    --secondary-foreground: 220 13% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 220 13% 15%;
-    --muted-foreground: 220 13% 70%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 220 13% 15%;
-    --accent-foreground: 220 13% 98%;
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 9%;
 
-    --destructive: 0 62.8% 50%;
-    --destructive-foreground: 220 13% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 220 13% 20%;
-    --input: 220 13% 15%;
-    --ring: 270 91% 65%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
+    --ring: 0 0% 9%;
 
-    --radius: 0.75rem;
-
-    /* Custom gradient variables */
-    --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
-    --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%);
-    --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    --glow-primary: 0 0 20px rgba(139, 92, 246, 0.3);
-    --glow-secondary: 0 0 20px rgba(59, 130, 246, 0.3);
-    --glow-accent: 0 0 20px rgba(6, 182, 212, 0.3);
+    --radius: 0.5rem;
   }
 }
 
@@ -57,142 +47,76 @@
 
   body {
     @apply bg-background text-foreground;
-    background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
     min-height: 100vh;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
 
-  /* Custom scrollbar */
+  /* Clean scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-background;
+    @apply bg-gray-100;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--gradient-primary);
-    border-radius: 4px;
+    @apply bg-gray-300 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--gradient-secondary);
+    @apply bg-gray-400;
   }
 }
 
 @layer components {
-  /* Improved gradient text utility */
-  .gradient-text {
-    background: var(--gradient-primary);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
-    font-weight: 700;
+  /* Modern card styling */
+  .modern-card {
+    @apply bg-white border border-gray-200 shadow-sm rounded-lg;
+    transition: all 0.2s ease;
   }
 
-  /* Enhanced glowing card effect */
-  .glow-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: var(--glow-primary);
-    transition: all 0.3s ease;
+  .modern-card:hover {
+    @apply shadow-md border-gray-300;
+    transform: translateY(-1px);
   }
 
-  .glow-card:hover {
-    box-shadow: var(--glow-secondary);
-    border-color: rgba(139, 92, 246, 0.3);
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.05);
+  /* Clean button styling */
+  .modern-button {
+    @apply bg-black text-white font-medium transition-all duration-200;
   }
 
-  /* Improved gradient button */
-  .gradient-button {
-    background: var(--gradient-primary);
-    background-size: 200% 200%;
-    animation: gradient-shift 3s ease infinite;
-    border: none;
-    color: white;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: var(--glow-primary);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  .modern-button:hover {
+    @apply bg-gray-800;
+    transform: translateY(-1px);
   }
 
-  .gradient-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--glow-secondary);
+  /* Stats card styling */
+  .stats-card {
+    @apply bg-white border border-gray-200 rounded-xl p-6 shadow-sm;
+    transition: all 0.2s ease;
   }
 
-  /* Improved neon border effect */
-  .neon-border {
-    border: 2px solid transparent;
-    background: linear-gradient(rgba(255,255,255,0.08), rgba(255,255,255,0.08)) padding-box,
-                var(--gradient-primary) border-box;
+  .stats-card:hover {
+    @apply shadow-md;
   }
 
-  /* Floating animation */
-  .float {
-    animation: float 6s ease-in-out infinite;
+  /* Section styling */
+  .section-container {
+    @apply py-20 bg-white;
   }
 
-  /* Pulse glow animation */
-  .pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite alternate;
-  }
-
-  /* High contrast text utilities */
-  .text-high-contrast {
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  }
-
-  .text-medium-contrast {
-    color: rgba(255, 255, 255, 0.8);
-  }
-
-  .text-low-contrast {
-    color: rgba(255, 255, 255, 0.6);
+  .section-alt {
+    @apply py-20 bg-gray-50;
   }
 }
 
 @layer utilities {
   /* Animation keyframes */
-  @keyframes gradient-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
-  @keyframes pulse-glow {
-    0% {
-      box-shadow: var(--glow-primary);
-    }
-    100% {
-      box-shadow: var(--glow-secondary);
-    }
-  }
-
   @keyframes fade-in-up {
     from {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -204,24 +128,16 @@
     animation: fade-in-up 0.6s ease-out;
   }
 
-  /* Improved glass morphism effect */
-  .glass {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+  /* Text utilities */
+  .text-primary {
+    @apply text-black;
   }
 
-  /* Enhanced gradient overlays */
-  .gradient-overlay {
-    position: relative;
+  .text-secondary {
+    @apply text-gray-600;
   }
 
-  .gradient-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--gradient-primary);
-    opacity: 0.1;
-    border-radius: inherit;
+  .text-muted {
+    @apply text-gray-500;
   }
 }
