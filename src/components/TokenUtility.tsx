@@ -1,121 +1,209 @@
 
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Vote, DollarSign, Users, Trophy, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { 
+  Coins, 
+  Calendar, 
+  Vote, 
+  TrendingUp, 
+  Shield, 
+  Users,
+  ArrowRight,
+  Zap,
+  Star
+} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const TokenUtility = () => {
+  const navigate = useNavigate();
+
   const utilities = [
     {
+      icon: Shield,
+      title: "Ownership Rights",
+      description: "Direct fractional ownership of premium beachfront property with legal title protection",
+      gradient: "from-purple-500 to-pink-500",
+      features: ["Legal ownership documents", "Property appreciation", "Asset backing"]
+    },
+    {
       icon: Calendar,
-      title: "Timeshare Rights",
-      description: "Proportional annual stay rights based on token ownership. Own 10% = ~36 nights per year.",
-      highlight: "Flexible usage, trade nights, or monetize unused allocations"
+      title: "Timeshare Benefits", 
+      description: "Proportional annual usage rights with flexible booking and rental options",
+      gradient: "from-blue-500 to-cyan-500",
+      features: ["~36 nights per 10% ownership", "Flexible booking system", "Rent unused nights"]
     },
     {
       icon: Vote,
-      title: "Governance Voting",
-      description: "Vote on property decisions, budgets, and management. All votes recorded on-chain.",
-      highlight: "Direct influence on your investment's future"
+      title: "Governance Power",
+      description: "On-chain voting rights for property decisions and community proposals",
+      gradient: "from-green-500 to-emerald-500", 
+      features: ["Property management votes", "Budget approvals", "Development decisions"]
     },
     {
-      icon: DollarSign,
-      title: "Revenue Sharing",
-      description: "Receive 30% of rental revenue as automatic dividends distributed to token holders.",
-      highlight: "Passive income from resort operations"
-    },
-    {
-      icon: Users,
-      title: "Community Benefits",
-      description: "Access to exclusive amenities, priority booking, and holder-only events.",
-      highlight: "Premium lifestyle perks and networking"
-    },
-    {
-      icon: Trophy,
-      title: "Loyalty Rewards",
-      description: "Long-term holders receive bonus nights, higher dividend rates, and service discounts.",
-      highlight: "Rewards for commitment and community building"
-    },
-    {
-      icon: RefreshCw,
-      title: "Token Buybacks",
-      description: "20% of profits used for token buybacks, reducing supply and potentially increasing value.",
-      highlight: "Built-in value appreciation mechanism"
+      icon: TrendingUp,
+      title: "Revenue Share",
+      description: "Automatic dividend distribution from resort operations and rental income",
+      gradient: "from-orange-500 to-red-500",
+      features: ["30% revenue distribution", "Monthly payouts", "Compound growth"]
     }
   ];
 
+  const tokenomics = [
+    { label: "Circulating Supply", value: "65,000 BBT", percentage: 65 },
+    { label: "Development Reserve", value: "25,000 BBT", percentage: 25 },
+    { label: "Liquidity Pool", value: "10,000 BBT", percentage: 10 }
+  ];
+
+  const roadmapItems = [
+    { phase: "Q1 2025", title: "Token Launch", status: "completed" },
+    { phase: "Q2 2025", title: "Development Start", status: "active" },
+    { phase: "Q3 2025", title: "Resort Opening", status: "upcoming" },
+    { phase: "Q4 2025", title: "Full Operations", status: "upcoming" }
+  ];
+
   return (
-    <section id="utility" className="py-20 bg-gradient-to-br from-blue-50 via-white to-emerald-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-emerald-100 text-emerald-800">Token Utility</Badge>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-            Binga Beach Token (BBT) Benefits
+    <section id="utility" className="py-32 relative overflow-hidden">
+      {/* Animated background */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6">
+        {/* Header */}
+        <div className="text-center mb-20">
+          <Badge className="mb-6 bg-blue-500/20 text-blue-300 border border-blue-500/30 px-4 py-2 backdrop-blur-sm">
+            Token Utility
+          </Badge>
+          <h2 className="text-4xl md:text-6xl font-bold mb-8">
+            <span className="text-white">BBT Token</span>
+            <br />
+            <span className="gradient-text">Ecosystem</span>
           </h2>
-          <p className="text-xl text-gray-700 max-w-4xl mx-auto">
-            BBT is more than ownership—it's your key to an exclusive beachfront lifestyle 
-            with financial returns, personal use rights, and community governance.
+          <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+            More than just ownership - BBT tokens unlock a comprehensive ecosystem of 
+            benefits, rights, and opportunities in the Binga Beach community.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Utility grid */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-20">
           {utilities.map((utility, index) => (
-            <div key={index} className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
-              <utility.icon className="w-12 h-12 text-blue-600 mb-6" />
-              <h3 className="text-xl font-bold mb-4 text-gray-900">{utility.title}</h3>
-              <p className="text-gray-600 mb-4 leading-relaxed">{utility.description}</p>
-              <div className="bg-gradient-to-r from-blue-50 to-emerald-50 p-3 rounded-lg">
-                <p className="text-sm font-medium text-blue-800">{utility.highlight}</p>
+            <div 
+              key={index}
+              className="glow-card p-8 rounded-3xl group hover:scale-[1.02] transition-all duration-300"
+            >
+              <div className="flex items-start gap-6">
+                <div className={`p-4 rounded-2xl bg-gradient-to-r ${utility.gradient} group-hover:scale-110 transition-transform`}>
+                  <utility.icon className="w-8 h-8 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-purple-300 transition-colors">
+                    {utility.title}
+                  </h3>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    {utility.description}
+                  </p>
+                  <div className="space-y-2">
+                    {utility.features.map((feature, featureIndex) => (
+                      <div key={featureIndex} className="flex items-center gap-3">
+                        <Star className="w-4 h-4 text-purple-400" />
+                        <span className="text-sm text-gray-400">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Enhanced Value Proposition */}
-        <div className="bg-white border-2 border-blue-200 rounded-2xl p-8 shadow-lg">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">The BBT Advantage</h3>
-            <p className="text-lg text-gray-700">
-              Traditional timeshares and real estate investments can't match our innovative model
-            </p>
+        {/* Tokenomics section */}
+        <div className="grid lg:grid-cols-2 gap-12 mb-20">
+          {/* Token distribution */}
+          <div className="glow-card p-8 rounded-3xl">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-blue-500/20">
+                <Coins className="w-6 h-6 text-purple-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white">Token Distribution</h3>
+            </div>
+            <div className="space-y-6">
+              {tokenomics.map((item, index) => (
+                <div key={index}>
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-300">{item.label}</span>
+                    <span className="text-white font-semibold">{item.value}</span>
+                  </div>
+                  <Progress 
+                    value={item.percentage} 
+                    className="h-3 bg-gray-800/50"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-red-100 p-4 rounded-lg mb-4">
-                <h4 className="font-bold text-red-800">Traditional Timeshare</h4>
+
+          {/* Roadmap */}
+          <div className="glow-card p-8 rounded-3xl">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20">
+                <Zap className="w-6 h-6 text-green-400" />
               </div>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>❌ Fixed weeks, rigid scheduling</li>
-                <li>❌ High annual fees</li>
-                <li>❌ "Use it or lose it" policy</li>
-                <li>❌ No ownership or governance</li>
-                <li>❌ Difficult to exit or trade</li>
-              </ul>
+              <h3 className="text-2xl font-bold text-white">Development Roadmap</h3>
             </div>
-            
-            <div className="text-center">
-              <div className="bg-yellow-100 p-4 rounded-lg mb-4">
-                <h4 className="font-bold text-yellow-800">Real Estate Crowdfunding</h4>
-              </div>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>⚠️ Financial returns only</li>
-                <li>⚠️ No personal use rights</li>
-                <li>⚠️ Limited governance</li>
-                <li>⚠️ Illiquid investments</li>
-                <li>⚠️ High minimum investments</li>
-              </ul>
+            <div className="space-y-4">
+              {roadmapItems.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 p-4 glass rounded-xl">
+                  <div className={`w-3 h-3 rounded-full ${
+                    item.status === 'completed' ? 'bg-green-400' :
+                    item.status === 'active' ? 'bg-purple-400 animate-pulse' :
+                    'bg-gray-500'
+                  }`}></div>
+                  <div className="flex-1">
+                    <div className="font-semibold text-white">{item.title}</div>
+                    <div className="text-sm text-gray-400">{item.phase}</div>
+                  </div>
+                  <Badge className={`text-xs ${
+                    item.status === 'completed' ? 'bg-green-500/20 text-green-300' :
+                    item.status === 'active' ? 'bg-purple-500/20 text-purple-300' :
+                    'bg-gray-500/20 text-gray-400'
+                  }`}>
+                    {item.status}
+                  </Badge>
+                </div>
+              ))}
             </div>
-            
-            <div className="text-center">
-              <div className="bg-emerald-100 p-4 rounded-lg mb-4">
-                <h4 className="font-bold text-emerald-800">BBT Model</h4>
-              </div>
-              <ul className="text-sm text-gray-700 space-y-2">
-                <li>✅ Flexible booking system</li>
-                <li>✅ Monetize unused nights</li>
-                <li>✅ True fractional ownership</li>
-                <li>✅ Full governance rights</li>
-                <li>✅ Liquid secondary market</li>
-              </ul>
+          </div>
+        </div>
+
+        {/* CTA section */}
+        <div className="text-center glow-card p-12 rounded-3xl neon-border">
+          <div className="max-w-2xl mx-auto">
+            <h3 className="text-3xl font-bold mb-6 gradient-text">
+              Ready to Join the Future of Real Estate?
+            </h3>
+            <p className="text-gray-300 mb-8 text-lg">
+              Start your investment journey with BBT tokens and unlock exclusive access 
+              to premium beachfront property in paradise.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                onClick={() => navigate('/auth')}
+                className="gradient-button px-8 py-4 text-lg h-auto rounded-xl group"
+              >
+                <span>Get Started</span>
+                <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/governance')}
+                className="px-8 py-4 text-lg h-auto rounded-xl glass border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
+              >
+                <Users className="mr-2 w-5 h-5" />
+                View Governance
+              </Button>
             </div>
           </div>
         </div>

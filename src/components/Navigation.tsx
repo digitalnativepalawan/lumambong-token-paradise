@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
@@ -55,15 +54,19 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled 
+          ? 'glass border-b border-purple-500/20 shadow-2xl' 
+          : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
-              <Waves className={`w-8 h-8 ${isScrolled ? 'text-blue-600' : 'text-white'}`} />
-              <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
+            <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate('/')}>
+              <div className="p-2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-500 group-hover:scale-110 transition-transform">
+                <Waves className="w-6 h-6 text-white" />
+              </div>
+              <span className="text-xl font-bold gradient-text">
                 Binga Beach
               </span>
             </div>
@@ -74,11 +77,10 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-medium transition-colors hover:text-blue-600 ${
-                    isScrolled ? 'text-gray-700' : 'text-white'
-                  }`}
+                  className="font-medium text-gray-300 hover:text-purple-400 transition-colors relative group"
                 >
                   {item.label}
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-blue-500 group-hover:w-full transition-all duration-300"></div>
                 </a>
               ))}
 
@@ -87,7 +89,7 @@ const Navigation = () => {
                 <Button
                   onClick={() => navigate('/dashboard')}
                   variant="ghost"
-                  className={`${isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                  className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
                 >
                   My Dashboard
                 </Button>
@@ -96,7 +98,7 @@ const Navigation = () => {
               {/* Social Media Icons */}
               <SocialMediaIcons 
                 variant="header" 
-                className={isScrolled ? 'text-gray-600' : 'text-white'} 
+                className="text-gray-300 hover:text-purple-400" 
               />
 
               {/* Audio Controls */}
@@ -105,13 +107,13 @@ const Navigation = () => {
                   onClick={() => setShowVolumeControl(!showVolumeControl)}
                   variant="ghost"
                   size="sm"
-                  className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                  className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
                 >
                   {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
                 </Button>
                 
                 {showVolumeControl && (
-                  <div className="absolute top-full right-0 mt-2 bg-white rounded-lg shadow-lg border p-3 flex items-center gap-2 min-w-[150px]">
+                  <div className="absolute top-full right-0 mt-2 glass rounded-lg border border-purple-500/20 p-3 flex items-center gap-2 min-w-[150px]">
                     <Button
                       onClick={() => adjustVolume(-0.1)}
                       variant="ghost"
@@ -149,9 +151,9 @@ const Navigation = () => {
               {/* User Authentication */}
               {isAuthenticated ? (
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <User className={`w-4 h-4 ${isScrolled ? 'text-gray-600' : 'text-white'}`} />
-                    <span className={`text-sm ${isScrolled ? 'text-gray-600' : 'text-white'}`}>
+                  <div className="flex items-center gap-2 glass px-3 py-2 rounded-lg">
+                    <User className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm text-gray-300">
                       {userProfile?.full_name || user?.email}
                     </span>
                   </div>
@@ -161,11 +163,7 @@ const Navigation = () => {
                   
                   <Button 
                     onClick={handleInvestClick}
-                    className={`${
-                      isScrolled 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                        : 'bg-white text-gray-900 hover:bg-gray-100'
-                    }`}
+                    className="gradient-button px-6 py-2 rounded-xl"
                   >
                     My Paradise
                   </Button>
@@ -173,7 +171,7 @@ const Navigation = () => {
                     onClick={handleSignOut}
                     variant="ghost"
                     size="sm"
-                    className={`${isScrolled ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                    className="text-gray-300 hover:text-red-400 hover:bg-red-500/10"
                   >
                     <LogOut className="w-4 h-4" />
                   </Button>
@@ -183,17 +181,13 @@ const Navigation = () => {
                   <Button
                     onClick={() => navigate('/auth')}
                     variant="ghost"
-                    className={`${isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                    className="text-gray-300 hover:text-purple-400 hover:bg-purple-500/10"
                   >
                     Sign In
                   </Button>
                   <Button 
                     onClick={handleInvestClick}
-                    className={`${
-                      isScrolled 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                        : 'bg-white text-gray-900 hover:bg-gray-100'
-                    }`}
+                    className="gradient-button px-6 py-2 rounded-xl"
                   >
                     Invest in BBT
                   </Button>
@@ -203,7 +197,7 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className={`md:hidden p-2 z-60 relative ${isScrolled ? 'text-gray-900' : 'text-white'}`}
+              className="md:hidden p-2 z-60 relative text-gray-300 hover:text-purple-400"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -212,7 +206,7 @@ const Navigation = () => {
 
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-lg">
+            <div className="md:hidden absolute top-full left-0 right-0 glass border-t border-purple-500/20 shadow-2xl">
               <div className="px-6 py-4 space-y-4">
                 {navItems.map((item) => (
                   <a

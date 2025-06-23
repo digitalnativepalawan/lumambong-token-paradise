@@ -1,111 +1,115 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Users, TreePine, Shield, Globe, Play, Pause } from "lucide-react";
-import { useAudio } from "@/hooks/useAudio";
-import { useEffect } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Waves, ArrowRight, Play, TrendingUp, Users, MapPin } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const Hero = () => {
-  const { isPlaying, isMuted, playAudio } = useAudio();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    // Auto-play audio when component mounts if not muted
-    if (!isMuted) {
-      playAudio();
+  const handleInvestClick = () => {
+    if (!isAuthenticated) {
+      navigate('/auth');
+      return;
     }
-  }, [isMuted, playAudio]);
+    navigate('/dashboard');
+  };
+
+  const stats = [
+    { icon: TrendingUp, label: "Token Value", value: "$25", change: "+12.5%" },
+    { icon: Users, label: "Investors", value: "1,247", change: "+8.2%" },
+    { icon: MapPin, label: "Properties", value: "10", change: "100%" }
+  ];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-white py-8">
-      {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 text-black">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Logo */}
-          <div className="mb-8">
-            <img 
-              src="/lovable-uploads/5f0c2f97-d6d5-46a2-a634-804f4f053d96.png" 
-              alt="Palawan Collective" 
-              className="w-64 sm:w-80 md:w-96 h-auto mx-auto"
-            />
-          </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cyan-500/10 rounded-full blur-3xl"></div>
+      </div>
 
-          {/* Audio Status Indicator */}
-          {isPlaying && !isMuted && (
-            <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 mb-4">
-              <Play className="w-3 h-3 text-emerald-600" />
-              <span className="text-xs text-emerald-600">Ambient audio playing</span>
-            </div>
-          )}
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]"></div>
 
-          {/* Location Badge */}
-          <div className="inline-flex items-center gap-2 bg-gray-100 rounded-full px-3 py-1 sm:px-4 sm:py-2 mb-4 sm:mb-8">
-            <MapPin className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600" />
-            <span className="text-xs sm:text-sm font-medium text-black">Lumambong Beach, Palawan</span>
-          </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
+        {/* Status badge */}
+        <div className="mb-8 animate-fade-in-up">
+          <Badge className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30 backdrop-blur-sm">
+            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+            Live Investment Platform
+          </Badge>
+        </div>
 
-          <p className="text-lg sm:text-xl md:text-2xl mb-3 sm:mb-4 font-light text-gray-800">
-            Own Your Secluded Palawan Paradise
+        {/* Main heading */}
+        <div className="mb-8 space-y-4">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight">
+            <span className="gradient-text">Own a Fraction</span>
+            <br />
+            <span className="text-white">of Paradise</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+            Tokenized beachfront real estate in Palawan, Philippines. 
+            <span className="gradient-text font-semibold"> Invest. Stay. Govern.</span>
           </p>
+        </div>
+
+        {/* CTA buttons */}
+        <div className="mb-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Button 
+            onClick={handleInvestClick}
+            className="gradient-button px-8 py-4 text-lg h-auto rounded-xl group"
+          >
+            <span>Start Investing</span>
+            <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </Button>
           
-          <p className="text-sm sm:text-lg mb-4 sm:mb-8 text-gray-700 max-w-2xl mx-auto leading-relaxed">
-            Escape to pristine seclusion. Invest in sustainable paradise through innovative tokenized crowdfunding on one of the world's most beautiful islands.
-          </p>
+          <Button 
+            variant="outline" 
+            className="px-8 py-4 text-lg h-auto rounded-xl glass border-purple-500/30 text-purple-300 hover:bg-purple-500/10 group"
+          >
+            <Play className="mr-2 w-5 h-5" />
+            <span>Watch Demo</span>
+          </Button>
+        </div>
 
-          {/* Key Stats */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-8 mb-6 sm:mb-12 justify-center">
-            <div className="flex items-center gap-2 justify-center sm:justify-start">
-              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-black">Only 10 Exclusive Units</span>
-            </div>
-            <div className="flex items-center gap-2 justify-center sm:justify-start">
-              <TreePine className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-black">100% Off-Grid Solar</span>
-            </div>
-            <div className="flex items-center gap-2 justify-center sm:justify-start">
-              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 flex-shrink-0" />
-              <span className="text-xs sm:text-sm text-black">5,282 sqm Beachfront</span>
-            </div>
-          </div>
-
-          {/* Investment Highlight */}
-          <div className="mb-4 sm:mb-8 p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <p className="text-xs sm:text-sm text-gray-700 mb-1 sm:mb-2">Total Investment Per Unit</p>
-            <p className="text-2xl sm:text-3xl font-bold text-emerald-600">$230,000 USD</p>
-            <p className="text-xs sm:text-sm text-gray-700">Fully turnkey ownership - Land, home, solar & legal setup</p>
-          </div>
-
-          {/* Tokenized Ownership Structure */}
-          <div className="p-4 sm:p-6 bg-gray-50 rounded-lg border border-gray-200">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4 justify-center">
-              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
-              <h3 className="text-base sm:text-lg font-semibold text-black">Tokenized Ownership Structure</h3>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 sm:gap-2 mb-1 sm:mb-2">
-                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-emerald-600 rounded-full"></div>
-                  <span className="text-xs sm:text-sm text-gray-700">Filipino Ownership</span>
+        {/* Stats grid */}
+        <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          {stats.map((stat, index) => (
+            <div 
+              key={stat.label}
+              className="glow-card p-6 rounded-2xl group"
+              style={{ animationDelay: `${index * 200}ms` }}
+            >
+              <div className="flex items-center justify-center mb-3">
+                <div className="p-3 rounded-full bg-gradient-to-r from-purple-500/20 to-blue-500/20">
+                  <stat.icon className="w-6 h-6 text-purple-400" />
                 </div>
-                <p className="text-xl sm:text-2xl font-bold text-emerald-600">60%</p>
               </div>
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-1 sm:gap-2 mb-1 sm:mb-2">
-                  <Globe className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
-                  <span className="text-xs sm:text-sm text-gray-700">Foreign Ownership</span>
-                </div>
-                <p className="text-xl sm:text-2xl font-bold text-blue-600">40%</p>
-              </div>
+              <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+              <div className="text-sm text-gray-400 mb-2">{stat.label}</div>
+              <div className="text-xs text-green-400 font-medium">{stat.change}</div>
             </div>
-            
-            <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 mb-2 sm:mb-3">
-              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 sm:h-3 rounded-l-full" style={{width: '60%'}}></div>
-            </div>
-            
-            <p className="text-xs sm:text-sm text-gray-700">
-              Compliant with Philippine law • Blockchain transparency • Community-first development
-            </p>
+          ))}
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-purple-500/50 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-purple-500 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
+      </div>
+
+      {/* Floating elements */}
+      <div className="absolute top-1/4 left-10 float">
+        <Waves className="w-12 h-12 text-purple-400/30" />
+      </div>
+      <div className="absolute bottom-1/4 right-10 float" style={{ animationDelay: '2s' }}>
+        <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg rotate-45"></div>
       </div>
     </section>
   );
