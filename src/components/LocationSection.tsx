@@ -2,12 +2,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Navigation, Compass, ExternalLink, Home, Zap, Users } from "lucide-react";
+import { MapPin, Navigation, Compass, ExternalLink, Home, Zap, Users, FileText } from "lucide-react";
 import ImageModal from "./ImageModal";
 
 const LocationSection = () => {
   const mapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1lRgpf0rzovejTPzeIg-5S6M-vRQoil0&usp=sharing";
   const futureProjectMapUrl = "https://www.google.com/maps/d/u/0/edit?mid=1dbLajOIGAHjaaGKfAUNivBT5YJQl5kM&usp=sharing";
+  const moduleSpecsUrl = "https://drive.google.com/file/d/1NCUW6eqVCYUwgmzcwFIDba6J6MI1GhPY/view?usp=sharing";
 
   const locationFeatures = [
     {
@@ -144,12 +145,12 @@ const LocationSection = () => {
             </p>
           </div>
 
-          {/* Centered Modular Home Image */}
-          <div className="mb-12 flex justify-center">
+          {/* Centered Modular Home Image with Button */}
+          <div className="mb-12 flex flex-col items-center">
             <ImageModal 
               src="/lovable-uploads/1459e5f6-bba3-4363-9f17-aca3c5c7aa2f.png"
               alt="Modern eco-luxury modular home with panoramic windows"
-              className="max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden"
+              className="max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden mb-6"
             >
               <img 
                 src="/lovable-uploads/1459e5f6-bba3-4363-9f17-aca3c5c7aa2f.png"
@@ -157,6 +158,16 @@ const LocationSection = () => {
                 className="w-full rounded-2xl shadow-2xl"
               />
             </ImageModal>
+            
+            {/* Module Specs Button */}
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold"
+              onClick={() => window.open(moduleSpecsUrl, '_blank')}
+            >
+              <FileText className="mr-2 w-5 h-5" />
+              Module Specs
+              <ExternalLink className="ml-2 w-4 h-4" />
+            </Button>
           </div>
 
           {/* Modular Home Features */}
@@ -191,23 +202,23 @@ const LocationSection = () => {
 
           {/* Specifications Summary */}
           <div className="bg-gradient-to-r from-blue-50 to-emerald-50 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-center mb-6">Home Specifications</h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <h3 className="text-2xl font-bold text-center mb-8">Home Specifications</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-2">31.4m²</div>
-                <div className="text-gray-600">Floor Area</div>
+                <div className="text-3xl font-bold text-blue-600 mb-2">31.4m²</div>
+                <div className="text-gray-600 font-medium">Floor Area</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-emerald-600 mb-2">10kVA</div>
-                <div className="text-gray-600">Solar System</div>
+                <div className="text-3xl font-bold text-emerald-600 mb-2">10kVA</div>
+                <div className="text-gray-600 font-medium">Solar System</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 mb-2">2 People</div>
-                <div className="text-gray-600">Occupancy</div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">2 People</div>
+                <div className="text-gray-600 font-medium">Occupancy</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600 mb-2">6.5 Tons</div>
-                <div className="text-gray-600">Total Weight</div>
+                <div className="text-3xl font-bold text-orange-600 mb-2">6.5 Tons</div>
+                <div className="text-gray-600 font-medium">Total Weight</div>
               </div>
             </div>
           </div>
@@ -240,15 +251,15 @@ const LocationSection = () => {
             
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">Lot 3947-E, Barangay Binga, San Vicente, Palawan</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">Direct beachfront access with titled land</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-emerald-500 rounded-full flex-shrink-0"></div>
                 <span className="text-gray-700">10 individual subdivided lots available</span>
               </div>
             </div>
