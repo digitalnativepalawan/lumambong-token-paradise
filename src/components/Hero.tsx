@@ -54,6 +54,18 @@ const Hero = () => {
             Tokenized beachfront real estate in Palawan, Philippines. 
             <span className="text-black font-semibold"> Invest. Stay. Govern.</span>
           </p>
+          
+          {/* Ownership Structure Emphasis */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl px-6 py-4">
+              <div className="text-2xl font-bold text-blue-600">60%</div>
+              <div className="text-sm text-blue-700 font-medium">🇵🇭 Filipino Ownership</div>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-4">
+              <div className="text-2xl font-bold text-green-600">40%</div>
+              <div className="text-sm text-green-700 font-medium">🌍 Foreign Ownership</div>
+            </div>
+          </div>
         </div>
 
         {/* CTA buttons */}

@@ -11,18 +11,118 @@ const BingaUnitsGrid = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // Mock data for the 10 Binga Beach lots
+  // Mock data for the 10 Binga Beach lots with ownership structure
   const lots = [
-    { id: 1, name: "Sunset Villa", tokensSold: 3500, totalTokens: 10000, price: 25 },
-    { id: 2, name: "Ocean Breeze", tokensSold: 2800, totalTokens: 10000, price: 25 },
-    { id: 3, name: "Palm Paradise", tokensSold: 4200, totalTokens: 10000, price: 25 },
-    { id: 4, name: "Coral Cove", tokensSold: 1900, totalTokens: 10000, price: 25 },
-    { id: 5, name: "Seashell Sanctuary", tokensSold: 3100, totalTokens: 10000, price: 25 },
-    { id: 6, name: "Tropical Retreat", tokensSold: 2400, totalTokens: 10000, price: 25 },
-    { id: 7, name: "Azure Escape", tokensSold: 3800, totalTokens: 10000, price: 25 },
-    { id: 8, name: "Bamboo Bliss", tokensSold: 2200, totalTokens: 10000, price: 25 },
-    { id: 9, name: "Coconut Grove", tokensSold: 4500, totalTokens: 10000, price: 25 },
-    { id: 10, name: "Starfish Shore", tokensSold: 1700, totalTokens: 10000, price: 25 }
+    { 
+      id: 1, 
+      name: "Sunset Villa", 
+      tokensSold: 3500, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 2100,
+      foreignSold: 1400
+    },
+    { 
+      id: 2, 
+      name: "Ocean Breeze", 
+      tokensSold: 2800, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1680,
+      foreignSold: 1120
+    },
+    { 
+      id: 3, 
+      name: "Palm Paradise", 
+      tokensSold: 4200, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 2520,
+      foreignSold: 1680
+    },
+    { 
+      id: 4, 
+      name: "Coral Cove", 
+      tokensSold: 1900, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1140,
+      foreignSold: 760
+    },
+    { 
+      id: 5, 
+      name: "Seashell Sanctuary", 
+      tokensSold: 3100, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1860,
+      foreignSold: 1240
+    },
+    { 
+      id: 6, 
+      name: "Tropical Retreat", 
+      tokensSold: 2400, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1440,
+      foreignSold: 960
+    },
+    { 
+      id: 7, 
+      name: "Azure Escape", 
+      tokensSold: 3800, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 2280,
+      foreignSold: 1520
+    },
+    { 
+      id: 8, 
+      name: "Bamboo Bliss", 
+      tokensSold: 2200, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1320,
+      foreignSold: 880
+    },
+    { 
+      id: 9, 
+      name: "Coconut Grove", 
+      tokensSold: 4500, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 2700,
+      foreignSold: 1800
+    },
+    { 
+      id: 10, 
+      name: "Starfish Shore", 
+      tokensSold: 1700, 
+      totalTokens: 10000, 
+      price: 25,
+      filipinoTokens: 6000,
+      foreignTokens: 4000,
+      filipinoSold: 1020,
+      foreignSold: 680
+    }
   ];
 
   const handleInvestClick = () => {
@@ -53,9 +153,21 @@ const BingaUnitsGrid = () => {
             Choose Your Binga Beach Lot
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Own a fraction of paradise through our tokenized lots. Each lot offers the same 
-            benefits: timeshare rights, governance voting, and revenue sharing.
+            Own a fraction of paradise through our tokenized lots. Each lot follows Philippine law 
+            with 60% Filipino ownership and 40% Foreign ownership structure.
           </p>
+
+          {/* Ownership Structure Summary */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+            <div className="bg-blue-50 border border-blue-200 rounded-xl px-6 py-3">
+              <div className="text-lg font-bold text-blue-600">60% Filipino Pool</div>
+              <div className="text-sm text-blue-700">6,000 tokens per lot</div>
+            </div>
+            <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-3">
+              <div className="text-lg font-bold text-green-600">40% Foreign Pool</div>
+              <div className="text-sm text-green-700">4,000 tokens per lot</div>
+            </div>
+          </div>
 
           {/* Project Progress */}
           <div className="bg-white rounded-xl p-8 shadow-sm border mb-12 max-w-4xl mx-auto">
@@ -86,7 +198,8 @@ const BingaUnitsGrid = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
           {lots.map((lot) => {
             const fundedPercentage = (lot.tokensSold / lot.totalTokens) * 100;
-            const availableTokens = lot.totalTokens - lot.tokensSold;
+            const filipinoPercentage = (lot.filipinoSold / lot.filipinoTokens) * 100;
+            const foreignPercentage = (lot.foreignSold / lot.foreignTokens) * 100;
             
             return (
               <div key={lot.id} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
@@ -108,14 +221,39 @@ const BingaUnitsGrid = () => {
                     <span>${lot.price} per BBT token</span>
                   </div>
                   
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Users className="w-4 h-4" />
-                    <span>{lot.tokensSold.toLocaleString()} / {lot.totalTokens.toLocaleString()} sold</span>
+                  {/* Ownership Breakdown */}
+                  <div className="bg-gray-50 p-3 rounded-lg space-y-3">
+                    <div className="text-xs font-semibold text-gray-700 text-center">Ownership Structure</div>
+                    
+                    {/* Filipino Pool */}
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-blue-600 font-medium">🇵🇭 Filipino (60%)</span>
+                        <span className="text-blue-600">{filipinoPercentage.toFixed(1)}%</span>
+                      </div>
+                      <Progress value={filipinoPercentage} className="h-1.5 mb-1" />
+                      <div className="text-xs text-gray-600">
+                        {lot.filipinoSold.toLocaleString()} / {lot.filipinoTokens.toLocaleString()} sold
+                      </div>
+                    </div>
+
+                    {/* Foreign Pool */}
+                    <div>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span className="text-green-600 font-medium">🌍 Foreign (40%)</span>
+                        <span className="text-green-600">{foreignPercentage.toFixed(1)}%</span>
+                      </div>
+                      <Progress value={foreignPercentage} className="h-1.5 mb-1" />
+                      <div className="text-xs text-gray-600">
+                        {lot.foreignSold.toLocaleString()} / {lot.foreignTokens.toLocaleString()} sold
+                      </div>
+                    </div>
                   </div>
                   
+                  {/* Overall Progress */}
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Funded</span>
+                      <span className="text-gray-600">Overall Funded</span>
                       <span className="font-medium">{fundedPercentage.toFixed(1)}%</span>
                     </div>
                     <Progress value={fundedPercentage} className="h-2" />
@@ -124,7 +262,7 @@ const BingaUnitsGrid = () => {
                   <div className="bg-blue-50 p-3 rounded-lg">
                     <div className="text-center">
                       <div className="text-lg font-bold text-blue-600">
-                        {availableTokens.toLocaleString()}
+                        {(lot.totalTokens - lot.tokensSold).toLocaleString()}
                       </div>
                       <div className="text-xs text-blue-700">BBT Available</div>
                     </div>
