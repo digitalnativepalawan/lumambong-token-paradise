@@ -8,6 +8,9 @@ import { AudioProvider } from "@/hooks/useAudio";
 import DisclaimerHeader from "@/components/DisclaimerHeader";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import Governance from "./pages/Governance";
+import Marketplace from "./pages/Marketplace";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -16,13 +19,16 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AudioProvider>
+        <DisclaimerHeader />
         <Toaster />
         <Sonner />
-        <DisclaimerHeader />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/governance" element={<Governance />} />
+            <Route path="/marketplace" element={<Marketplace />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

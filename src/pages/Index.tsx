@@ -1,8 +1,9 @@
+
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
-import PropertyShowcase from "@/components/PropertyShowcase";
-import InvestmentBreakdown from "@/components/InvestmentBreakdown";
-import SolarPowerSection from "@/components/SolarPowerSection";
+import ProjectOverview from "@/components/ProjectOverview";
+import TokenUtility from "@/components/TokenUtility";
+import BingaUnitsGrid from "@/components/BingaUnitsGrid";
 import LocationSection from "@/components/LocationSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -12,9 +13,9 @@ const Index = () => {
     <div className="min-h-screen">
       <Navigation />
       <Hero />
-      <PropertyShowcase />
-      <InvestmentBreakdown />
-      <SolarPowerSection />
+      <ProjectOverview />
+      <TokenUtility />
+      <BingaUnitsGrid />
       <LocationSection />
       <ContactSection />
       <Footer />

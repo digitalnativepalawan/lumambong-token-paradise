@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Waves, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
@@ -36,7 +37,7 @@ const Navigation = () => {
       navigate('/auth');
       return;
     }
-    openModal();
+    navigate('/dashboard');
   };
 
   const adjustVolume = (delta: number) => {
@@ -45,7 +46,8 @@ const Navigation = () => {
   };
 
   const navItems = [
-    { label: "Property", href: "#property" },
+    { label: "Project", href: "#project" },
+    { label: "Token Utility", href: "#utility" }, 
     { label: "Investment", href: "#investment" },
     { label: "Location", href: "#location" },
     { label: "Contact", href: "#contact" }
@@ -59,8 +61,11 @@ const Navigation = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <div className="flex items-center gap-2">
-              <Waves className={`w-8 h-8 ${isScrolled ? 'text-emerald-600' : 'text-white'}`} />
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
+              <Waves className={`w-8 h-8 ${isScrolled ? 'text-blue-600' : 'text-white'}`} />
+              <span className={`text-xl font-bold ${isScrolled ? 'text-gray-900' : 'text-white'}`}>
+                Binga Beach
+              </span>
             </div>
 
             {/* Desktop Navigation */}
@@ -69,13 +74,24 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className={`font-medium transition-colors hover:text-emerald-600 ${
+                  className={`font-medium transition-colors hover:text-blue-600 ${
                     isScrolled ? 'text-gray-700' : 'text-white'
                   }`}
                 >
                   {item.label}
                 </a>
               ))}
+
+              {/* Dashboard Link for Authenticated Users */}
+              {isAuthenticated && (
+                <Button
+                  onClick={() => navigate('/dashboard')}
+                  variant="ghost"
+                  className={`${isScrolled ? 'text-gray-700 hover:text-gray-900' : 'text-white hover:text-gray-200'}`}
+                >
+                  My Dashboard
+                </Button>
+              )}
 
               {/* Social Media Icons */}
               <SocialMediaIcons 
@@ -106,7 +122,7 @@ const Navigation = () => {
                     </Button>
                     <div className="flex-1 bg-gray-200 rounded-full h-2 relative">
                       <div 
-                        className="bg-emerald-600 h-2 rounded-full transition-all"
+                        className="bg-blue-600 h-2 rounded-full transition-all"
                         style={{ width: `${volume * 100}%` }}
                       />
                     </div>
@@ -147,11 +163,11 @@ const Navigation = () => {
                     onClick={handleInvestClick}
                     className={`${
                       isScrolled 
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
                         : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
                   >
-                    Invest Now
+                    My Paradise
                   </Button>
                   <Button
                     onClick={handleSignOut}
@@ -175,11 +191,11 @@ const Navigation = () => {
                     onClick={handleInvestClick}
                     className={`${
                       isScrolled 
-                        ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
                         : 'bg-white text-gray-900 hover:bg-gray-100'
                     }`}
                   >
-                    Invest Now
+                    Invest in BBT
                   </Button>
                 </div>
               )}
@@ -202,12 +218,26 @@ const Navigation = () => {
                   <a
                     key={item.label}
                     href={item.href}
-                    className="block font-medium text-gray-700 hover:text-emerald-600 transition-colors py-2"
+                    className="block font-medium text-gray-700 hover:text-blue-600 transition-colors py-2"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {item.label}
                   </a>
                 ))}
+                
+                {/* Dashboard Link for Mobile */}
+                {isAuthenticated && (
+                  <Button
+                    onClick={() => {
+                      navigate('/dashboard');
+                      setIsMobileMenuOpen(false);
+                    }}
+                    variant="ghost"
+                    className="w-full justify-start text-gray-700 hover:text-blue-600"
+                  >
+                    My Dashboard
+                  </Button>
+                )}
                 
                 {/* Social Media Icons for Mobile */}
                 <div className="flex items-center justify-between pt-3 border-t">
@@ -263,9 +293,9 @@ const Navigation = () => {
                         handleInvestClick();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                     >
-                      Invest Now
+                      My Paradise
                     </Button>
                     <Button
                       onClick={() => {
@@ -295,9 +325,9 @@ const Navigation = () => {
                         handleInvestClick();
                         setIsMobileMenuOpen(false);
                       }}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                     >
-                      Invest Now
+                      Invest in BBT
                     </Button>
                   </div>
                 )}
