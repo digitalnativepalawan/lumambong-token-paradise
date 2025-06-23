@@ -1,4 +1,3 @@
-
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SocialMediaIcons from "./SocialMediaIcons";
@@ -10,7 +9,7 @@ const Footer = () => {
     { label: "Investment Opportunities", href: "#investment" },
     { label: "Location & Amenities", href: "#location" },
     { label: "Contact Us", href: "#contact" },
-    { label: "Business Plan", href: "https://g.co/gemini/share/922cc3bf7865", external: true },
+    { label: "Business Plan", href: "/business-plan" },
     { label: "Governance", href: "/governance" },
     { label: "Marketplace", href: "/marketplace" }
   ];
@@ -104,27 +103,14 @@ const Footer = () => {
             <h3 className="text-xl font-semibold text-black">Quick Links</h3>
             <div className="space-y-3">
               {quickLinks.map((link, index) => (
-                link.external ? (
-                  <a 
-                    key={index}
-                    href={link.href} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-gray-600 hover:text-blue-600 transition-colors relative group"
-                  >
-                    {link.label}
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-                  </a>
-                ) : (
-                  <a 
-                    key={index}
-                    href={link.href} 
-                    className="block text-gray-600 hover:text-blue-600 transition-colors relative group"
-                  >
-                    {link.label}
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-                  </a>
-                )
+                <a 
+                  key={index}
+                  href={link.href} 
+                  className="block text-gray-600 hover:text-blue-600 transition-colors relative group"
+                >
+                  {link.label}
+                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
+                </a>
               ))}
             </div>
           </div>

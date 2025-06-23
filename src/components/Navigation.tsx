@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogOut, Volume2, VolumeX, Minus, Plus } from "lucide-react";
@@ -58,7 +57,7 @@ const Navigation = () => {
     { label: "Investment", href: "#investment" },
     { label: "Location", href: "#location" },
     { label: "Contact", href: "#contact", onClick: scrollToContact },
-    { label: "Business Plan", href: "https://g.co/gemini/share/922cc3bf7865", external: true }
+    { label: "Business Plan", href: "/business-plan" }
   ];
 
   return (
@@ -77,17 +76,15 @@ const Navigation = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               {navItems.map((item) => (
-                item.external ? (
-                  <a
+                item.href.startsWith('/') ? (
+                  <button
                     key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    onClick={() => navigate(item.href)}
                     className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
                   >
                     {item.label}
                     <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-                  </a>
+                  </button>
                 ) : (
                   <a
                     key={item.label}
@@ -226,17 +223,17 @@ const Navigation = () => {
             <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
               <div className="px-6 py-4 space-y-4">
                 {navItems.map((item) => (
-                  item.external ? (
-                    <a
+                  item.href.startsWith('/') ? (
+                    <button
                       key={item.label}
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block font-medium text-gray-600 hover:text-black transition-colors py-2 cursor-pointer"
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={() => {
+                        navigate(item.href);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="block w-full text-left font-medium text-gray-600 hover:text-black transition-colors py-2 cursor-pointer"
                     >
                       {item.label}
-                    </a>
+                    </button>
                   ) : (
                     <a
                       key={item.label}
