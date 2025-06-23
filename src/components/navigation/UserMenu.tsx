@@ -24,10 +24,10 @@ const UserMenu = () => {
 
   if (isAuthenticated) {
     return (
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 bg-gray-100 px-3 py-2 rounded-lg">
-          <User className="w-4 h-4 text-blue-600" />
-          <span className="text-sm text-black">
+      <div className="flex items-center gap-2 lg:gap-3">
+        <div className="hidden sm:flex items-center gap-2 bg-gray-100 px-2 lg:px-3 py-1.5 lg:py-2 rounded-lg">
+          <User className="w-3 h-3 lg:w-4 lg:h-4 text-blue-600" />
+          <span className="text-xs lg:text-sm text-black truncate max-w-24 lg:max-w-none">
             {userProfile?.full_name || user?.email}
           </span>
         </div>
@@ -37,7 +37,7 @@ const UserMenu = () => {
         
         <Button 
           onClick={handleInvestClick}
-          className="modern-button px-6 py-2 rounded-xl"
+          className="modern-button px-3 lg:px-6 py-1.5 lg:py-2 rounded-xl text-xs lg:text-sm"
         >
           My Paradise
         </Button>
@@ -45,26 +45,26 @@ const UserMenu = () => {
           onClick={handleSignOut}
           variant="ghost"
           size="sm"
-          className="text-gray-600 hover:text-red-600 hover:bg-red-50"
+          className="text-gray-600 hover:text-red-600 hover:bg-red-50 p-1.5 lg:p-2"
         >
-          <LogOut className="w-4 h-4" />
+          <LogOut className="w-3 h-3 lg:w-4 lg:h-4" />
         </Button>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 lg:gap-3">
       <Button
         onClick={() => navigate('/auth')}
         variant="ghost"
-        className="text-gray-600 hover:text-black hover:bg-gray-100"
+        className="text-gray-600 hover:text-black hover:bg-gray-100 text-xs lg:text-sm px-2 lg:px-4"
       >
         Sign In
       </Button>
       <Button 
         onClick={handleInvestClick}
-        className="modern-button px-6 py-2 rounded-xl"
+        className="modern-button px-3 lg:px-6 py-1.5 lg:py-2 rounded-xl text-xs lg:text-sm"
       >
         Invest in BBT
       </Button>

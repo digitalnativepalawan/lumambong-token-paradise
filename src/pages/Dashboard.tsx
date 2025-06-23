@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -52,13 +51,13 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       
-      <div className="pt-20 pb-12">
-        <div className="max-w-7xl mx-auto px-6">
+      <div className="pt-16 sm:pt-20 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-emerald-600 rounded-2xl p-8 text-white mb-8">
+          <div className="bg-gradient-to-r from-blue-600 to-emerald-600 rounded-2xl p-6 sm:p-8 text-white mb-6 sm:mb-8 mt-4 sm:mt-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>
-                <h1 className="text-3xl font-bold mb-2">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2">
                   Welcome back, {userProfile?.full_name || user?.email}
                 </h1>
                 <p className="text-blue-100">
@@ -69,66 +68,66 @@ const Dashboard = () => {
                 <Badge className="bg-yellow-500 text-yellow-900">
                   {userStats.loyaltyStatus} Member
                 </Badge>
-                <Trophy className="w-8 h-8" />
+                <Trophy className="w-6 h-6 sm:w-8 sm:h-8" />
               </div>
             </div>
           </div>
 
           {/* Quick Stats */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
               <div className="flex items-center gap-3 mb-2">
-                <Home className="w-6 h-6 text-blue-600" />
-                <span className="font-medium text-gray-600">Total BBT</span>
+                <Home className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                <span className="font-medium text-gray-600 text-sm sm:text-base">Total BBT</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">
                 {userStats.totalTokens.toLocaleString()}
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs sm:text-sm text-gray-500">
                 ${userStats.totalValue.toLocaleString()} value
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
               <div className="flex items-center gap-3 mb-2">
-                <DollarSign className="w-6 h-6 text-emerald-600" />
-                <span className="font-medium text-gray-600">Monthly Dividends</span>
+                <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
+                <span className="font-medium text-gray-600 text-sm sm:text-base">Monthly Dividends</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">
                 ${userStats.monthlyDividends}
               </div>
-              <div className="text-sm text-emerald-600 flex items-center gap-1">
+              <div className="text-xs sm:text-sm text-emerald-600 flex items-center gap-1">
                 <TrendingUp className="w-3 h-3" />
                 +12% vs last month
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
               <div className="flex items-center gap-3 mb-2">
-                <Calendar className="w-6 h-6 text-purple-600" />
-                <span className="font-medium text-gray-600">Available Nights</span>
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
+                <span className="font-medium text-gray-600 text-sm sm:text-base">Available Nights</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">
                 {userStats.availableNights}
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-xs sm:text-sm text-gray-500">
                 {userStats.usedNights} nights used this year
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-sm">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm">
               <div className="flex items-center gap-3 mb-2">
-                <Vote className="w-6 h-6 text-orange-600" />
-                <span className="font-medium text-gray-600">Governance</span>
+                <Vote className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
+                <span className="font-medium text-gray-600 text-sm sm:text-base">Governance</span>
               </div>
-              <div className="text-2xl font-bold text-gray-900">3</div>
-              <div className="text-sm text-gray-500">Active proposals</div>
+              <div className="text-xl sm:text-2xl font-bold text-gray-900">3</div>
+              <div className="text-xs sm:text-sm text-gray-500">Active proposals</div>
             </div>
           </div>
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="overview" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 text-xs sm:text-sm">
               <TabsTrigger value="overview">My Paradise</TabsTrigger>
               <TabsTrigger value="stays">My Stays</TabsTrigger>
               <TabsTrigger value="governance">Governance</TabsTrigger>

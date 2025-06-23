@@ -31,6 +31,9 @@ const Navigation = () => {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // If not on homepage, navigate to homepage with contact hash
+      navigate('/#contact');
     }
   };
 
@@ -41,14 +44,24 @@ const Navigation = () => {
           ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm' 
           : 'bg-white/80 backdrop-blur-sm'
       }`}>
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-between h-20">
-            {/* Empty left section for uniform spacing */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            {/* Logo/Brand Section */}
             <div className="flex items-center">
+              <button 
+                onClick={() => navigate('/')}
+                className="flex-shrink-0"
+              >
+                <img 
+                  src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
+                  alt="Binga Beach Logo" 
+                  className="h-8 sm:h-10 w-auto object-contain"
+                />
+              </button>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-4 xl:gap-6">
               <NavigationMenu scrollToContact={scrollToContact} />
 
               {/* Dashboard Link for Authenticated Users */}
@@ -56,17 +69,19 @@ const Navigation = () => {
                 <Button
                   onClick={() => navigate('/dashboard')}
                   variant="ghost"
-                  className="text-gray-600 hover:text-black hover:bg-gray-100"
+                  className="text-gray-600 hover:text-black hover:bg-gray-100 text-sm"
                 >
                   My Dashboard
                 </Button>
               )}
 
               {/* Social Media Icons */}
-              <SocialMediaIcons 
-                variant="header" 
-                className="text-gray-600 hover:text-black" 
-              />
+              <div className="hidden xl:flex">
+                <SocialMediaIcons 
+                  variant="header" 
+                  className="text-gray-600 hover:text-black" 
+                />
+              </div>
 
               {/* Audio Controls */}
               <AudioControls />
@@ -77,10 +92,10 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2 z-60 relative text-gray-600 hover:text-black"
+              className="lg:hidden p-2 z-60 relative text-gray-600 hover:text-black"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
 

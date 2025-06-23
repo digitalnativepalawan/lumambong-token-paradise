@@ -16,6 +16,13 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
         if (location.pathname !== '/') {
           // If not on homepage, navigate to homepage with contact hash
           navigate('/#contact');
+          // Use setTimeout to ensure navigation completes before scrolling
+          setTimeout(() => {
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+              contactSection.scrollIntoView({ behavior: 'smooth' });
+            }
+          }, 100);
           return;
         } else {
           // If on homepage, use the scroll function
@@ -32,9 +39,16 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
       return;
     }
 
-    // If we're on the business plan page and trying to access hash links, go to home first
-    if (location.pathname === '/business-plan' && href.startsWith('#')) {
+    // If we're not on the homepage and trying to access hash links, go to home first
+    if (location.pathname !== '/' && href.startsWith('#')) {
       navigate('/' + href);
+      // Use setTimeout to ensure navigation completes before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(href.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
       return;
     }
 
@@ -61,12 +75,12 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
   ];
 
   return (
-    <div className="hidden md:flex items-center gap-8">
+    <div className="hidden lg:flex items-center gap-6">
       {navItems.map((item) => (
         <button
           key={item.label}
           onClick={() => handleNavigation(item.href, item.onClick)}
-          className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer"
+          className="font-medium text-gray-600 hover:text-black transition-colors relative group cursor-pointer text-sm whitespace-nowrap"
         >
           {item.label}
           <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
