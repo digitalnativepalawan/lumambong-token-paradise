@@ -1,11 +1,43 @@
+
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 import SocialMediaIcons from "./SocialMediaIcons";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleLinkClick = (href: string) => {
+    if (href.startsWith('/')) {
+      // For route links
+      navigate(href);
+      return;
+    }
+
+    if (href.startsWith('#')) {
+      // For hash links
+      if (location.pathname !== '/') {
+        // If not on homepage, navigate to homepage with hash
+        navigate('/' + href);
+        return;
+      } else {
+        // If on homepage, scroll to section
+        const element = document.getElementById(href.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+        return;
+      }
+    }
+
+    // For external links
+    window.open(href, '_blank');
+  };
+
   const quickLinks = [
     { label: "The Project", href: "#project" },
-    { label: "Token Utility", href: "#utility" },
+    { label: "Token Utility", href: "#utility" }, 
     { label: "Investment Opportunities", href: "#investment" },
     { label: "Location & Amenities", href: "#location" },
     { label: "Contact Us", href: "#contact" },
@@ -103,14 +135,14 @@ const Footer = () => {
             <h3 className="text-xl font-semibold text-black">Quick Links</h3>
             <div className="space-y-3">
               {quickLinks.map((link, index) => (
-                <a 
+                <button 
                   key={index}
-                  href={link.href} 
-                  className="block text-gray-600 hover:text-blue-600 transition-colors relative group"
+                  onClick={() => handleLinkClick(link.href)}
+                  className="block w-full text-left text-gray-600 hover:text-blue-600 transition-colors relative group"
                 >
                   {link.label}
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
-                </a>
+                </button>
               ))}
             </div>
           </div>
@@ -124,13 +156,13 @@ const Footer = () => {
             </p>
             <div className="flex flex-wrap gap-6">
               {legalLinks.map((link, index) => (
-                <a 
+                <button 
                   key={index}
-                  href={link.href} 
+                  onClick={() => handleLinkClick(link.href)}
                   className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
             </div>
           </div>

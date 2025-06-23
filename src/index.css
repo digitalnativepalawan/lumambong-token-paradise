@@ -127,6 +127,27 @@
   .text-muted {
     @apply text-gray-500;
   }
+
+  /* Business plan responsive improvements */
+  @media (max-width: 768px) {
+    .business-plan-section {
+      @apply px-4 py-8;
+    }
+    
+    .business-plan-card {
+      @apply p-4;
+    }
+    
+    .business-plan-grid {
+      @apply grid-cols-1 gap-4;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .business-plan-grid {
+      @apply grid-cols-2 gap-6;
+    }
+  }
 }
 
 @layer utilities {
@@ -144,5 +165,21 @@
 
   .animate-fade-in-up {
     animation: fade-in-up 0.6s ease-out;
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-friendly {
+    @apply text-sm leading-relaxed;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-friendly {
+      @apply text-base;
+    }
+  }
+
+  /* Touch-friendly button sizing */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
   }
 }
