@@ -45,7 +45,7 @@ const Hero = () => {
         <div className="mb-8 animate-fade-in-up">
           <Badge className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-green-50 text-green-700 border border-green-200">
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            Live Investment Platform
+            Phase 2
           </Badge>
         </div>
 
