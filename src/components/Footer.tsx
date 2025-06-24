@@ -1,18 +1,12 @@
 
-import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 import SocialMediaIcons from "./SocialMediaIcons";
 
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { toast } = useToast();
-  const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleLinkClick = (href: string) => {
     if (href.startsWith('/')) {
@@ -41,48 +35,6 @@ const Footer = () => {
     window.open(href, '_blank');
   };
 
-  const handleNewsletterSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter your email address",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const { error } = await supabase.functions.invoke('send-contact-email', {
-        body: {
-          name: 'Newsletter Subscriber',
-          email: email,
-          phone: 'N/A',
-          investmentAmount: 'Newsletter Signup',
-          message: `Newsletter signup from: ${email}`
-        }
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Success!",
-        description: "Thank you for subscribing to our newsletter!",
-      });
-      setEmail("");
-    } catch (error) {
-      console.error('Newsletter signup error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to subscribe. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const quickLinks = [
     { label: "The Project", href: "#project" },
     { label: "Token Utility", href: "#utility" }, 
@@ -102,48 +54,23 @@ const Footer = () => {
 
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand section */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img 
                 src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
                 alt="Binga Beach Logo" 
-                className="w-48 h-auto object-contain"
+                className="w-40 sm:w-48 h-auto object-contain"
               />
             </div>
-            <p className="text-gray-600 text-lg leading-relaxed max-w-md">
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
               Own a fraction of paradise through innovative tokenized real estate. 
               BBT offers ownership, timeshare rights, and governance in premium 
               beachfront property in Palawan, Philippines.
             </p>
             
-            {/* Newsletter signup */}
-            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 max-w-md">
-              <h4 className="font-semibold text-black mb-3">Stay Updated</h4>
-              <p className="text-sm text-gray-600 mb-4">
-                Get the latest updates on development progress and investment opportunities.
-              </p>
-              <form onSubmit={handleNewsletterSignup} className="flex gap-2">
-                <input 
-                  type="email" 
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-blue-500"
-                  disabled={isLoading}
-                />
-                <Button 
-                  type="submit" 
-                  className="modern-button px-4 py-2 rounded-lg"
-                  disabled={isLoading}
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </form>
-            </div>
-
             <SocialMediaIcons variant="footer" className="text-gray-600 hover:text-blue-600" />
           </div>
 
@@ -152,10 +79,10 @@ const Footer = () => {
             <h3 className="text-xl font-semibold text-black">Contact</h3>
             <div className="space-y-4">
               <div className="flex items-start gap-3 group">
-                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors">
+                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors flex-shrink-0">
                   <MapPin className="w-5 h-5 text-blue-600" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <div className="text-gray-600 group-hover:text-black transition-colors">
                     Lumambong (Binga) Beach
                   </div>
@@ -163,18 +90,18 @@ const Footer = () => {
                 </div>
               </div>
               <div className="flex items-center gap-3 group">
-                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors">
+                <div className="p-2 rounded-lg bg-blue-50 border border-blue-200 group-hover:bg-blue-100 transition-colors flex-shrink-0">
                   <Mail className="w-5 h-5 text-blue-600" />
                 </div>
                 <a 
                   href="mailto:david@bingabeach.com" 
-                  className="text-gray-600 hover:text-black transition-colors"
+                  className="text-gray-600 hover:text-black transition-colors break-all sm:break-normal"
                 >
                   david@bingabeach.com
                 </a>
               </div>
               <div className="flex items-center gap-3 group">
-                <div className="p-2 rounded-lg bg-green-50 border border-green-200 group-hover:bg-green-100 transition-colors">
+                <div className="p-2 rounded-lg bg-green-50 border border-green-200 group-hover:bg-green-100 transition-colors flex-shrink-0">
                   <Phone className="w-5 h-5 text-green-600" />
                 </div>
                 <span className="text-gray-600 group-hover:text-black transition-colors">
@@ -192,7 +119,7 @@ const Footer = () => {
                 <button 
                   key={index}
                   onClick={() => handleLinkClick(link.href)}
-                  className="block w-full text-left text-gray-600 hover:text-blue-600 transition-colors relative group"
+                  className="block w-full text-left text-gray-600 hover:text-blue-600 transition-colors relative group py-1"
                 >
                   {link.label}
                   <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></div>
@@ -203,12 +130,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom section */}
-        <div className="border-t border-gray-200 mt-12 pt-8">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-            <p className="text-gray-600">
+        <div className="border-t border-gray-200 mt-8 sm:mt-12 pt-6 sm:pt-8">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
+            <p className="text-gray-600 text-sm sm:text-base">
               &copy; 2025 Binga Beach. All rights reserved.
             </p>
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap gap-4 sm:gap-6">
               {legalLinks.map((link, index) => (
                 <button 
                   key={index}
