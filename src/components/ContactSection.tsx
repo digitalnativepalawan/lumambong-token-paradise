@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Mail, Phone, Download, Calendar } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -17,37 +18,50 @@ const ContactSection = () => {
     message: ''
   });
   
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create email content
-    const emailSubject = `Investment Interest - ${formData.name}`;
-    const emailBody = `
-New investment interest received:
+    if (!formData.name || !formData.email) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in at least your name and email address.",
+        variant: "destructive",
+      });
+      return;
+    }
 
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Investment Amount: ${formData.investmentAmount}
-Message: ${formData.message}
+    setIsSubmitting(true);
+    
+    try {
+      console.log('Submitting form data:', formData);
+      
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
 
-Submitted on: ${new Date().toLocaleString()}
-    `.trim();
+      if (error) {
+        throw error;
+      }
 
-    // Create mailto link
-    const mailtoLink = `mailto:info@palawancollective.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
-    
-    // Open email client
-    window.location.href = mailtoLink;
-    
-    toast({
-      title: "Interest Registered",
-      description: "Your email client will open to send your information to our team.",
-    });
-    
-    setFormData({ name: '', email: '', phone: '', investmentAmount: '', message: '' });
+      toast({
+        title: "Interest Submitted Successfully",
+        description: "Thank you for your interest! We'll get back to you soon.",
+      });
+      
+      setFormData({ name: '', email: '', phone: '', investmentAmount: '', message: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your information. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -78,7 +92,7 @@ Submitted on: ${new Date().toLocaleString()}
               <CardTitle className="text-2xl text-white">Express Your Interest</CardTitle>
               <p className="text-gray-300">Get priority access to the tokenized offering</p>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <Input
@@ -123,8 +137,12 @@ Submitted on: ${new Date().toLocaleString()}
                   onChange={handleInputChange}
                   className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
                 />
-                <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-lg py-6">
-                  Submit Interest
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-lg py-6"
+                >
+                  {isSubmitting ? 'Submitting...' : 'Submit Interest'}
                 </Button>
               </form>
             </CardContent>
