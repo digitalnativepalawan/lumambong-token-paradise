@@ -1,76 +1,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Download, Calendar } from "lucide-react";
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    investmentAmount: '',
-    message: ''
-  });
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.name || !formData.email) {
-      toast({
-        title: "Missing Information",
-        description: "Please fill in at least your name and email address.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsSubmitting(true);
-    
-    try {
-      console.log('Submitting form data:', formData);
-      
-      const { data, error } = await supabase.functions.invoke('send-contact-email', {
-        body: formData
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      toast({
-        title: "Interest Submitted Successfully",
-        description: "Thank you for your interest! We'll get back to you soon.",
-      });
-      
-      setFormData({ name: '', email: '', phone: '', investmentAmount: '', message: '' });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your information. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
   return (
     <section className="py-20 bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-6">
@@ -86,68 +20,6 @@ const ContactSection = () => {
         </div>
 
         <div className="max-w-4xl mx-auto">
-          {/* Contact Form */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10 mb-8">
-            <CardHeader>
-              <CardTitle className="text-2xl text-white">Express Your Interest</CardTitle>
-              <p className="text-gray-300">Get priority access to the tokenized offering</p>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <Input
-                    name="name"
-                    placeholder="Full Name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  />
-                  <Input
-                    name="email"
-                    type="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  />
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <Input
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  />
-                  <Input
-                    name="investmentAmount"
-                    placeholder="Investment Interest ($)"
-                    value={formData.investmentAmount}
-                    onChange={handleInputChange}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                  />
-                </div>
-                <Textarea
-                  name="message"
-                  placeholder="Tell us about your investment goals and any questions you have..."
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400"
-                />
-                <Button 
-                  type="submit" 
-                  disabled={isSubmitting}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-lg py-6"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Submit Interest'}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
           {/* Quick Actions */}
           <div className="grid md:grid-cols-2 gap-4 mb-8">
             <Button 
