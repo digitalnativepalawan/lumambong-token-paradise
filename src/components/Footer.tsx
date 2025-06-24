@@ -2,11 +2,17 @@
 import { MapPin, Mail, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import SocialMediaIcons from "./SocialMediaIcons";
 
 const Footer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLinkClick = (href: string) => {
     if (href.startsWith('/')) {
@@ -33,6 +39,48 @@ const Footer = () => {
 
     // For external links
     window.open(href, '_blank');
+  };
+
+  const handleNewsletterSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: {
+          name: 'Newsletter Subscriber',
+          email: email,
+          phone: 'N/A',
+          investmentAmount: 'Newsletter Signup',
+          message: `Newsletter signup from: ${email}`
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Thank you for subscribing to our newsletter!",
+      });
+      setEmail("");
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const quickLinks = [
@@ -77,16 +125,23 @@ const Footer = () => {
               <p className="text-sm text-gray-600 mb-4">
                 Get the latest updates on development progress and investment opportunities.
               </p>
-              <div className="flex gap-2">
+              <form onSubmit={handleNewsletterSignup} className="flex gap-2">
                 <input 
                   type="email" 
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:border-blue-500"
+                  disabled={isLoading}
                 />
-                <Button className="modern-button px-4 py-2 rounded-lg">
+                <Button 
+                  type="submit" 
+                  className="modern-button px-4 py-2 rounded-lg"
+                  disabled={isLoading}
+                >
                   <ArrowRight className="w-4 h-4" />
                 </Button>
-              </div>
+              </form>
             </div>
 
             <SocialMediaIcons variant="footer" className="text-gray-600 hover:text-blue-600" />
