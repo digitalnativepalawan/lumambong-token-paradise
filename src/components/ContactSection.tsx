@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, Download, Calendar } from "lucide-react";
+import { Download, Calendar } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -85,9 +85,9 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
+        <div className="max-w-4xl mx-auto">
           {/* Contact Form */}
-          <Card className="bg-white/5 backdrop-blur-sm border-white/10">
+          <Card className="bg-white/5 backdrop-blur-sm border-white/10 mb-8">
             <CardHeader>
               <CardTitle className="text-2xl text-white">Express Your Interest</CardTitle>
               <p className="text-gray-300">Get priority access to the tokenized offering</p>
@@ -148,59 +148,33 @@ const ContactSection = () => {
             </CardContent>
           </Card>
 
-          {/* Contact Information & Actions */}
-          <div className="space-y-8">
-            {/* Contact Details */}
-            <Card className="bg-white/5 backdrop-blur-sm border-white/10">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-semibold text-white mb-6">Direct Contact</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Mail className="w-5 h-5 text-emerald-400" />
-                    <div>
-                      <p className="text-gray-300">Email</p>
-                      <p className="text-white">info@palawancollective.com</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <Phone className="w-5 h-5 text-emerald-400" />
-                    <div>
-                      <p className="text-gray-300">Phone</p>
-                      <p className="text-white">+63 947 444 3597</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <div className="space-y-4">
-              <Button 
-                variant="outline" 
-                className="w-full border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-gray-900 py-6"
-              >
-                <Download className="mr-2 w-5 h-5" />
-                Download Full Prospectus
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900 py-6"
-              >
-                <Calendar className="mr-2 w-5 h-5" />
-                Schedule Virtual Site Tour
-              </Button>
-            </div>
-
-            {/* Investment Urgency */}
-            <Card className="bg-gradient-to-r from-emerald-600 to-blue-600 border-none">
-              <CardContent className="p-6 text-center">
-                <h4 className="text-lg font-semibold text-white mb-2">Limited Time Offer</h4>
-                <p className="text-emerald-100 mb-4">Early investors receive priority lot selection</p>
-                <div className="text-3xl font-bold text-white">10 Units Only</div>
-                <p className="text-emerald-100 text-sm">Secure your legacy on Lumambong Beach</p>
-              </CardContent>
-            </Card>
+          {/* Quick Actions */}
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            <Button 
+              variant="outline" 
+              className="w-full border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-gray-900 py-6"
+            >
+              <Download className="mr-2 w-5 h-5" />
+              Download Full Prospectus
+            </Button>
+            <Button 
+              variant="outline" 
+              className="w-full border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-gray-900 py-6"
+            >
+              <Calendar className="mr-2 w-5 h-5" />
+              Schedule Virtual Site Tour
+            </Button>
           </div>
+
+          {/* Investment Urgency */}
+          <Card className="bg-gradient-to-r from-emerald-600 to-blue-600 border-none">
+            <CardContent className="p-6 text-center">
+              <h4 className="text-lg font-semibold text-white mb-2">Limited Time Offer</h4>
+              <p className="text-emerald-100 mb-4">Early investors receive priority lot selection</p>
+              <div className="text-3xl font-bold text-white">10 Units Only</div>
+              <p className="text-emerald-100 text-sm">Secure your legacy on Lumambong Beach</p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Disclaimer */}
