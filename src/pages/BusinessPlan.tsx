@@ -11,10 +11,12 @@ import FinancialProjections from "@/components/business-plan/FinancialProjection
 import TechnicalImplementation from "@/components/business-plan/TechnicalImplementation";
 import { Button } from "@/components/ui/button";
 import { ChevronRight, Download, Share2, Menu, Users } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const BusinessPlan = () => {
   const [activeSection, setActiveSection] = useState("executive-summary");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { toast } = useToast();
 
   const sections = [
     { id: "executive-summary", title: "Executive Summary", component: ExecutiveSummary },
@@ -38,6 +40,31 @@ const BusinessPlan = () => {
 
   const handleAngelInvestorClick = () => {
     window.open('https://drive.google.com/file/d/18yJQc1Qq7r8SZuSTUFwu5O2xwSqINgyW/view?usp=sharing', '_blank');
+  };
+
+  const handleDownloadPDF = () => {
+    toast({
+      title: "PDF Download",
+      description: "PDF download functionality will be available soon. Please contact us for a copy of the business plan.",
+    });
+  };
+
+  const handleSharePlan = async () => {
+    const currentUrl = window.location.href;
+    
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      toast({
+        title: "Link Copied!",
+        description: "Business plan link has been copied to your clipboard.",
+      });
+    } catch (err) {
+      // Fallback for browsers that don't support clipboard API
+      toast({
+        title: "Share Link",
+        description: "Copy this link to share: " + currentUrl,
+      });
+    }
   };
 
   useEffect(() => {
@@ -77,7 +104,10 @@ const BusinessPlan = () => {
             
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
-              <Button className="modern-button px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base">
+              <Button 
+                onClick={handleDownloadPDF}
+                className="modern-button px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base"
+              >
                 <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Download PDF
               </Button>
@@ -88,7 +118,11 @@ const BusinessPlan = () => {
                 <Users className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Angel Investor
               </Button>
-              <Button variant="outline" className="px-4 md:px-6 py-2 md:py-3 rounded-xl border-gray-300 text-sm md:text-base">
+              <Button 
+                onClick={handleSharePlan}
+                variant="outline" 
+                className="px-4 md:px-6 py-2 md:py-3 rounded-xl border-gray-300 text-sm md:text-base"
+              >
                 <Share2 className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Share Plan
               </Button>
