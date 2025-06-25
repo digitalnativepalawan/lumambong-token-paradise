@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -10,12 +9,14 @@ import ManagementStructure from "@/components/business-plan/ManagementStructure"
 import RiskAssessment from "@/components/business-plan/RiskAssessment";
 import FinancialProjections from "@/components/business-plan/FinancialProjections";
 import TechnicalImplementation from "@/components/business-plan/TechnicalImplementation";
+import AngelInvestorModal from "@/components/business-plan/AngelInvestorModal";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Download, Share2, Menu } from "lucide-react";
+import { ChevronRight, Download, Share2, Menu, Users } from "lucide-react";
 
 const BusinessPlan = () => {
   const [activeSection, setActiveSection] = useState("executive-summary");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [angelInvestorModalOpen, setAngelInvestorModalOpen] = useState(false);
 
   const sections = [
     { id: "executive-summary", title: "Executive Summary", component: ExecutiveSummary },
@@ -77,6 +78,13 @@ const BusinessPlan = () => {
               <Button className="modern-button px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base">
                 <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Download PDF
+              </Button>
+              <Button 
+                onClick={() => setAngelInvestorModalOpen(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base"
+              >
+                <Users className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                Angel Investor
               </Button>
               <Button variant="outline" className="px-4 md:px-6 py-2 md:py-3 rounded-xl border-gray-300 text-sm md:text-base">
                 <Share2 className="w-4 h-4 md:w-5 md:h-5 mr-2" />
@@ -155,6 +163,11 @@ const BusinessPlan = () => {
           </div>
         </div>
       </div>
+
+      <AngelInvestorModal 
+        isOpen={angelInvestorModalOpen}
+        onClose={() => setAngelInvestorModalOpen(false)}
+      />
 
       <Footer />
     </div>
