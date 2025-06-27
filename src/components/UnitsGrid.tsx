@@ -9,7 +9,7 @@ import { useInvestmentModal } from "@/hooks/useInvestmentModal";
 import { Loader2 } from "lucide-react";
 
 const UnitsGrid = () => {
-  const { units, tokenPools, loading, error } = useRealTimeUnits();
+  const { units, securityPools, loading, error } = useRealTimeUnits();
   const { isOpen, selectedUnit, closeModal } = useInvestmentModal();
 
   if (loading) {
@@ -37,14 +37,14 @@ const UnitsGrid = () => {
     );
   }
 
-  // Calculate ownership stats from token pools
-  const filipinoPool = tokenPools.find(pool => pool.pool_type === 'filipino');
-  const foreignPool = tokenPools.find(pool => pool.pool_type === 'foreign');
+  // Calculate ownership stats from digital security pools
+  const filipinoPool = securityPools.find(pool => pool.pool_type === 'filipino');
+  const foreignPool = securityPools.find(pool => pool.pool_type === 'foreign');
 
-  const filipinoSold = filipinoPool?.sold_tokens || 0;
-  const foreignSold = foreignPool?.sold_tokens || 0;
-  const filipinoTotal = filipinoPool?.total_tokens || 6;
-  const foreignTotal = foreignPool?.total_tokens || 4;
+  const filipinoSold = filipinoPool?.sold_securities || 0;
+  const foreignSold = foreignPool?.sold_securities || 0;
+  const filipinoTotal = filipinoPool?.total_securities || 6;
+  const foreignTotal = foreignPool?.total_securities || 4;
 
   return (
     <section className="py-20 bg-gray-50">

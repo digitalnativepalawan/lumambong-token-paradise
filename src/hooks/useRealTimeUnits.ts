@@ -6,9 +6,9 @@ export interface Unit {
   id: string;
   name: string;
   unit_type: string;
-  total_securities: number;
-  available_securities: number;
-  security_price_usd: number;
+  total_tokens: number;
+  available_tokens: number;
+  token_price_usd: number;
   ownership_type: string;
   status: string;
   funded_percentage: number;
@@ -42,9 +42,9 @@ export const useRealTimeUnits = () => {
           id: unit.id,
           name: unit.name,
           unit_type: 'Premium Villa', // Default since this field might not exist
-          total_securities: unit.total_tokens,
-          available_securities: unit.total_tokens, // Assuming all securities are available initially
-          security_price_usd: unit.token_price_usd,
+          total_tokens: unit.total_tokens,
+          available_tokens: unit.total_tokens, // Assuming all securities are available initially
+          token_price_usd: unit.token_price_usd,
           ownership_type: 'foreign_allowed', // Default value
           status: unit.status,
           funded_percentage: fundedPercentage
