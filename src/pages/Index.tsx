@@ -2,7 +2,7 @@
 import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import ProjectOverview from "@/components/ProjectOverview";
-import TokenUtility from "@/components/TokenUtility";
+import DigitalSecuritiesUtility from "@/components/DigitalSecuritiesUtility";
 import BingaUnitsGrid from "@/components/BingaUnitsGrid";
 import LocationSection from "@/components/LocationSection";
 import ContactSection from "@/components/ContactSection";
@@ -15,7 +15,7 @@ const Index = () => {
       <Navigation />
       <Hero />
       <ProjectOverview />
-      <TokenUtility />
+      <DigitalSecuritiesUtility />
       <BingaUnitsGrid />
       <LocationSection />
       <ContactSection />
