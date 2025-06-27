@@ -86,7 +86,7 @@ const BusinessModel = () => {
                   <p className="text-gray-600">{benefit.description}</p>
                 </div>
               </div>
-            </div>
+            </CardContent>
           </Card>
         ))}
       </div>
