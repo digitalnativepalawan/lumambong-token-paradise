@@ -16,9 +16,9 @@ interface Unit {
   id: string;
   name: string;
   unit_type: string;
-  total_tokens: number;
-  available_tokens: number;
-  token_price_usd: number;
+  total_securities: number;
+  available_securities: number;
+  security_price_usd: number;
   ownership_type: string;
   status: string;
   funded_percentage: number;
@@ -72,7 +72,7 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
     openModal({
       id: unit.id,
       name: unit.name,
-      token_price_usd: unit.token_price_usd,
+      token_price_usd: unit.security_price_usd,
       unit_type: unit.unit_type,
       ownership_type: unit.ownership_type
     });
@@ -88,7 +88,7 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
               <ModernTableHeadCell>Unit Details</ModernTableHeadCell>
               <ModernTableHeadCell>Ownership Type</ModernTableHeadCell>
               <ModernTableHeadCell align="center">Funding Progress</ModernTableHeadCell>
-              <ModernTableHeadCell align="right">Token Price</ModernTableHeadCell>
+              <ModernTableHeadCell align="right">Security Price</ModernTableHeadCell>
               <ModernTableHeadCell align="center">Status</ModernTableHeadCell>
               <ModernTableHeadCell align="center">Action</ModernTableHeadCell>
             </ModernTableRow>
@@ -101,7 +101,7 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
                     <h3 className="font-semibold text-gray-900">{unit.name}</h3>
                     <p className="text-sm text-gray-600">{unit.unit_type}</p>
                     <p className="text-xs text-gray-500 mt-1">
-                      Tokens: {unit.total_tokens - unit.available_tokens} / {unit.total_tokens}
+                      Securities: {unit.total_securities - unit.available_securities} / {unit.total_securities}
                     </p>
                   </div>
                 </ModernTableCell>
@@ -119,9 +119,9 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
                 </ModernTableCell>
                 <ModernTableCell align="right">
                   <span className="text-lg font-bold text-gray-900">
-                    ${unit.token_price_usd.toLocaleString()}
+                    ${unit.security_price_usd.toLocaleString()}
                   </span>
-                  <p className="text-xs text-gray-500">per token</p>
+                  <p className="text-xs text-gray-500">per security</p>
                 </ModernTableCell>
                 <ModernTableCell align="center">
                   {getStatusBadge(unit.status, unit.funded_percentage)}
@@ -167,15 +167,15 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
             <div className="flex justify-between items-center mb-4">
               <div>
                 <span className="text-lg font-bold text-gray-900">
-                  ${unit.token_price_usd.toLocaleString()}
+                  ${unit.security_price_usd.toLocaleString()}
                 </span>
-                <p className="text-xs text-gray-500">per token</p>
+                <p className="text-xs text-gray-500">per security</p>
               </div>
               {getStatusBadge(unit.status, unit.funded_percentage)}
             </div>
 
             <div className="text-xs text-gray-500 mb-4">
-              Tokens: {unit.total_tokens - unit.available_tokens} / {unit.total_tokens}
+              Securities: {unit.total_securities - unit.available_securities} / {unit.total_securities}
             </div>
 
             {unit.status === 'available' && unit.funded_percentage < 100 ? (
@@ -183,7 +183,7 @@ const UnitsTable = ({ units }: UnitsTableProps) => {
                 onClick={() => handleInvestClick(unit)}
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
               >
-                Invest Now - ${unit.token_price_usd}
+                Invest Now - ${unit.security_price_usd}
               </Button>
             ) : (
               <Button disabled className="w-full">
