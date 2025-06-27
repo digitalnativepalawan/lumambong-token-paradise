@@ -13,12 +13,12 @@ const ExecutiveSummary = () => {
     {
       icon: Users,
       title: "Community-Driven",
-      description: "Tokenized ownership with governance rights and timeshare benefits"
+      description: "Digital securities ownership with governance rights and timeshare benefits"
     },
     {
       icon: TrendingUp,
       title: "Strong ROI Potential",
-      description: "Multiple revenue streams including rental income and token appreciation"
+      description: "Multiple revenue streams including rental income and security appreciation"
     },
     {
       icon: Shield,
@@ -33,7 +33,7 @@ const ExecutiveSummary = () => {
         <h2 className="text-4xl font-bold text-black mb-4">Executive Summary</h2>
         <div className="flex flex-wrap gap-2 mb-6">
           <Badge className="bg-green-100 text-green-700 border-green-200">Live Project</Badge>
-          <Badge className="bg-blue-100 text-blue-700 border-blue-200">Tokenized Real Estate</Badge>
+          <Badge className="bg-blue-100 text-blue-700 border-blue-200">Digital Securities Real Estate</Badge>
           <Badge className="bg-purple-100 text-purple-700 border-purple-200">Eco-Tourism</Badge>
         </div>
       </div>
@@ -44,16 +44,16 @@ const ExecutiveSummary = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-700 text-lg leading-relaxed">
-            Binga Beach represents a pioneering approach to real estate investment through blockchain tokenization. 
+            Binga Beach represents a pioneering approach to real estate investment through blockchain digital securities. 
             Located on the pristine shores of Lumambong Beach in Palawan, Philippines, this project combines 
             sustainable eco-tourism development with innovative financial technology to create accessible 
             investment opportunities in premium beachfront property.
           </p>
           
           <p className="text-gray-700 text-lg leading-relaxed">
-            Through the BBT (Binga Beach Token) ecosystem, investors can own fractional shares of modular 
+            Through the BBT (Binga Beach Digital Security) ecosystem, investors can own fractional shares of modular 
             beachfront homes, participate in governance decisions, enjoy timeshare rights, and benefit from 
-            multiple revenue streams including rental income and token value appreciation.
+            multiple revenue streams including rental income and security value appreciation.
           </p>
 
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-6">
@@ -61,7 +61,7 @@ const ExecutiveSummary = () => {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <div className="text-2xl font-bold text-blue-600">$25</div>
-                <div className="text-sm text-blue-700">Token Price</div>
+                <div className="text-sm text-blue-700">Security Price</div>
               </div>
               <div>
                 <div className="text-2xl font-bold text-blue-600">$2.5M</div>

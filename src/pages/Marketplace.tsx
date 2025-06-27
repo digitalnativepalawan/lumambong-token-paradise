@@ -1,4 +1,3 @@
-
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -24,13 +23,13 @@ const Marketplace = () => {
     return null;
   }
 
-  const tokenListings = [
+  const securityListings = [
     {
       id: 1,
       seller: "beachfan123",
       lotName: "Sunset Villa",
-      tokens: 500,
-      pricePerToken: 26.50,
+      securities: 500,
+      pricePerSecurity: 26.50,
       totalValue: 13250,
       listed: "2 hours ago"
     },
@@ -38,8 +37,8 @@ const Marketplace = () => {
       id: 2,
       seller: "cryptoinvestor",
       lotName: "Ocean Breeze",
-      tokens: 1200,
-      pricePerToken: 25.75,
+      securities: 1200,
+      pricePerSecurity: 25.75,
       totalValue: 30900,
       listed: "5 hours ago"
     },
@@ -47,8 +46,8 @@ const Marketplace = () => {
       id: 3,
       seller: "palawanlover",
       lotName: "Palm Paradise",
-      tokens: 750,
-      pricePerToken: 27.00,
+      securities: 750,
+      pricePerSecurity: 27.00,
       totalValue: 20250,
       listed: "1 day ago"
     }
@@ -88,7 +87,7 @@ const Marketplace = () => {
   ];
 
   const marketStats = {
-    avgTokenPrice: 26.15,
+    avgSecurityPrice: 26.15,
     priceChange: 4.2,
     volume24h: 89750,
     avgNightPrice: 185,
@@ -108,7 +107,7 @@ const Marketplace = () => {
               BBT Secondary Market
             </h1>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Trade BBT tokens and timeshare nights with other community members. 
+              Trade BBT digital securities and timeshare nights with other community members. 
               All transactions are secure and transparent.
             </p>
           </div>
@@ -117,8 +116,8 @@ const Marketplace = () => {
           <div className="grid md:grid-cols-5 gap-6 mb-12">
             <div className="bg-white p-6 rounded-xl shadow-sm text-center">
               <DollarSign className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-              <div className="text-xl font-bold text-gray-900">${marketStats.avgTokenPrice}</div>
-              <div className="text-sm text-gray-600">Avg Token Price</div>
+              <div className="text-xl font-bold text-gray-900">${marketStats.avgSecurityPrice}</div>
+              <div className="text-sm text-gray-600">Avg Security Price</div>
             </div>
             
             <div className="bg-white p-6 rounded-xl shadow-sm text-center">
@@ -147,28 +146,28 @@ const Marketplace = () => {
           </div>
 
           {/* Marketplace Tabs */}
-          <Tabs defaultValue="tokens" className="space-y-6">
+          <Tabs defaultValue="securities" className="space-y-6">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="tokens">BBT Tokens</TabsTrigger>
+              <TabsTrigger value="securities">BBT Digital Securities</TabsTrigger>
               <TabsTrigger value="nights">Timeshare Nights</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="tokens" className="space-y-6">
+            <TabsContent value="securities" className="space-y-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-bold">Token Listings</h3>
+                <h3 className="text-2xl font-bold">Security Listings</h3>
                 <Button className="bg-blue-600 hover:bg-blue-700">
-                  Sell My Tokens
+                  Sell My Securities
                 </Button>
               </div>
 
               <div className="grid gap-6">
-                {tokenListings.map((listing) => (
+                {securityListings.map((listing) => (
                   <div key={listing.id} className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-md transition-shadow">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <h4 className="text-lg font-bold text-gray-900">{listing.lotName}</h4>
-                          <Badge variant="outline">{listing.tokens} BBT</Badge>
+                          <Badge variant="outline">{listing.securities} BBT</Badge>
                         </div>
                         <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
                           <div className="flex items-center gap-1">
@@ -181,7 +180,7 @@ const Marketplace = () => {
                           </div>
                         </div>
                         <div className="text-sm text-gray-600">
-                          ${listing.pricePerToken} per token
+                          ${listing.pricePerSecurity} per security
                         </div>
                       </div>
                       
@@ -190,7 +189,7 @@ const Marketplace = () => {
                           ${listing.totalValue.toLocaleString()}
                         </div>
                         <Button className="bg-emerald-600 hover:bg-emerald-700">
-                          Buy Tokens
+                          Buy Securities
                         </Button>
                       </div>
                     </div>
@@ -198,13 +197,13 @@ const Marketplace = () => {
                 ))}
               </div>
 
-              {/* How Token Trading Works */}
+              {/* How Security Trading Works */}
               <div className="bg-blue-50 rounded-xl p-6 mt-8">
-                <h4 className="font-bold mb-4">How Token Trading Works</h4>
+                <h4 className="font-bold mb-4">How Security Trading Works</h4>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">
                   <div>
                     <div className="font-medium mb-1">1. Browse Listings</div>
-                    <div className="text-gray-600">Find tokens from the lots you want to invest in</div>
+                    <div className="text-gray-600">Find securities from the lots you want to invest in</div>
                   </div>
                   <div>
                     <div className="font-medium mb-1">2. Secure Purchase</div>
@@ -212,7 +211,7 @@ const Marketplace = () => {
                   </div>
                   <div>
                     <div className="font-medium mb-1">3. Instant Transfer</div>
-                    <div className="text-gray-600">Tokens and ownership rights transfer immediately</div>
+                    <div className="text-gray-600">Securities and ownership rights transfer immediately</div>
                   </div>
                 </div>
               </div>
@@ -289,7 +288,7 @@ const Marketplace = () => {
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold mb-4">Why Trade on Our Marketplace?</h3>
               <p className="text-blue-100">
-                The only official secondary market for BBT tokens and timeshare nights
+                The only official secondary market for BBT digital securities and timeshare nights
               </p>
             </div>
             
@@ -323,7 +322,7 @@ const Marketplace = () => {
                   <Calendar className="w-6 h-6" />
                 </div>
                 <div className="font-bold mb-1">Flexible</div>
-                <div className="text-sm text-blue-100">Trade tokens or nights</div>
+                <div className="text-sm text-blue-100">Trade securities or nights</div>
               </div>
             </div>
           </div>

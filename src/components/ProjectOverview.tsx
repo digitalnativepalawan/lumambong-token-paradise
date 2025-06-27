@@ -27,14 +27,14 @@ const ProjectOverview = () => {
     {
       icon: Users,
       title: "Community Governed",
-      description: "On-chain governance system giving token holders voting rights"
+      description: "On-chain governance system giving security holders voting rights"
     }
   ];
 
   const investmentHighlights = [
     { label: "Total Project Value", value: "$2,500,000", icon: TrendingUp },
-    { label: "Token Supply", value: "100,000 BBT", icon: Shield },
-    { label: "Token Value", value: "1 BBT = $25", icon: Zap },
+    { label: "Security Supply", value: "100,000 BBT", icon: Shield },
+    { label: "Security Value", value: "1 BBT = $25", icon: Zap },
     { label: "Per Lot Value", value: "$250,000", icon: Home }
   ];
 
@@ -60,7 +60,7 @@ const ProjectOverview = () => {
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             A pioneering real estate development that merges premium beachfront property 
             with blockchain technology, offering fractional ownership through 
-            <span className="text-black font-semibold"> Binga Beach Tokens (BBT)</span>.
+            <span className="text-black font-semibold"> Binga Beach Digital Securities (BBT)</span>.
           </p>
         </div>
 
@@ -85,9 +85,9 @@ const ProjectOverview = () => {
               </div>
             </div>
 
-            {/* Token benefits */}
+            {/* Security benefits */}
             <div>
-              <h3 className="text-3xl font-bold mb-8 text-black">Token Benefits</h3>
+              <h3 className="text-3xl font-bold mb-8 text-black">Security Benefits</h3>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-4 group">

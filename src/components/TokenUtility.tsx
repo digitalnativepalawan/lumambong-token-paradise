@@ -53,14 +53,14 @@ const TokenUtility = () => {
     }
   ];
 
-  const tokenomics = [
+  const securities = [
     { label: "Circulating Supply", value: "65,000 BBT", percentage: 65, color: "bg-blue-500" },
     { label: "Development Reserve", value: "25,000 BBT", percentage: 25, color: "bg-green-500" },
     { label: "Liquidity Pool", value: "10,000 BBT", percentage: 10, color: "bg-purple-500" }
   ];
 
   const roadmapItems = [
-    { phase: "Q1 2025", title: "Token Launch", status: "completed" },
+    { phase: "Q1 2025", title: "Digital Securities Launch", status: "completed" },
     { phase: "Q2 2025", title: "Development Start", status: "active" },
     { phase: "Q3 2025", title: "Resort Opening", status: "upcoming" },
     { phase: "Q4 2025", title: "Full Operations", status: "upcoming" }
@@ -72,15 +72,15 @@ const TokenUtility = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <Badge className="mb-6 bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2 text-sm">
-            Token Utility
+            Digital Securities Utility
           </Badge>
           <h2 className="text-4xl md:text-6xl font-bold mb-8 text-black">
-            BBT Token
+            BBT Digital Securities
             <br />
             <span className="text-blue-600">Ecosystem</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            More than just ownership - BBT tokens unlock a comprehensive ecosystem of 
+            More than just ownership - BBT digital securities unlock a comprehensive ecosystem of 
             benefits, rights, and opportunities in the Binga Beach community.
           </p>
         </div>
@@ -117,18 +117,18 @@ const TokenUtility = () => {
           ))}
         </div>
 
-        {/* Tokenomics section */}
+        {/* Securities distribution section */}
         <div className="grid lg:grid-cols-2 gap-12 mb-20">
-          {/* Token distribution */}
+          {/* Security distribution */}
           <div className="utility-card">
             <div className="flex items-center gap-4 mb-8">
               <div className="p-3 rounded-xl bg-purple-50">
                 <Coins className="w-6 h-6 text-purple-600" />
               </div>
-              <h3 className="text-2xl font-bold text-black">Token Distribution</h3>
+              <h3 className="text-2xl font-bold text-black">Security Distribution</h3>
             </div>
             <div className="space-y-6">
-              {tokenomics.map((item, index) => (
+              {securities.map((item, index) => (
                 <div key={index}>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-600">{item.label}</span>
@@ -183,7 +183,7 @@ const TokenUtility = () => {
               Ready to Join the Future of Real Estate?
             </h3>
             <p className="text-gray-600 mb-8 text-lg leading-relaxed">
-              Start your investment journey with BBT tokens and unlock exclusive access 
+              Start your investment journey with BBT digital securities and unlock exclusive access 
               to premium beachfront property in paradise.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
