@@ -35,16 +35,16 @@ export const useRealTimeUnits = () => {
       
       // Map units data to Unit interface with calculated fields
       return data.map((unit): Unit => {
-        const soldSecurities = unit.total_securities - (unit.total_securities || 0); // Calculate sold securities
-        const fundedPercentage = unit.total_securities > 0 ? (soldSecurities / unit.total_securities) * 100 : 0;
+        const soldSecurities = unit.total_tokens - (unit.total_tokens || 0); // Calculate sold securities
+        const fundedPercentage = unit.total_tokens > 0 ? (soldSecurities / unit.total_tokens) * 100 : 0;
         
         return {
           id: unit.id,
           name: unit.name,
           unit_type: 'Premium Villa', // Default since this field might not exist
-          total_securities: unit.total_securities,
-          available_securities: unit.total_securities, // Assuming all securities are available initially
-          security_price_usd: unit.security_price_usd,
+          total_securities: unit.total_tokens, // Map total_tokens to total_securities
+          available_securities: unit.total_tokens, // Assuming all securities are available initially
+          security_price_usd: unit.token_price_usd, // Map token_price_usd to security_price_usd
           ownership_type: 'foreign_allowed', // Default value
           status: unit.status,
           funded_percentage: fundedPercentage
@@ -57,7 +57,7 @@ export const useRealTimeUnits = () => {
     queryKey: ['security-pools'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('digital_security_pools')
+        .from('token_pools')
         .select('*');
       
       if (error) throw error;
@@ -65,8 +65,8 @@ export const useRealTimeUnits = () => {
       return data.map((pool): SecurityPool => ({
         id: pool.id,
         pool_type: pool.pool_type,
-        total_securities: pool.total_securities, // Map total_securities to total_securities
-        sold_securities: pool.sold_securities,   // Map sold_securities to sold_securities
+        total_securities: pool.total_tokens, // Map total_tokens to total_securities
+        sold_securities: pool.sold_tokens,   // Map sold_tokens to sold_securities
         created_at: pool.created_at,
         updated_at: pool.updated_at
       }));
