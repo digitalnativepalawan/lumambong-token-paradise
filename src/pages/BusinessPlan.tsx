@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
@@ -88,83 +89,83 @@ const BusinessPlan = () => {
   }, [sections]);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Navigation />
       
       {/* Header */}
-      <div className="bg-gradient-to-br from-blue-50 to-green-50 pt-20 md:pt-24 pb-8 md:pb-16">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+      <div className="bg-gradient-to-br from-blue-50 to-green-50 pt-20 md:pt-24 pb-6 md:pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center">
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-black mb-4 md:mb-6">
+            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-black mb-3 md:mb-6">
               Business Plan
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
+            <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-4 md:mb-8 px-2">
               Comprehensive overview of Binga Beach tokenized real estate investment opportunity
             </p>
             
             {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2 max-w-md sm:max-w-none mx-auto">
               <Button 
                 onClick={handleDownloadPDF}
-                className="modern-button px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base"
+                className="modern-button px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
               >
-                <Download className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Download PDF
+                <Download className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
+                <span className="truncate">Download PDF</span>
               </Button>
               <Button 
                 onClick={handleAngelInvestorClick}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base"
+                className="bg-purple-600 hover:bg-purple-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
               >
-                <Users className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Angel Investor
+                <Users className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
+                <span className="truncate">Angel Investor</span>
               </Button>
               <Button 
                 onClick={handleSharePlan}
                 variant="outline" 
-                className="px-4 md:px-6 py-2 md:py-3 rounded-xl border-gray-300 text-sm md:text-base"
+                className="px-3 md:px-6 py-2 md:py-3 rounded-xl border-gray-300 text-sm md:text-base w-full sm:w-auto"
               >
-                <Share2 className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Share Plan
+                <Share2 className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
+                <span className="truncate">Share Plan</span>
               </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12">
-        <div className="flex">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-8">
+        <div className="flex relative">
           {/* Mobile Sidebar Toggle */}
           <Button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="lg:hidden fixed top-32 left-4 z-50 modern-button p-2 rounded-lg shadow-lg"
+            className="lg:hidden fixed top-28 left-2 z-50 modern-button p-2 rounded-lg shadow-lg"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4" />
           </Button>
 
           {/* Sidebar Navigation */}
           <div className={`
-            fixed lg:static inset-y-0 left-0 z-40 w-80 lg:w-auto
+            fixed lg:static inset-y-0 left-0 z-40 w-72 lg:w-auto
             transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0
             transition-transform duration-300 ease-in-out
             bg-white lg:bg-transparent border-r lg:border-r-0 border-gray-200
-            lg:flex-shrink-0 lg:block
+            lg:flex-shrink-0 lg:block overflow-y-auto
           `}>
-            <div className="h-full overflow-y-auto pt-20 lg:pt-0 px-4 lg:px-0">
-              <div className="lg:sticky lg:top-32 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
-                <h3 className="text-lg font-semibold text-black mb-6">Sections</h3>
-                <nav className="space-y-2 pb-6">
+            <div className="h-full pt-16 lg:pt-0 px-3 lg:px-0">
+              <div className="lg:sticky lg:top-28 lg:max-h-[calc(100vh-7rem)] lg:overflow-y-auto">
+                <h3 className="text-base md:text-lg font-semibold text-black mb-4 md:mb-6">Sections</h3>
+                <nav className="space-y-1 md:space-y-2 pb-6">
                   {sections.map((section) => (
                     <button
                       key={section.id}
                       onClick={() => scrollToSection(section.id)}
-                      className={`w-full text-left px-3 md:px-4 py-2 md:py-3 rounded-lg transition-colors flex items-center justify-between group text-sm md:text-base ${
+                      className={`w-full text-left px-3 py-2 md:py-3 rounded-lg transition-colors flex items-center justify-between group text-sm md:text-base ${
                         activeSection === section.id
                           ? 'bg-blue-100 text-blue-700 border border-blue-200'
                           : 'text-gray-600 hover:bg-gray-50 hover:text-black'
                       }`}
                     >
-                      <span className="font-medium">{section.title}</span>
-                      <ChevronRight className={`w-3 h-3 md:w-4 md:h-4 transition-transform ${
+                      <span className="font-medium truncate pr-2">{section.title}</span>
+                      <ChevronRight className={`w-3 h-3 md:w-4 md:h-4 transition-transform flex-shrink-0 ${
                         activeSection === section.id ? 'rotate-90' : 'group-hover:translate-x-1'
                       }`} />
                     </button>
@@ -183,12 +184,12 @@ const BusinessPlan = () => {
           )}
 
           {/* Main Content */}
-          <div className="flex-1 lg:ml-6 xl:ml-12">
-            <div className="space-y-12 md:space-y-16">
+          <div className="flex-1 lg:ml-6 xl:ml-12 min-w-0">
+            <div className="space-y-8 md:space-y-12">
               {sections.map((section) => {
                 const Component = section.component;
                 return (
-                  <section key={section.id} id={section.id} className="scroll-mt-24">
+                  <section key={section.id} id={section.id} className="scroll-mt-20 md:scroll-mt-24">
                     <div className="max-w-none">
                       <Component />
                     </div>
