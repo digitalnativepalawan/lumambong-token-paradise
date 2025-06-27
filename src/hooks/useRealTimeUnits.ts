@@ -65,8 +65,8 @@ export const useRealTimeUnits = () => {
       return data.map((pool): SecurityPool => ({
         id: pool.id,
         pool_type: pool.pool_type,
-        total_securities: pool.total_tokens,
-        sold_securities: pool.sold_tokens,
+        total_securities: pool.total_tokens, // Map total_tokens to total_securities
+        sold_securities: pool.sold_tokens,   // Map sold_tokens to sold_securities
         created_at: pool.created_at,
         updated_at: pool.updated_at
       }));
