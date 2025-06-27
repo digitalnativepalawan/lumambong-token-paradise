@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const TokenUtility = () => {
+const DigitalSecuritiesUtility = () => {
   const navigate = useNavigate();
 
   const utilities = [
@@ -210,4 +210,4 @@ const TokenUtility = () => {
   );
 };
 
-export default TokenUtility;
+export default DigitalSecuritiesUtility;
