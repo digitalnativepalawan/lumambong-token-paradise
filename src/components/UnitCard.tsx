@@ -88,11 +88,11 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
           </div>
         </div>
 
-        {/* TORING SOLID */}
+        {/* DIGITAL SECURITIES SOLD */}
         <div className="mb-4">
           <div className="flex justify-between items-center mb-1">
             <span className="text-xs text-gray-600 font-medium">
-              TOKENS SOLD {unit.toring_solid} / {unit.lbbl}
+              SECURITIES SOLD {unit.toring_solid} / {unit.lbbl}
             </span>
             <span className="text-xs font-bold text-black">
               {unit.funded_percentage}% Funded
@@ -124,7 +124,7 @@ const UnitCard = ({ unit, onClick }: UnitCardProps) => {
         {/* Invest Flow */}
         <div className="flex justify-between items-center pt-4 border-t border-gray-200">
           <span className="text-xs text-gray-600">
-            <strong>Price - ${unit.invest_flow}/Token</strong>
+            <strong>Price - ${unit.invest_flow}/Digital Security</strong>
           </span>
         </div>
 

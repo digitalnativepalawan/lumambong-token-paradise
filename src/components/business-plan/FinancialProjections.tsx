@@ -6,19 +6,19 @@ import { TrendingUp, DollarSign, PieChart as PieChartIcon, Calculator } from "lu
 
 const FinancialProjections = () => {
   const revenueProjections = [
-    { year: "2025", tokenSales: 500000, rentalIncome: 200000, amenities: 50000, total: 750000 },
-    { year: "2026", tokenSales: 300000, rentalIncome: 450000, amenities: 100000, total: 850000 },
-    { year: "2027", tokenSales: 200000, rentalIncome: 800000, amenities: 200000, total: 1200000 },
-    { year: "2028", tokenSales: 150000, rentalIncome: 1200000, amenities: 300000, total: 1650000 },
-    { year: "2029", tokenSales: 100000, rentalIncome: 1600000, amenities: 400000, total: 2100000 },
-    { year: "2030", tokenSales: 100000, rentalIncome: 2000000, amenities: 500000, total: 2600000 },
-    { year: "2031", tokenSales: 100000, rentalIncome: 2400000, amenities: 600000, total: 3100000 },
-    { year: "2032", tokenSales: 100000, rentalIncome: 2800000, amenities: 700000, total: 3600000 },
-    { year: "2033", tokenSales: 100000, rentalIncome: 3200000, amenities: 800000, total: 4100000 },
-    { year: "2034", tokenSales: 100000, rentalIncome: 3600000, amenities: 900000, total: 4600000 }
+    { year: "2025", securitySales: 500000, rentalIncome: 200000, amenities: 50000, total: 750000 },
+    { year: "2026", securitySales: 300000, rentalIncome: 450000, amenities: 100000, total: 850000 },
+    { year: "2027", securitySales: 200000, rentalIncome: 800000, amenities: 200000, total: 1200000 },
+    { year: "2028", securitySales: 150000, rentalIncome: 1200000, amenities: 300000, total: 1650000 },
+    { year: "2029", securitySales: 100000, rentalIncome: 1600000, amenities: 400000, total: 2100000 },
+    { year: "2030", securitySales: 100000, rentalIncome: 2000000, amenities: 500000, total: 2600000 },
+    { year: "2031", securitySales: 100000, rentalIncome: 2400000, amenities: 600000, total: 3100000 },
+    { year: "2032", securitySales: 100000, rentalIncome: 2800000, amenities: 700000, total: 3600000 },
+    { year: "2033", securitySales: 100000, rentalIncome: 3200000, amenities: 800000, total: 4100000 },
+    { year: "2034", securitySales: 100000, rentalIncome: 3600000, amenities: 900000, total: 4600000 }
   ];
 
-  const tokenValueProjection = [
+  const securityValueProjection = [
     { year: "2025", value: 25, holders: 1000 },
     { year: "2026", value: 32, holders: 1200 },
     { year: "2027", value: 42, holders: 1400 },
@@ -45,8 +45,8 @@ const FinancialProjections = () => {
       label: "Total Revenue",
       color: "#3B82F6",
     },
-    tokenSales: {
-      label: "Token Sales",
+    securitySales: {
+      label: "Security Sales",
       color: "#10B981",
     },
     rentalIncome: {
@@ -58,7 +58,7 @@ const FinancialProjections = () => {
       color: "#F59E0B",
     },
     value: {
-      label: "Token Value",
+      label: "Security Value",
       color: "#EF4444",
     },
   };
@@ -94,11 +94,11 @@ const FinancialProjections = () => {
               <div className="p-2 rounded-lg bg-green-50 border border-green-200">
                 <TrendingUp className="w-5 h-5 text-green-600" />
               </div>
-              <h4 className="font-semibold text-black">Token Value</h4>
+              <h4 className="font-semibold text-black">Security Value</h4>
             </div>
             <div className="text-3xl font-bold text-green-600 mb-2">$182</div>
             <p className="text-gray-600 text-sm">
-              Projected token value by 2034
+              Projected security value by 2034
             </p>
           </CardContent>
         </Card>
@@ -156,7 +156,7 @@ const FinancialProjections = () => {
                   <XAxis dataKey="year" />
                   <YAxis />
                   <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="tokenSales" stackId="a" fill="#10B981" />
+                  <Bar dataKey="securitySales" stackId="a" fill="#10B981" />
                   <Bar dataKey="rentalIncome" stackId="a" fill="#8B5CF6" />
                   <Bar dataKey="amenities" stackId="a" fill="#F59E0B" />
                 </BarChart>
@@ -167,12 +167,12 @@ const FinancialProjections = () => {
 
         <Card className="border-gray-200">
           <CardHeader>
-            <CardTitle className="text-2xl text-black">Token Value Growth</CardTitle>
+            <CardTitle className="text-2xl text-black">Security Value Growth</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={tokenValueProjection}>
+                <LineChart data={securityValueProjection}>
                   <XAxis dataKey="year" />
                   <YAxis />
                   <ChartTooltip content={<ChartTooltipContent />} />
@@ -245,7 +245,7 @@ const FinancialProjections = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  Token appreciation: 15-20% annually
+                  Security appreciation: 15-20% annually
                 </li>
               </ul>
             </div>
