@@ -16,110 +16,110 @@ const BingaUnitsGrid = () => {
     { 
       id: 1, 
       name: "Sunset Villa", 
-      tokensSold: 3500, 
-      totalTokens: 10000, 
+      securitiesSold: 3500, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 2100,
       foreignSold: 1400
     },
     { 
       id: 2, 
       name: "Ocean Breeze", 
-      tokensSold: 2800, 
-      totalTokens: 10000, 
+      securitiesSold: 2800, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1680,
       foreignSold: 1120
     },
     { 
       id: 3, 
       name: "Palm Paradise", 
-      tokensSold: 4200, 
-      totalTokens: 10000, 
+      securitiesSold: 4200, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 2520,
       foreignSold: 1680
     },
     { 
       id: 4, 
       name: "Coral Cove", 
-      tokensSold: 1900, 
-      totalTokens: 10000, 
+      securitiesSold: 1900, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1140,
       foreignSold: 760
     },
     { 
       id: 5, 
       name: "Seashell Sanctuary", 
-      tokensSold: 3100, 
-      totalTokens: 10000, 
+      securitiesSold: 3100, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1860,
       foreignSold: 1240
     },
     { 
       id: 6, 
       name: "Tropical Retreat", 
-      tokensSold: 2400, 
-      totalTokens: 10000, 
+      securitiesSold: 2400, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1440,
       foreignSold: 960
     },
     { 
       id: 7, 
       name: "Azure Escape", 
-      tokensSold: 3800, 
-      totalTokens: 10000, 
+      securitiesSold: 3800, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 2280,
       foreignSold: 1520
     },
     { 
       id: 8, 
       name: "Bamboo Bliss", 
-      tokensSold: 2200, 
-      totalTokens: 10000, 
+      securitiesSold: 2200, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1320,
       foreignSold: 880
     },
     { 
       id: 9, 
       name: "Coconut Grove", 
-      tokensSold: 4500, 
-      totalTokens: 10000, 
+      securitiesSold: 4500, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 2700,
       foreignSold: 1800
     },
     { 
       id: 10, 
       name: "Starfish Shore", 
-      tokensSold: 1700, 
-      totalTokens: 10000, 
+      securitiesSold: 1700, 
+      totalSecurities: 10000, 
       price: 25,
-      filipinoTokens: 6000,
-      foreignTokens: 4000,
+      filipinoSecurities: 6000,
+      foreignSecurities: 4000,
       filipinoSold: 1020,
       foreignSold: 680
     }
@@ -134,13 +134,13 @@ const BingaUnitsGrid = () => {
   };
 
   const getTotalProgress = () => {
-    const totalSold = lots.reduce((sum, lot) => sum + lot.tokensSold, 0);
-    const totalTokens = lots.reduce((sum, lot) => sum + lot.totalTokens, 0);
-    return (totalSold / totalTokens) * 100;
+    const totalSold = lots.reduce((sum, lot) => sum + lot.securitiesSold, 0);
+    const totalSecurities = lots.reduce((sum, lot) => sum + lot.totalSecurities, 0);
+    return (totalSold / totalSecurities) * 100;
   };
 
   const getTotalRaised = () => {
-    const totalSold = lots.reduce((sum, lot) => sum + lot.tokensSold, 0);
+    const totalSold = lots.reduce((sum, lot) => sum + lot.securitiesSold, 0);
     return totalSold * 25;
   };
 
@@ -153,7 +153,7 @@ const BingaUnitsGrid = () => {
             Choose Your Binga Beach Lot
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Own a fraction of paradise through our tokenized lots. Each lot follows Philippine law 
+            Own a fraction of paradise through our digital securities backed lots. Each lot follows Philippine law 
             with 60% Filipino ownership and 40% Foreign ownership structure.
           </p>
 
@@ -161,11 +161,11 @@ const BingaUnitsGrid = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <div className="bg-blue-50 border border-blue-200 rounded-xl px-6 py-3">
               <div className="text-lg font-bold text-blue-600">60% Filipino Pool</div>
-              <div className="text-sm text-blue-700">6,000 tokens per lot</div>
+              <div className="text-sm text-blue-700">6,000 securities per lot</div>
             </div>
             <div className="bg-green-50 border border-green-200 rounded-xl px-6 py-3">
               <div className="text-lg font-bold text-green-600">40% Foreign Pool</div>
-              <div className="text-sm text-green-700">4,000 tokens per lot</div>
+              <div className="text-sm text-green-700">4,000 securities per lot</div>
             </div>
           </div>
 
@@ -186,7 +186,7 @@ const BingaUnitsGrid = () => {
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-emerald-600 mb-2">
-                  {Math.round((100000 - lots.reduce((sum, lot) => sum + lot.tokensSold, 0)) / 1000)}K
+                  {Math.round((100000 - lots.reduce((sum, lot) => sum + lot.securitiesSold, 0)) / 1000)}K
                 </div>
                 <div className="text-gray-600">BBT Available</div>
               </div>
@@ -197,9 +197,9 @@ const BingaUnitsGrid = () => {
         {/* Lots Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
           {lots.map((lot) => {
-            const fundedPercentage = (lot.tokensSold / lot.totalTokens) * 100;
-            const filipinoPercentage = (lot.filipinoSold / lot.filipinoTokens) * 100;
-            const foreignPercentage = (lot.foreignSold / lot.foreignTokens) * 100;
+            const fundedPercentage = (lot.securitiesSold / lot.totalSecurities) * 100;
+            const filipinoPercentage = (lot.filipinoSold / lot.filipinoSecurities) * 100;
+            const foreignPercentage = (lot.foreignSold / lot.foreignSecurities) * 100;
             
             return (
               <div key={lot.id} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100">
@@ -218,7 +218,7 @@ const BingaUnitsGrid = () => {
                   
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <DollarSign className="w-4 h-4" />
-                    <span>${lot.price} per BBT token</span>
+                    <span>${lot.price} per BBT security</span>
                   </div>
                   
                   {/* Ownership Breakdown */}
@@ -233,7 +233,7 @@ const BingaUnitsGrid = () => {
                       </div>
                       <Progress value={filipinoPercentage} className="h-1.5 mb-1" />
                       <div className="text-xs text-gray-600">
-                        {lot.filipinoSold.toLocaleString()} / {lot.filipinoTokens.toLocaleString()} sold
+                        {lot.filipinoSold.toLocaleString()} / {lot.filipinoSecurities.toLocaleString()} sold
                       </div>
                     </div>
 
@@ -245,7 +245,7 @@ const BingaUnitsGrid = () => {
                       </div>
                       <Progress value={foreignPercentage} className="h-1.5 mb-1" />
                       <div className="text-xs text-gray-600">
-                        {lot.foreignSold.toLocaleString()} / {lot.foreignTokens.toLocaleString()} sold
+                        {lot.foreignSold.toLocaleString()} / {lot.foreignSecurities.toLocaleString()} sold
                       </div>
                     </div>
                   </div>
@@ -262,7 +262,7 @@ const BingaUnitsGrid = () => {
                   <div className="bg-blue-50 p-3 rounded-lg">
                     <div className="text-center">
                       <div className="text-lg font-bold text-blue-600">
-                        {(lot.totalTokens - lot.tokensSold).toLocaleString()}
+                        {(lot.totalSecurities - lot.securitiesSold).toLocaleString()}
                       </div>
                       <div className="text-xs text-blue-700">BBT Available</div>
                     </div>
@@ -283,7 +283,7 @@ const BingaUnitsGrid = () => {
 
         {/* Benefits Summary */}
         <div className="bg-gradient-to-r from-blue-600 to-emerald-600 rounded-2xl p-8 text-white text-center">
-          <h3 className="text-2xl font-bold mb-4">Every BBT Token Includes</h3>
+          <h3 className="text-2xl font-bold mb-4">Every BBT Digital Security Includes</h3>
           <div className="grid md:grid-cols-4 gap-6">
             <div className="flex flex-col items-center">
               <Calendar className="w-8 h-8 mb-2" />

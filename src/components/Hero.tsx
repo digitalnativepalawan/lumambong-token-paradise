@@ -24,7 +24,7 @@ const Hero = () => {
   };
 
   const stats = [
-    { icon: TrendingUp, label: "Token Value", value: "$25", change: "+12.5%" },
+    { icon: TrendingUp, label: "Security Value", value: "$25", change: "+12.5%" },
     { icon: Users, label: "Investors", value: "1,247", change: "+8.2%" },
     { icon: MapPin, label: "Properties", value: "10", change: "100%" }
   ];
@@ -57,7 +57,7 @@ const Hero = () => {
             of Paradise
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Tokenized beachfront real estate in Palawan, Philippines. 
+            Digital securities backed beachfront real estate in Palawan, Philippines. 
             <span className="text-black font-semibold"> Invest. Stay. Govern.</span>
           </p>
           
