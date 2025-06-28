@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ModernTable, ModernTableHeader, ModernTableBody, ModernTableRow, ModernTableCell, ModernTableHeadCell } from "@/components/ui/modern-table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -67,7 +68,7 @@ const FinancialProjections = () => {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div>
         <h2 className="text-4xl font-bold text-black mb-4">Financial Projections</h2>
         <p className="text-xl text-gray-600 mb-6">
@@ -128,36 +129,38 @@ const FinancialProjections = () => {
           <CardTitle className="text-2xl text-black">10-Year Revenue Projection (USD)</CardTitle>
         </CardHeader>
         <CardContent>
-          <ModernTable>
-            <ModernTableHeader>
-              <ModernTableRow>
-                <ModernTableHeadCell>Year</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Digital Security Sales</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Rental Income</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Amenities</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Total Revenue</ModernTableHeadCell>
-              </ModernTableRow>
-            </ModernTableHeader>
-            <ModernTableBody>
-              {revenueProjections.map((projection) => (
-                <ModernTableRow key={projection.year}>
-                  <ModernTableCell className="font-semibold">{projection.year}</ModernTableCell>
-                  <ModernTableCell align="right" className="text-green-600 font-medium">
-                    ${projection.securitySales.toLocaleString()}
-                  </ModernTableCell>
-                  <ModernTableCell align="right" className="text-purple-600 font-medium">
-                    ${projection.rentalIncome.toLocaleString()}
-                  </ModernTableCell>
-                  <ModernTableCell align="right" className="text-orange-600 font-medium">
-                    ${projection.amenities.toLocaleString()}
-                  </ModernTableCell>
-                  <ModernTableCell align="right" className="text-blue-600 font-bold">
-                    ${projection.total.toLocaleString()}
-                  </ModernTableCell>
+          <div className="overflow-x-auto">
+            <ModernTable>
+              <ModernTableHeader>
+                <ModernTableRow>
+                  <ModernTableHeadCell>Year</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Digital Security Sales</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Rental Income</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Amenities</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Total Revenue</ModernTableHeadCell>
                 </ModernTableRow>
-              ))}
-            </ModernTableBody>
-          </ModernTable>
+              </ModernTableHeader>
+              <ModernTableBody>
+                {revenueProjections.map((projection) => (
+                  <ModernTableRow key={projection.year}>
+                    <ModernTableCell className="font-semibold whitespace-nowrap">{projection.year}</ModernTableCell>
+                    <ModernTableCell align="right" className="text-green-600 font-medium whitespace-nowrap">
+                      ${projection.securitySales.toLocaleString()}
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="text-purple-600 font-medium whitespace-nowrap">
+                      ${projection.rentalIncome.toLocaleString()}
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="text-orange-600 font-medium whitespace-nowrap">
+                      ${projection.amenities.toLocaleString()}
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="text-blue-600 font-bold whitespace-nowrap">
+                      ${projection.total.toLocaleString()}
+                    </ModernTableCell>
+                  </ModernTableRow>
+                ))}
+              </ModernTableBody>
+            </ModernTable>
+          </div>
         </CardContent>
       </Card>
 
@@ -167,49 +170,62 @@ const FinancialProjections = () => {
           <CardTitle className="text-2xl text-black">Digital Security Value Growth</CardTitle>
         </CardHeader>
         <CardContent>
-          <ModernTable>
-            <ModernTableHeader>
-              <ModernTableRow>
-                <ModernTableHeadCell>Year</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Digital Security Value (USD)</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Digital Security Holders</ModernTableHeadCell>
-              </ModernTableRow>
-            </ModernTableHeader>
-            <ModernTableBody>
-              {securityValueProjection.map((projection) => (
-                <ModernTableRow key={projection.year}>
-                  <ModernTableCell className="font-semibold">{projection.year}</ModernTableCell>
-                  <ModernTableCell align="right" className="text-red-600 font-bold">
-                    ${projection.value}
-                  </ModernTableCell>
-                  <ModernTableCell align="right" className="text-gray-700 font-medium">
-                    {projection.holders.toLocaleString()}
-                  </ModernTableCell>
+          <div className="overflow-x-auto">
+            <ModernTable>
+              <ModernTableHeader>
+                <ModernTableRow>
+                  <ModernTableHeadCell>Year</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Digital Security Value (USD)</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Digital Security Holders</ModernTableHeadCell>
                 </ModernTableRow>
-              ))}
-            </ModernTableBody>
-          </ModernTable>
+              </ModernTableHeader>
+              <ModernTableBody>
+                {securityValueProjection.map((projection) => (
+                  <ModernTableRow key={projection.year}>
+                    <ModernTableCell className="font-semibold whitespace-nowrap">{projection.year}</ModernTableCell>
+                    <ModernTableCell align="right" className="text-red-600 font-bold whitespace-nowrap">
+                      ${projection.value}
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="text-gray-700 font-medium whitespace-nowrap">
+                      {projection.holders.toLocaleString()}
+                    </ModernTableCell>
+                  </ModernTableRow>
+                ))}
+              </ModernTableBody>
+            </ModernTable>
+          </div>
         </CardContent>
       </Card>
 
+      {/* Main Revenue Chart */}
       <Card className="border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-black">10-Year Revenue Projection</CardTitle>
         </CardHeader>
         <CardContent>
-          <ChartContainer config={chartConfig} className="h-96">
+          <ChartContainer config={chartConfig} className="h-96 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenueProjections} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <AreaChart data={revenueProjections} margin={{ top: 20, right: 30, left: 40, bottom: 80 }}>
                 <XAxis 
                   dataKey="year" 
-                  tick={{ fontSize: 12 }}
+                  tick={{ fontSize: 11 }}
                   interval={0}
                   angle={-45}
                   textAnchor="end"
                   height={80}
                 />
-                <YAxis tick={{ fontSize: 12 }} />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <YAxis 
+                  tick={{ fontSize: 11 }}
+                  tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+                />
+                <ChartTooltip 
+                  content={<ChartTooltipContent 
+                    formatter={(value, name) => [
+                      `$${Number(value).toLocaleString()}`,
+                      name
+                    ]}
+                  />} 
+                />
                 <Area
                   type="monotone"
                   dataKey="total"
@@ -224,27 +240,38 @@ const FinancialProjections = () => {
         </CardContent>
       </Card>
 
-      <div className="grid lg:grid-cols-2 gap-8">
+      {/* Side by Side Charts */}
+      <div className="space-y-8">
         <Card className="border-gray-200">
           <CardHeader>
-            <CardTitle className="text-2xl text-black">Revenue Breakdown</CardTitle>
+            <CardTitle className="text-2xl text-black">Revenue Breakdown (First 5 Years)</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-80">
+            <ChartContainer config={chartConfig} className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={revenueProjections.slice(0, 5)} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                <BarChart data={revenueProjections.slice(0, 5)} margin={{ top: 20, right: 30, left: 40, bottom: 80 }}>
                   <XAxis 
                     dataKey="year" 
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 11 }}
                     angle={-45}
                     textAnchor="end"
                     height={80}
                   />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
-                  <Bar dataKey="securitySales" stackId="a" fill="#10B981" />
-                  <Bar dataKey="rentalIncome" stackId="a" fill="#8B5CF6" />
-                  <Bar dataKey="amenities" stackId="a" fill="#F59E0B" />
+                  <YAxis 
+                    tick={{ fontSize: 11 }}
+                    tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+                  />
+                  <ChartTooltip 
+                    content={<ChartTooltipContent 
+                      formatter={(value, name) => [
+                        `$${Number(value).toLocaleString()}`,
+                        name
+                      ]}
+                    />} 
+                  />
+                  <Bar dataKey="securitySales" stackId="a" fill="#10B981" name="Digital Security Sales" />
+                  <Bar dataKey="rentalIncome" stackId="a" fill="#8B5CF6" name="Rental Income" />
+                  <Bar dataKey="amenities" stackId="a" fill="#F59E0B" name="Amenities" />
                 </BarChart>
               </ResponsiveContainer>
             </ChartContainer>
@@ -256,25 +283,36 @@ const FinancialProjections = () => {
             <CardTitle className="text-2xl text-black">Digital Security Value Growth</CardTitle>
           </CardHeader>
           <CardContent>
-            <ChartContainer config={chartConfig} className="h-80">
+            <ChartContainer config={chartConfig} className="h-80 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={securityValueProjection} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                <LineChart data={securityValueProjection} margin={{ top: 20, right: 30, left: 40, bottom: 80 }}>
                   <XAxis 
                     dataKey="year" 
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 11 }}
                     interval={0}
                     angle={-45}
                     textAnchor="end"
                     height={80}
                   />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <ChartTooltip content={<ChartTooltipContent />} />
+                  <YAxis 
+                    tick={{ fontSize: 11 }}
+                    tickFormatter={(value) => `$${value}`}
+                  />
+                  <ChartTooltip 
+                    content={<ChartTooltipContent 
+                      formatter={(value, name) => [
+                        `$${Number(value)}`,
+                        name
+                      ]}
+                    />} 
+                  />
                   <Line
                     type="monotone"
                     dataKey="value"
                     stroke="#EF4444"
                     strokeWidth={3}
                     dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
+                    name="Digital Security Value"
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -283,6 +321,7 @@ const FinancialProjections = () => {
         </Card>
       </div>
 
+      {/* Operational Cost Structure */}
       <Card className="border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-black">Revised Operational Cost Structure ({operationalCostPercentage}% of Revenue)</CardTitle>
@@ -293,39 +332,42 @@ const FinancialProjections = () => {
             ensuring healthy profit margins while maintaining high service standards.
           </p>
           
-          <ModernTable>
-            <ModernTableHeader>
-              <ModernTableRow>
-                <ModernTableHeadCell>Category</ModernTableHeadCell>
-                <ModernTableHeadCell align="center">% of Revenue</ModernTableHeadCell>
-                <ModernTableHeadCell align="right">Annual Cost (Year 1)</ModernTableHeadCell>
-                <ModernTableHeadCell>Notes</ModernTableHeadCell>
-              </ModernTableRow>
-            </ModernTableHeader>
-            <ModernTableBody>
-              {operationalCosts.map((cost, index) => (
-                <ModernTableRow key={index}>
-                  <ModernTableCell className="font-semibold">{cost.category}</ModernTableCell>
-                  <ModernTableCell align="center" className="font-medium">{cost.percentage}%</ModernTableCell>
-                  <ModernTableCell align="right" className="text-blue-600 font-bold">
-                    ${cost.amount.toLocaleString()}
-                  </ModernTableCell>
-                  <ModernTableCell className="text-gray-600">{cost.notes}</ModernTableCell>
+          <div className="overflow-x-auto">
+            <ModernTable>
+              <ModernTableHeader>
+                <ModernTableRow>
+                  <ModernTableHeadCell>Category</ModernTableHeadCell>
+                  <ModernTableHeadCell align="center">% of Revenue</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Annual Cost (Year 1)</ModernTableHeadCell>
+                  <ModernTableHeadCell>Notes</ModernTableHeadCell>
                 </ModernTableRow>
-              ))}
-              <ModernTableRow className="bg-gray-50 border-t-2 border-gray-200">
-                <ModernTableCell className="font-bold text-black">Total</ModernTableCell>
-                <ModernTableCell align="center" className="font-bold text-black">{operationalCostPercentage}%</ModernTableCell>
-                <ModernTableCell align="right" className="font-bold text-blue-700 text-lg">
-                  ${totalOperationalCost.toLocaleString()}
-                </ModernTableCell>
-                <ModernTableCell className="text-gray-600 font-medium">vs. $90,000 originally</ModernTableCell>
-              </ModernTableRow>
-            </ModernTableBody>
-          </ModernTable>
+              </ModernTableHeader>
+              <ModernTableBody>
+                {operationalCosts.map((cost, index) => (
+                  <ModernTableRow key={index}>
+                    <ModernTableCell className="font-semibold whitespace-nowrap">{cost.category}</ModernTableCell>
+                    <ModernTableCell align="center" className="font-medium whitespace-nowrap">{cost.percentage}%</ModernTableCell>
+                    <ModernTableCell align="right" className="text-blue-600 font-bold whitespace-nowrap">
+                      ${cost.amount.toLocaleString()}
+                    </ModernTableCell>
+                    <ModernTableCell className="text-gray-600">{cost.notes}</ModernTableCell>
+                  </ModernTableRow>
+                ))}
+                <ModernTableRow className="bg-gray-50 border-t-2 border-gray-200">
+                  <ModernTableCell className="font-bold text-black whitespace-nowrap">Total</ModernTableCell>
+                  <ModernTableCell align="center" className="font-bold text-black whitespace-nowrap">{operationalCostPercentage}%</ModernTableCell>
+                  <ModernTableCell align="right" className="font-bold text-blue-700 text-lg whitespace-nowrap">
+                    ${totalOperationalCost.toLocaleString()}
+                  </ModernTableCell>
+                  <ModernTableCell className="text-gray-600 font-medium">vs. $90,000 originally</ModernTableCell>
+                </ModernTableRow>
+              </ModernTableBody>
+            </ModernTable>
+          </div>
         </CardContent>
       </Card>
 
+      {/* Key Financial Assumptions */}
       <Card className="border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-black">Key Financial Assumptions</CardTitle>
@@ -336,19 +378,19 @@ const FinancialProjections = () => {
               <h5 className="font-semibold text-black mb-3">Revenue Assumptions</h5>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
                   Average nightly rate: $150-200
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
                   Occupancy rate: 65-80%
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
                   Annual rate increase: 5%
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
                   Digital security appreciation: 15-20% annually
                 </li>
               </ul>
@@ -358,19 +400,19 @@ const FinancialProjections = () => {
               <h5 className="font-semibold text-black mb-3">Cost Assumptions</h5>
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                  <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
                   Operational costs: {operationalCostPercentage}% of revenue
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                  <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
                   Annual cost inflation: 3%
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                  <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
                   Maintenance reserve: 5% of revenue
                 </li>
                 <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
+                  <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
                   Technology upgrades: 2% of revenue
                 </li>
               </ul>
