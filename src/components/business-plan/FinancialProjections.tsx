@@ -1,5 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from "recharts";
 import { TrendingUp, DollarSign, PieChart as PieChartIcon, Calculator } from "lucide-react";
@@ -98,7 +99,7 @@ const FinancialProjections = () => {
             </div>
             <div className="text-3xl font-bold text-green-600 mb-2">$182</div>
             <p className="text-gray-600 text-sm">
-              Projected security value by 2034
+              Projected digital security value by 2034
             </p>
           </CardContent>
         </Card>
@@ -119,6 +120,80 @@ const FinancialProjections = () => {
         </Card>
       </div>
 
+      {/* Revenue Projections Table */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-2xl text-black">10-Year Revenue Projection (USD)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-semibold text-black">Year</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Security Sales</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Rental Income</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Amenities</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Total Revenue</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {revenueProjections.map((projection) => (
+                  <TableRow key={projection.year}>
+                    <TableCell className="font-medium">{projection.year}</TableCell>
+                    <TableCell className="text-right text-green-600 font-medium">
+                      ${projection.securitySales.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right text-purple-600 font-medium">
+                      ${projection.rentalIncome.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right text-orange-600 font-medium">
+                      ${projection.amenities.toLocaleString()}
+                    </TableCell>
+                    <TableCell className="text-right text-blue-600 font-semibold">
+                      ${projection.total.toLocaleString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Digital Security Value Growth Table */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-2xl text-black">Digital Security Value Growth</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-semibold text-black">Year</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Security Value (USD)</TableHead>
+                  <TableHead className="text-right font-semibold text-black">Security Holders</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {securityValueProjection.map((projection) => (
+                  <TableRow key={projection.year}>
+                    <TableCell className="font-medium">{projection.year}</TableCell>
+                    <TableCell className="text-right text-red-600 font-semibold">
+                      ${projection.value}
+                    </TableCell>
+                    <TableCell className="text-right text-gray-700 font-medium">
+                      {projection.holders.toLocaleString()}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="border-gray-200">
         <CardHeader>
           <CardTitle className="text-2xl text-black">10-Year Revenue Projection</CardTitle>
@@ -126,9 +201,16 @@ const FinancialProjections = () => {
         <CardContent>
           <ChartContainer config={chartConfig} className="h-96">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenueProjections}>
-                <XAxis dataKey="year" />
-                <YAxis />
+              <AreaChart data={revenueProjections} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                <XAxis 
+                  dataKey="year" 
+                  tick={{ fontSize: 12 }}
+                  interval={0}
+                  angle={-45}
+                  textAnchor="end"
+                  height={80}
+                />
+                <YAxis tick={{ fontSize: 12 }} />
                 <ChartTooltip content={<ChartTooltipContent />} />
                 <Area
                   type="monotone"
@@ -152,9 +234,15 @@ const FinancialProjections = () => {
           <CardContent>
             <ChartContainer config={chartConfig} className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={revenueProjections.slice(0, 5)}>
-                  <XAxis dataKey="year" />
-                  <YAxis />
+                <BarChart data={revenueProjections.slice(0, 5)} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                  <XAxis 
+                    dataKey="year" 
+                    tick={{ fontSize: 12 }}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
+                  <YAxis tick={{ fontSize: 12 }} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Bar dataKey="securitySales" stackId="a" fill="#10B981" />
                   <Bar dataKey="rentalIncome" stackId="a" fill="#8B5CF6" />
@@ -167,14 +255,21 @@ const FinancialProjections = () => {
 
         <Card className="border-gray-200">
           <CardHeader>
-            <CardTitle className="text-2xl text-black">Security Value Growth</CardTitle>
+            <CardTitle className="text-2xl text-black">Digital Security Value Growth</CardTitle>
           </CardHeader>
           <CardContent>
             <ChartContainer config={chartConfig} className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={securityValueProjection}>
-                  <XAxis dataKey="year" />
-                  <YAxis />
+                <LineChart data={securityValueProjection} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+                  <XAxis 
+                    dataKey="year" 
+                    tick={{ fontSize: 12 }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
+                  <YAxis tick={{ fontSize: 12 }} />
                   <ChartTooltip content={<ChartTooltipContent />} />
                   <Line
                     type="monotone"
@@ -245,7 +340,7 @@ const FinancialProjections = () => {
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-blue-500" />
-                  Security appreciation: 15-20% annually
+                  Digital security appreciation: 15-20% annually
                 </li>
               </ul>
             </div>

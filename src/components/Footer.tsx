@@ -66,7 +66,7 @@ const Footer = () => {
               />
             </div>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-              Own a fraction of paradise through innovative tokenized real estate. 
+              Own a fraction of paradise through innovative digital securities real estate. 
               BBT offers ownership, timeshare rights, and governance in premium 
               beachfront property in Palawan, Philippines.
             </p>
