@@ -1,6 +1,5 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ModernTable, ModernTableHeader, ModernTableBody, ModernTableRow, ModernTableCell, ModernTableHeadCell } from "@/components/ui/modern-table";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from "recharts";
 import { TrendingUp, DollarSign, PieChart as PieChartIcon, Calculator } from "lucide-react";
@@ -33,13 +32,16 @@ const FinancialProjections = () => {
   ];
 
   const operationalCosts = [
-    { category: "Property Maintenance", amount: 180000, percentage: 30 },
-    { category: "Staff & Operations", amount: 150000, percentage: 25 },
-    { category: "Marketing & Sales", amount: 90000, percentage: 15 },
-    { category: "Technology & Systems", amount: 60000, percentage: 10 },
-    { category: "Insurance & Legal", amount: 60000, percentage: 10 },
-    { category: "Utilities & Services", amount: 60000, percentage: 10 }
+    { category: "Property Maintenance", percentage: 6, amount: 18192, notes: "Local contractors, lower rates" },
+    { category: "Staff & Operations", percentage: 5, amount: 15160, notes: "3 full-time staff @ $5,000/yr" },
+    { category: "Marketing & Sales", percentage: 3, amount: 9096, notes: "Digital-heavy, local agencies" },
+    { category: "Technology", percentage: 1.5, amount: 4548, notes: "Cloud-based, low overhead" },
+    { category: "Insurance & Legal", percentage: 1.5, amount: 4548, notes: "Local providers" },
+    { category: "Utilities", percentage: 1, amount: 3032, notes: "Solar reduces energy costs" }
   ];
+
+  const totalOperationalCost = 54576;
+  const operationalCostPercentage = 18;
 
   const chartConfig = {
     total: {
@@ -47,7 +49,7 @@ const FinancialProjections = () => {
       color: "#3B82F6",
     },
     securitySales: {
-      label: "Security Sales",
+      label: "Digital Security Sales",
       color: "#10B981",
     },
     rentalIncome: {
@@ -59,7 +61,7 @@ const FinancialProjections = () => {
       color: "#F59E0B",
     },
     value: {
-      label: "Security Value",
+      label: "Digital Security Value",
       color: "#EF4444",
     },
   };
@@ -95,7 +97,7 @@ const FinancialProjections = () => {
               <div className="p-2 rounded-lg bg-green-50 border border-green-200">
                 <TrendingUp className="w-5 h-5 text-green-600" />
               </div>
-              <h4 className="font-semibold text-black">Security Value</h4>
+              <h4 className="font-semibold text-black">Digital Security Value</h4>
             </div>
             <div className="text-3xl font-bold text-green-600 mb-2">$182</div>
             <p className="text-gray-600 text-sm">
@@ -126,38 +128,36 @@ const FinancialProjections = () => {
           <CardTitle className="text-2xl text-black">10-Year Revenue Projection (USD)</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="font-semibold text-black">Year</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Security Sales</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Rental Income</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Amenities</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Total Revenue</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {revenueProjections.map((projection) => (
-                  <TableRow key={projection.year}>
-                    <TableCell className="font-medium">{projection.year}</TableCell>
-                    <TableCell className="text-right text-green-600 font-medium">
-                      ${projection.securitySales.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-right text-purple-600 font-medium">
-                      ${projection.rentalIncome.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-right text-orange-600 font-medium">
-                      ${projection.amenities.toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-right text-blue-600 font-semibold">
-                      ${projection.total.toLocaleString()}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <ModernTable>
+            <ModernTableHeader>
+              <ModernTableRow>
+                <ModernTableHeadCell>Year</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Digital Security Sales</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Rental Income</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Amenities</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Total Revenue</ModernTableHeadCell>
+              </ModernTableRow>
+            </ModernTableHeader>
+            <ModernTableBody>
+              {revenueProjections.map((projection) => (
+                <ModernTableRow key={projection.year}>
+                  <ModernTableCell className="font-semibold">{projection.year}</ModernTableCell>
+                  <ModernTableCell align="right" className="text-green-600 font-medium">
+                    ${projection.securitySales.toLocaleString()}
+                  </ModernTableCell>
+                  <ModernTableCell align="right" className="text-purple-600 font-medium">
+                    ${projection.rentalIncome.toLocaleString()}
+                  </ModernTableCell>
+                  <ModernTableCell align="right" className="text-orange-600 font-medium">
+                    ${projection.amenities.toLocaleString()}
+                  </ModernTableCell>
+                  <ModernTableCell align="right" className="text-blue-600 font-bold">
+                    ${projection.total.toLocaleString()}
+                  </ModernTableCell>
+                </ModernTableRow>
+              ))}
+            </ModernTableBody>
+          </ModernTable>
         </CardContent>
       </Card>
 
@@ -167,30 +167,28 @@ const FinancialProjections = () => {
           <CardTitle className="text-2xl text-black">Digital Security Value Growth</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="font-semibold text-black">Year</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Security Value (USD)</TableHead>
-                  <TableHead className="text-right font-semibold text-black">Security Holders</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {securityValueProjection.map((projection) => (
-                  <TableRow key={projection.year}>
-                    <TableCell className="font-medium">{projection.year}</TableCell>
-                    <TableCell className="text-right text-red-600 font-semibold">
-                      ${projection.value}
-                    </TableCell>
-                    <TableCell className="text-right text-gray-700 font-medium">
-                      {projection.holders.toLocaleString()}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+          <ModernTable>
+            <ModernTableHeader>
+              <ModernTableRow>
+                <ModernTableHeadCell>Year</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Digital Security Value (USD)</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Digital Security Holders</ModernTableHeadCell>
+              </ModernTableRow>
+            </ModernTableHeader>
+            <ModernTableBody>
+              {securityValueProjection.map((projection) => (
+                <ModernTableRow key={projection.year}>
+                  <ModernTableCell className="font-semibold">{projection.year}</ModernTableCell>
+                  <ModernTableCell align="right" className="text-red-600 font-bold">
+                    ${projection.value}
+                  </ModernTableCell>
+                  <ModernTableCell align="right" className="text-gray-700 font-medium">
+                    {projection.holders.toLocaleString()}
+                  </ModernTableCell>
+                </ModernTableRow>
+              ))}
+            </ModernTableBody>
+          </ModernTable>
         </CardContent>
       </Card>
 
@@ -287,33 +285,44 @@ const FinancialProjections = () => {
 
       <Card className="border-gray-200">
         <CardHeader>
-          <CardTitle className="text-2xl text-black">Operational Cost Structure</CardTitle>
+          <CardTitle className="text-2xl text-black">Revised Operational Cost Structure ({operationalCostPercentage}% of Revenue)</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-gray-700 mb-6">
-            Annual operational costs are projected to be approximately 25% of gross revenue, 
+            Annual operational costs are projected to be approximately {operationalCostPercentage}% of gross revenue, 
             ensuring healthy profit margins while maintaining high service standards.
           </p>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {operationalCosts.map((cost, index) => (
-              <div key={index} className="border border-gray-200 rounded-xl p-4">
-                <div className="flex justify-between items-center mb-2">
-                  <h5 className="font-semibold text-black text-sm">{cost.category}</h5>
-                  <span className="text-gray-600 text-sm">{cost.percentage}%</span>
-                </div>
-                <div className="text-xl font-bold text-blue-600 mb-2">
-                  ${cost.amount.toLocaleString()}
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-500 h-2 rounded-full"
-                    style={{ width: `${cost.percentage}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+          <ModernTable>
+            <ModernTableHeader>
+              <ModernTableRow>
+                <ModernTableHeadCell>Category</ModernTableHeadCell>
+                <ModernTableHeadCell align="center">% of Revenue</ModernTableHeadCell>
+                <ModernTableHeadCell align="right">Annual Cost (Year 1)</ModernTableHeadCell>
+                <ModernTableHeadCell>Notes</ModernTableHeadCell>
+              </ModernTableRow>
+            </ModernTableHeader>
+            <ModernTableBody>
+              {operationalCosts.map((cost, index) => (
+                <ModernTableRow key={index}>
+                  <ModernTableCell className="font-semibold">{cost.category}</ModernTableCell>
+                  <ModernTableCell align="center" className="font-medium">{cost.percentage}%</ModernTableCell>
+                  <ModernTableCell align="right" className="text-blue-600 font-bold">
+                    ${cost.amount.toLocaleString()}
+                  </ModernTableCell>
+                  <ModernTableCell className="text-gray-600">{cost.notes}</ModernTableCell>
+                </ModernTableRow>
+              ))}
+              <ModernTableRow className="bg-gray-50 border-t-2 border-gray-200">
+                <ModernTableCell className="font-bold text-black">Total</ModernTableCell>
+                <ModernTableCell align="center" className="font-bold text-black">{operationalCostPercentage}%</ModernTableCell>
+                <ModernTableCell align="right" className="font-bold text-blue-700 text-lg">
+                  ${totalOperationalCost.toLocaleString()}
+                </ModernTableCell>
+                <ModernTableCell className="text-gray-600 font-medium">vs. $90,000 originally</ModernTableCell>
+              </ModernTableRow>
+            </ModernTableBody>
+          </ModernTable>
         </CardContent>
       </Card>
 
@@ -350,7 +359,7 @@ const FinancialProjections = () => {
               <ul className="space-y-2 text-gray-600">
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500" />
-                  Operational costs: 25% of revenue
+                  Operational costs: {operationalCostPercentage}% of revenue
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-500" />
