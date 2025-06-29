@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,38 +14,51 @@ import {
   Calendar, 
   DollarSign,
   Info,
-  Home
+  Home,
+  AlertTriangle
 } from "lucide-react";
-import SimulatorResultsTable from "./SimulatorResultsTable";
-import SimulatorChart from "./SimulatorChart";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+interface SimulationResult {
+  ownershipPct: number;
+  annualStayDays: number;
+  annualDividendUSD: number;
+  breakdown: {
+    grossRental: number;
+    grossAmenities: number;
+    netIncome: number;
+    dividendPool: number;
+  };
+  caps: {
+    foreignCap: number;
+    philippineCap: number;
+    remainingForeign: number;
+    remainingPhilippine: number;
+  };
+}
 
 const DigitalSecuritiesSimulator = () => {
   const [tokenQuantity, setTokenQuantity] = useState([1000]);
-  const [nationality, setNationality] = useState<'filipino' | 'foreign'>('filipino');
+  const [investorType, setInvestorType] = useState<'PHILIPPINE' | 'FOREIGN'>('PHILIPPINE');
   const [currency, setCurrency] = useState<'USD' | 'PHP'>('USD');
+  const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Configurable parameters
-  const FILIPINO_ALLOCATION = 0.6;
-  const FOREIGN_ALLOCATION = 0.4;
-  const TOKENS_PER_LOT = 100000;
-  const LOT_VALUE = 250000; // USD
+  // Constants
+  const TOTAL_TOKENS = 248400;
   const TOKEN_PRICE = 25; // USD
-  const TOTAL_STAYS_PER_LOT = 365; // days per year
-  const PROJECTED_ANNUAL_RENT = 125000; // USD per lot
-
-  // Exchange rate (simplified)
   const USD_TO_PHP = 56;
 
-  // Calculations
-  const tokensPurchased = tokenQuantity[0];
-  const ownershipPercentage = (tokensPurchased / TOKENS_PER_LOT) * 100;
-  const investmentAmount = tokensPurchased * TOKEN_PRICE;
-  
-  const staysAllocation = nationality === 'filipino' 
-    ? (tokensPurchased / TOKENS_PER_LOT) * TOTAL_STAYS_PER_LOT * FILIPINO_ALLOCATION
-    : (tokensPurchased / TOKENS_PER_LOT) * TOTAL_STAYS_PER_LOT * FOREIGN_ALLOCATION;
+  // Calculate max tokens based on investor type and available caps
+  const getMaxTokens = () => {
+    if (!simulationResult) return 10000; // Default while loading
     
-  const annualDividend = (tokensPurchased / TOKENS_PER_LOT) * PROJECTED_ANNUAL_RENT * 0.3; // 30% revenue share
+    return investorType === 'FOREIGN' 
+      ? simulationResult.caps.remainingForeign
+      : simulationResult.caps.remainingPhilippine;
+  };
 
   const formatCurrency = (amount: number) => {
     if (currency === 'PHP') {
@@ -54,14 +67,70 @@ const DigitalSecuritiesSimulator = () => {
     return `$${amount.toLocaleString()}`;
   };
 
+  const simulateInvestment = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('simulate-investment', {
+        body: {
+          tokensPurchased: tokenQuantity[0],
+          totalTokens: TOTAL_TOKENS,
+          investorType: investorType
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.error) {
+        setError(data.error);
+        toast.error(data.error);
+        return;
+      }
+
+      setSimulationResult(data);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to simulate investment';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Run simulation on component mount and when inputs change
+  useEffect(() => {
+    simulateInvestment();
+  }, [tokenQuantity[0], investorType]);
+
+  // Update slider max when caps change
+  useEffect(() => {
+    if (simulationResult) {
+      const maxTokens = getMaxTokens();
+      if (tokenQuantity[0] > maxTokens) {
+        setTokenQuantity([Math.min(maxTokens, 1000)]);
+      }
+    }
+  }, [simulationResult, investorType]);
+
   const downloadSummary = () => {
+    if (!simulationResult) return;
+
     const summaryData = {
-      tokensPurchased,
-      nationality,
-      ownershipPercentage: ownershipPercentage.toFixed(3),
-      investmentAmount: formatCurrency(investmentAmount),
-      annualStays: Math.round(staysAllocation),
-      projectedAnnualDividend: formatCurrency(annualDividend),
+      tokensPurchased: tokenQuantity[0],
+      investmentAmount: formatCurrency(tokenQuantity[0] * TOKEN_PRICE),
+      investorType,
+      ownershipPercentage: `${simulationResult.ownershipPct}%`,
+      annualStayDays: simulationResult.annualStayDays,
+      annualDividend: formatCurrency(simulationResult.annualDividendUSD),
+      breakdown: {
+        grossRental: formatCurrency(simulationResult.breakdown.grossRental),
+        grossAmenities: formatCurrency(simulationResult.breakdown.grossAmenities),
+        netIncome: formatCurrency(simulationResult.breakdown.netIncome),
+        dividendPool: formatCurrency(simulationResult.breakdown.dividendPool)
+      },
       currency,
       generatedAt: new Date().toISOString()
     };
@@ -94,9 +163,7 @@ const DigitalSecuritiesSimulator = () => {
           </p>
         </div>
 
-        {/* Mobile-optimized layout */}
         <div className="space-y-6 md:space-y-8">
-          {/* Input Panel - Full width on mobile, side-by-side on desktop */}
           <Card className="p-4 md:p-8 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
             <div className="space-y-6 md:space-y-8">
               <div className="text-center">
@@ -104,7 +171,6 @@ const DigitalSecuritiesSimulator = () => {
                 <p className="text-sm text-gray-600">Configure your Digital Securities purchase</p>
               </div>
 
-              {/* Mobile-first responsive grid */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
                 {/* Left Column - Inputs */}
                 <div className="space-y-6">
@@ -115,39 +181,52 @@ const DigitalSecuritiesSimulator = () => {
                       <Input
                         type="number"
                         value={tokenQuantity[0]}
-                        onChange={(e) => setTokenQuantity([parseInt(e.target.value) || 1])}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value) || 1;
+                          const maxTokens = getMaxTokens();
+                          setTokenQuantity([Math.min(Math.max(1, value), maxTokens)]);
+                        }}
                         className="w-full sm:w-32 text-center text-lg font-medium"
                         min="1"
-                        max="100000"
+                        max={getMaxTokens()}
                       />
                     </div>
                     <Slider
                       value={tokenQuantity}
                       onValueChange={setTokenQuantity}
-                      max={10000}
+                      max={getMaxTokens()}
                       min={1}
                       step={1}
                       className="w-full"
                     />
                     <div className="flex justify-between text-xs text-gray-500">
                       <span>1</span>
-                      <span>10,000+</span>
+                      <span>{getMaxTokens().toLocaleString()} max</span>
                     </div>
                   </div>
 
-                  {/* Nationality Toggle */}
+                  {/* Investor Type Toggle */}
                   <div className="space-y-3">
                     <Label className="text-sm font-medium">Investor Classification</Label>
-                    <Tabs value={nationality} onValueChange={(value) => setNationality(value as 'filipino' | 'foreign')}>
+                    <Tabs value={investorType} onValueChange={(value) => setInvestorType(value as 'PHILIPPINE' | 'FOREIGN')}>
                       <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 h-auto">
-                        <TabsTrigger value="filipino" className="text-sm py-3 px-4">
-                          🇵🇭 Filipino (60% Pool)
+                        <TabsTrigger value="PHILIPPINE" className="text-sm py-3 px-4">
+                          🇵🇭 Philippine (60% Pool)
                         </TabsTrigger>
-                        <TabsTrigger value="foreign" className="text-sm py-3 px-4">
+                        <TabsTrigger value="FOREIGN" className="text-sm py-3 px-4">
                           🌍 Foreign (40% Pool)
                         </TabsTrigger>
                       </TabsList>
                     </Tabs>
+                    {simulationResult && (
+                      <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded">
+                        Available in {investorType.toLowerCase()} pool: {
+                          investorType === 'FOREIGN' 
+                            ? simulationResult.caps.remainingForeign.toLocaleString()
+                            : simulationResult.caps.remainingPhilippine.toLocaleString()
+                        } tokens
+                      </div>
+                    )}
                   </div>
 
                   {/* Currency Toggle */}
@@ -169,47 +248,85 @@ const DigitalSecuritiesSimulator = () => {
                     <p className="text-sm text-gray-600">Your projected returns and benefits</p>
                   </div>
 
-                  {/* Mobile-optimized grid for results */}
-                  <div className="grid grid-cols-2 gap-3 md:gap-4">
-                    <div className="bg-blue-50 p-3 md:p-4 rounded-lg text-center">
-                      <DollarSign className="w-5 h-5 md:w-6 md:h-6 text-blue-600 mx-auto mb-2" />
-                      <div className="text-sm md:text-lg font-bold text-blue-600 leading-tight">
-                        {formatCurrency(investmentAmount)}
-                      </div>
-                      <div className="text-xs text-blue-700 mt-1">Total Investment</div>
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+                      <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                      <div className="text-sm text-red-800">{error}</div>
                     </div>
+                  )}
 
-                    <div className="bg-green-50 p-3 md:p-4 rounded-lg text-center">
-                      <Home className="w-5 h-5 md:w-6 md:h-6 text-green-600 mx-auto mb-2" />
-                      <div className="text-sm md:text-lg font-bold text-green-600 leading-tight">
-                        {ownershipPercentage.toFixed(3)}%
-                      </div>
-                      <div className="text-xs text-green-700 mt-1">Ownership Share</div>
+                  {isLoading ? (
+                    <div className="text-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                      <p className="text-sm text-gray-600 mt-2">Calculating...</p>
                     </div>
+                  ) : simulationResult && (
+                    <div className="grid grid-cols-2 gap-3 md:gap-4">
+                      <div className="bg-blue-50 p-3 md:p-4 rounded-lg text-center">
+                        <DollarSign className="w-5 h-5 md:w-6 md:h-6 text-blue-600 mx-auto mb-2" />
+                        <div className="text-sm md:text-lg font-bold text-blue-600 leading-tight">
+                          {formatCurrency(tokenQuantity[0] * TOKEN_PRICE)}
+                        </div>
+                        <div className="text-xs text-blue-700 mt-1">Total Investment</div>
+                      </div>
 
-                    <div className="bg-purple-50 p-3 md:p-4 rounded-lg text-center">
-                      <Calendar className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-2" />
-                      <div className="text-sm md:text-lg font-bold text-purple-600 leading-tight">
-                        {Math.round(staysAllocation)}
+                      <div className="bg-green-50 p-3 md:p-4 rounded-lg text-center">
+                        <Home className="w-5 h-5 md:w-6 md:h-6 text-green-600 mx-auto mb-2" />
+                        <div className="text-sm md:text-lg font-bold text-green-600 leading-tight">
+                          {simulationResult.ownershipPct}%
+                        </div>
+                        <div className="text-xs text-green-700 mt-1">Ownership Share</div>
                       </div>
-                      <div className="text-xs text-purple-700 mt-1">Annual Stay Days</div>
-                    </div>
 
-                    <div className="bg-orange-50 p-3 md:p-4 rounded-lg text-center">
-                      <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-orange-600 mx-auto mb-2" />
-                      <div className="text-sm md:text-lg font-bold text-orange-600 leading-tight">
-                        {formatCurrency(annualDividend)}
+                      <div className="bg-purple-50 p-3 md:p-4 rounded-lg text-center">
+                        <Calendar className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-2" />
+                        <div className="text-sm md:text-lg font-bold text-purple-600 leading-tight">
+                          {simulationResult.annualStayDays}
+                        </div>
+                        <div className="text-xs text-purple-700 mt-1">Annual Stay Days</div>
                       </div>
-                      <div className="text-xs text-orange-700 mt-1">Annual Dividend</div>
+
+                      <div className="bg-orange-50 p-3 md:p-4 rounded-lg text-center">
+                        <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-orange-600 mx-auto mb-2" />
+                        <div className="text-sm md:text-lg font-bold text-orange-600 leading-tight">
+                          {formatCurrency(simulationResult.annualDividendUSD)}
+                        </div>
+                        <div className="text-xs text-orange-700 mt-1">Annual Dividend</div>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {/* Breakdown Table */}
+                  {simulationResult && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <h5 className="font-medium text-gray-800 mb-3 text-sm">Revenue Breakdown</h5>
+                      <div className="space-y-2 text-xs">
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Gross Rental:</span>
+                          <span className="font-medium">{formatCurrency(simulationResult.breakdown.grossRental)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Amenity Revenue:</span>
+                          <span className="font-medium">{formatCurrency(simulationResult.breakdown.grossAmenities)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-gray-600">Net Income:</span>
+                          <span className="font-medium">{formatCurrency(simulationResult.breakdown.netIncome)}</span>
+                        </div>
+                        <div className="flex justify-between border-t pt-2">
+                          <span className="text-gray-600">Dividend Pool:</span>
+                          <span className="font-bold">{formatCurrency(simulationResult.breakdown.dividendPool)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Mobile-friendly download button */}
               <div className="pt-4 border-t border-gray-200">
                 <Button 
                   onClick={downloadSummary}
+                  disabled={!simulationResult}
                   className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 py-3 text-base"
                   size="lg"
                 >
@@ -220,21 +337,6 @@ const DigitalSecuritiesSimulator = () => {
             </div>
           </Card>
 
-          {/* Results Table */}
-          <SimulatorResultsTable 
-            nationality={nationality}
-            currency={currency}
-            formatCurrency={formatCurrency}
-          />
-
-          {/* Chart Visualization */}
-          <SimulatorChart 
-            nationality={nationality}
-            currency={currency}
-            formatCurrency={formatCurrency}
-          />
-
-          {/* Mobile-optimized Disclaimer */}
           <div className="p-4 md:p-6 bg-yellow-50 rounded-xl border border-yellow-200">
             <div className="flex items-start gap-3">
               <Info className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
