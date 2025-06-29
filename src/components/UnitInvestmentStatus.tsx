@@ -6,9 +6,9 @@ import { Progress } from '@/components/ui/progress';
 
 interface Investor {
   id: string;
-  percentage: number;
-  nationality: string;
-  investment_amount_usd: number;
+  percentage: number | null;
+  nationality: string | null;
+  investment_amount_usd: number | null;
   created_at: string;
 }
 
@@ -25,14 +25,13 @@ const UnitInvestmentStatus = ({ unit }: UnitInvestmentStatusProps) => {
 
   const fetchInvestors = async () => {
     try {
-      // Try to fetch investors, but handle the case where table doesn't exist yet
       const { data, error } = await supabase
-        .from('investors' as any)
+        .from('investors')
         .select('*')
         .eq('unit_id', unit.id);
 
       if (error) {
-        console.log('Investors table not yet available:', error);
+        console.log('Error fetching investors:', error);
         setInvestors([]);
       } else {
         setInvestors(data || []);
@@ -48,7 +47,7 @@ const UnitInvestmentStatus = ({ unit }: UnitInvestmentStatusProps) => {
   useEffect(() => {
     fetchInvestors();
 
-    // Set up real-time subscription (will fail gracefully if table doesn't exist)
+    // Set up real-time subscription
     try {
       const subscription = supabase
         .channel(`investors-${unit.id}`)
@@ -70,7 +69,7 @@ const UnitInvestmentStatus = ({ unit }: UnitInvestmentStatusProps) => {
         supabase.removeChannel(subscription);
       };
     } catch (error) {
-      console.log('Real-time subscription not available yet:', error);
+      console.log('Real-time subscription error:', error);
     }
   }, [unit.id]);
 

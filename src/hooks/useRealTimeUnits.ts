@@ -23,33 +23,39 @@ export interface SecurityPool {
   updated_at: string;
 }
 
+// Mock units data since we don't have a units table yet
+const mockUnits: Unit[] = [
+  {
+    id: 'unit-1',
+    name: 'Beachfront Premium Villa',
+    unit_type: 'Premium Villa',
+    total_securities: 1000,
+    available_securities: 750,
+    security_price_usd: 450,
+    ownership_type: 'foreign_allowed',
+    status: 'available',
+    funded_percentage: 25
+  },
+  {
+    id: 'unit-2',
+    name: 'Garden Paradise Suite',
+    unit_type: 'Garden Suite',
+    total_securities: 800,
+    available_securities: 600,
+    security_price_usd: 350,
+    ownership_type: 'foreign_allowed',
+    status: 'available',
+    funded_percentage: 25
+  }
+];
+
 export const useRealTimeUnits = () => {
   const { data: units = [], isLoading: unitsLoading, error: unitsError } = useQuery({
     queryKey: ['units'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('units')
-        .select('*');
-      
-      if (error) throw error;
-      
-      // Map units data to Unit interface with calculated fields
-      return data.map((unit): Unit => {
-        const soldSecurities = unit.total_tokens - (unit.total_tokens || 0); // Calculate sold securities
-        const fundedPercentage = unit.total_tokens > 0 ? (soldSecurities / unit.total_tokens) * 100 : 0;
-        
-        return {
-          id: unit.id,
-          name: unit.name,
-          unit_type: 'Premium Villa', // Default since this field might not exist
-          total_securities: unit.total_tokens, // Map total_tokens to total_securities
-          available_securities: unit.total_tokens, // Assuming all securities are available initially
-          security_price_usd: unit.token_price_usd, // Map token_price_usd to security_price_usd
-          ownership_type: 'foreign_allowed', // Default value
-          status: unit.status,
-          funded_percentage: fundedPercentage
-        };
-      });
+      // For now, return mock data since we don't have a units table
+      // In the future, this would query: supabase.from('units').select('*')
+      return mockUnits;
     },
   });
 
@@ -65,8 +71,8 @@ export const useRealTimeUnits = () => {
       return data.map((pool): SecurityPool => ({
         id: pool.id,
         pool_type: pool.pool_type,
-        total_securities: pool.total_tokens, // Map total_tokens to total_securities
-        sold_securities: pool.sold_tokens,   // Map sold_tokens to sold_securities
+        total_securities: pool.total_tokens,
+        sold_securities: pool.sold_tokens,
         created_at: pool.created_at,
         updated_at: pool.updated_at
       }));

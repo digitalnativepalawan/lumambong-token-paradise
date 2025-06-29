@@ -9,7 +9,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import KYCModal from './KYCModal';
-import UnitInvestmentStatus from './UnitInvestmentStatus';
 
 interface InvestmentModalProps {
   isOpen: boolean;
@@ -43,22 +42,24 @@ const InvestmentModal = ({ isOpen, onClose, unit }: InvestmentModalProps) => {
       const percentage = parseFloat(investmentPercentage);
       const investmentAmount = calculateInvestmentAmount();
 
-      // Use direct SQL query to insert into investors table
-      const { error } = await supabase.rpc('insert_investor', {
-        p_user_id: user.id,
-        p_unit_id: unit.id,
-        p_name: userProfile.full_name || user.email || 'Unknown',
-        p_email: user.email,
-        p_percentage: percentage,
-        p_nationality: userProfile.nationality,
-        p_investment_amount_usd: investmentAmount
+      // Use the insert-investor edge function
+      const { data, error } = await supabase.functions.invoke('insert-investor', {
+        body: {
+          p_user_id: user.id,
+          p_unit_id: unit.id,
+          p_name: userProfile.full_name || user.email || 'Unknown',
+          p_email: user.email,
+          p_percentage: percentage,
+          p_nationality: userProfile.nationality,
+          p_investment_amount_usd: investmentAmount
+        }
       });
 
       if (error) {
         console.error('Investment error:', error);
         // Fallback: try direct insert
         const { error: directError } = await supabase
-          .from('investors' as any)
+          .from('investors')
           .insert({
             user_id: user.id,
             unit_id: unit.id,
@@ -113,9 +114,6 @@ const InvestmentModal = ({ isOpen, onClose, unit }: InvestmentModalProps) => {
         </DialogHeader>
 
         <div className="space-y-6">
-          {/* Real-time Investment Status - temporarily disabled until types are updated */}
-          {/* <UnitInvestmentStatus unit={unit} /> */}
-
           {/* Investment Form */}
           <div className="space-y-4">
             <div>

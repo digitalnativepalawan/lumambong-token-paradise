@@ -20,15 +20,14 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      // Try to fetch from users table, handle gracefully if it doesn't exist
       const { data, error } = await supabase
-        .from('users' as any)
+        .from('users')
         .select('*')
         .eq('auth_user_id', userId)
         .single();
 
-      if (error && error.code !== 'PGRST116') { // Not found is ok
-        console.log('User profile table not available yet:', error);
+      if (error && error.code !== 'PGRST116') {
+        console.log('User profile table error:', error);
         // Create a basic profile from auth user data
         setUserProfile({
           id: userId,
@@ -41,7 +40,16 @@ export const useAuth = () => {
         return;
       }
       
-      setUserProfile(data);
+      if (data) {
+        setUserProfile({
+          id: data.id,
+          email: data.email,
+          full_name: data.name,
+          nationality: null, // This would need to be added to users table
+          kyc_verified: false, // This would need to be added to users table
+          is_admin: data.role === 'admin'
+        });
+      }
     } catch (error) {
       console.error('Error fetching user profile:', error);
       // Fallback profile
@@ -103,11 +111,11 @@ export const useAuth = () => {
 
     try {
       const { error } = await supabase
-        .from('users' as any)
+        .from('users')
         .upsert({
           auth_user_id: user.id,
           email: user.email,
-          ...updates,
+          name: updates.full_name,
           updated_at: new Date().toISOString()
         });
 
