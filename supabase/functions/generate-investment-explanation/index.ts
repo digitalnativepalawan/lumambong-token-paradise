@@ -21,6 +21,12 @@ interface ExplanationRequest {
       dividendPool: number
     }
   }
+  adjustments?: {
+    rateDelta: number
+    highOccDelta: number
+    lowOccDelta: number
+    amenityDelta: number
+  }
 }
 
 serve(async (req) => {
@@ -29,35 +35,70 @@ serve(async (req) => {
   }
 
   try {
-    const { tokensPurchased, totalTokens, simulationResult }: ExplanationRequest = await req.json()
+    const { tokensPurchased, totalTokens, investorType, simulationResult, adjustments }: ExplanationRequest = await req.json()
 
-    // Calculate additional metrics for the explanation using correct valuations
-    const totalInvestment = tokensPurchased * 25
-    const currentProjectValue = 2585000 // $2.585M current project value
-    const equityToday = (simulationResult.ownershipPct / 100) * currentProjectValue
-    const yearsAhead = 12
-    const projectedFutureValue = 12130000 // $12.13M projected future value in 12 years
-    const equityFuture = (simulationResult.ownershipPct / 100) * projectedFutureValue
+    // Constants for equity calculations
+    const TOKEN_PRICE = 25
+    const CURRENT_PROJECT_VALUE = 2585000 // $2.585M
+    const FUTURE_PROJECT_VALUE = 12130000 // $12.13M in 12 years
+    
+    // Calculate investment metrics
+    const totalInvestment = tokensPurchased * TOKEN_PRICE
+    const ownershipDecimal = simulationResult.ownershipPct / 100
+    const equityToday = ownershipDecimal * CURRENT_PROJECT_VALUE
+    const equityFuture = ownershipDecimal * FUTURE_PROJECT_VALUE
     const equityGain = equityFuture - equityToday
-    const twelveYearDividends = simulationResult.annualDividendUSD * yearsAhead
-    const totalReturn = twelveYearDividends + equityGain
+    const twelveYearDividends = simulationResult.annualDividendUSD * 12
+    const totalReturn = equityGain + twelveYearDividends
     const totalReturnMultiple = totalReturn / totalInvestment
 
-    // Generate the explanation
-    const explanation = `By buying ${tokensPurchased.toLocaleString()} Digital Securities for $${totalInvestment.toLocaleString()}, you own ${simulationResult.ownershipPct.toFixed(4)}% of Binga Beach. That slice is worth $${Math.round(equityToday).toLocaleString()} today and could grow to $${Math.round(equityFuture).toLocaleString()} in ${yearsAhead} years — a gain of $${Math.round(equityGain).toLocaleString()}. You'll also get about ${Math.round(simulationResult.annualStayDays)} free-stay nights annually and receive $${Math.round(simulationResult.annualDividendUSD).toLocaleString()} in dividends this year (totalling $${Math.round(twelveYearDividends).toLocaleString()} over ${yearsAhead} years). Together, your cash dividends plus asset appreciation could multiply your $${totalInvestment.toLocaleString()} investment roughly ${totalReturnMultiple.toFixed(1)}× by Year ${yearsAhead}. It's a small entry for big long-term upside and a taste of paradise!`
+    // Generate adjustment context
+    const adj = adjustments || { rateDelta: 0, highOccDelta: 0, lowOccDelta: 0, amenityDelta: 0 }
+    let adjustmentContext = ""
+    
+    if (adj.rateDelta !== 0 || adj.highOccDelta !== 0 || adj.lowOccDelta !== 0 || adj.amenityDelta !== 0) {
+      const adjustmentParts = []
+      if (adj.rateDelta !== 0) {
+        adjustmentParts.push(`${adj.rateDelta > 0 ? 'increased' : 'decreased'} nightly rates by $${Math.abs(adj.rateDelta)}`)
+      }
+      if (adj.highOccDelta !== 0) {
+        adjustmentParts.push(`${adj.highOccDelta > 0 ? 'boosted' : 'reduced'} high-season occupancy by ${Math.abs(adj.highOccDelta)}pp`)
+      }
+      if (adj.lowOccDelta !== 0) {
+        adjustmentParts.push(`${adj.lowOccDelta > 0 ? 'boosted' : 'reduced'} low-season occupancy by ${Math.abs(adj.lowOccDelta)}pp`)
+      }
+      if (adj.amenityDelta !== 0) {
+        adjustmentParts.push(`${adj.amenityDelta > 0 ? 'increased' : 'decreased'} amenity revenue by ${Math.abs(adj.amenityDelta).toFixed(1)}pp`)
+      }
+      
+      adjustmentContext = ` With your adjustments (${adjustmentParts.join(', ')}), the financial projections reflect these operational improvements.`
+    }
+
+    // Generate explanation based on investment size and performance
+    let explanation = ""
+    
+    if (tokensPurchased >= 10000) {
+      explanation = `By investing $${totalInvestment.toLocaleString()} in ${tokensPurchased.toLocaleString()} Digital Securities, you're acquiring a meaningful ${simulationResult.ownershipPct}% stake in Binga Beach. Your ownership slice is worth about $${Math.round(equityToday).toLocaleString()} today and could grow to approximately $${Math.round(equityFuture).toLocaleString()} over 12 years—a potential gain of $${Math.round(equityGain).toLocaleString()}. You'll receive roughly $${Math.round(simulationResult.annualDividendUSD)} in annual dividends (about $${Math.round(twelveYearDividends).toLocaleString()} over 12 years), plus ${Math.round(simulationResult.annualStayDays)} days of property access annually. Combined, your dividends and property appreciation could multiply your investment by ${totalReturnMultiple.toFixed(1)}× over the next decade.${adjustmentContext}`
+    } else if (tokensPurchased >= 1000) {
+      explanation = `Your $${totalInvestment.toLocaleString()} investment in ${tokensPurchased.toLocaleString()} Digital Securities gives you ${simulationResult.ownershipPct}% ownership of Binga Beach. This stake is valued at about $${Math.round(equityToday).toLocaleString()} today, with potential to reach $${Math.round(equityFuture).toLocaleString()} in 12 years. You'll earn approximately $${Math.round(simulationResult.annualDividendUSD)} annually in dividends and enjoy ${Math.round(simulationResult.annualStayDays)} days of property access per year. Over 12 years, your total returns (dividends plus appreciation) could reach about ${totalReturnMultiple.toFixed(1)}× your initial investment.${adjustmentContext}`
+    } else {
+      explanation = `With ${tokensPurchased} Digital Securities for $${totalInvestment.toLocaleString()}, you own ${simulationResult.ownershipPct}% of Binga Beach. Your ownership is worth about $${Math.round(equityToday).toLocaleString()} today and could grow to roughly $${Math.round(equityFuture).toLocaleString()} over time. You'll receive about $${Math.round(simulationResult.annualDividendUSD)} in annual dividends and can enjoy ${Math.round(simulationResult.annualStayDays)} days at the property each year. This represents a potential ${totalReturnMultiple.toFixed(1)}× return on your investment over 12 years through dividends and property appreciation.${adjustmentContext}`
+    }
+
+    const result = {
+      explanation,
+      metrics: {
+        totalInvestment,
+        equityToday: Math.round(equityToday),
+        equityFuture: Math.round(equityFuture),
+        equityGain: Math.round(equityGain),
+        twelveYearDividends: Math.round(twelveYearDividends),
+        totalReturnMultiple: Number(totalReturnMultiple.toFixed(2))
+      }
+    }
 
     return new Response(
-      JSON.stringify({ 
-        explanation,
-        metrics: {
-          totalInvestment,
-          equityToday: Math.round(equityToday),
-          equityFuture: Math.round(equityFuture),
-          equityGain: Math.round(equityGain),
-          twelveYearDividends: Math.round(twelveYearDividends),
-          totalReturnMultiple: parseFloat(totalReturnMultiple.toFixed(1))
-        }
-      }),
+      JSON.stringify(result),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
@@ -66,7 +107,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('Explanation generation error:', error)
     return new Response(
-      JSON.stringify({ error: 'Failed to generate explanation' }),
+      JSON.stringify({ error: 'Internal server error' }),
       { 
         status: 500, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 

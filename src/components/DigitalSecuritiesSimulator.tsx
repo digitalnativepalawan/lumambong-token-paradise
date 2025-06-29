@@ -8,7 +8,8 @@ import { toast } from "sonner";
 import InvestmentControls from "./digital-securities/InvestmentControls";
 import InvestmentResults from "./digital-securities/InvestmentResults";
 import InvestmentExplanation from "./digital-securities/InvestmentExplanation";
-import { SimulationResult, InvestmentExplanation as InvestmentExplanationType, InvestorType, Currency } from "./digital-securities/types";
+import AdjustmentControls from "./digital-securities/AdjustmentControls";
+import { SimulationResult, InvestmentExplanation as InvestmentExplanationType, InvestorType, Currency, SimulationAdjustments } from "./digital-securities/types";
 
 const DigitalSecuritiesSimulator = () => {
   const [tokenQuantity, setTokenQuantity] = useState([1000]);
@@ -19,6 +20,12 @@ const DigitalSecuritiesSimulator = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isGeneratingExplanation, setIsGeneratingExplanation] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [adjustments, setAdjustments] = useState<SimulationAdjustments>({
+    rateDelta: 0,
+    highOccDelta: 0,
+    lowOccDelta: 0,
+    amenityDelta: 0
+  });
 
   // Constants
   const TOTAL_TOKENS = 248400;
@@ -40,7 +47,8 @@ const DigitalSecuritiesSimulator = () => {
         body: {
           tokensPurchased: tokenQuantity[0],
           totalTokens: TOTAL_TOKENS,
-          investorType: investorType
+          investorType: investorType,
+          adjustments: adjustments
         }
       });
 
@@ -74,7 +82,8 @@ const DigitalSecuritiesSimulator = () => {
           tokensPurchased: tokenQuantity[0],
           totalTokens: TOTAL_TOKENS,
           investorType: investorType,
-          simulationResult: simulationData
+          simulationResult: simulationData,
+          adjustments: adjustments
         }
       });
 
@@ -94,7 +103,7 @@ const DigitalSecuritiesSimulator = () => {
   // Run simulation on component mount and when inputs change
   useEffect(() => {
     simulateInvestment();
-  }, [tokenQuantity[0], investorType]);
+  }, [tokenQuantity[0], investorType, adjustments]);
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-emerald-50 py-6 md:py-16 mt-12">
@@ -118,31 +127,39 @@ const DigitalSecuritiesSimulator = () => {
             <div className="space-y-4 md:space-y-8">
               <div className="text-center">
                 <h4 className="text-base sm:text-lg md:text-xl font-bold mb-2">Investment Calculator</h4>
-                <p className="text-xs sm:text-sm text-gray-600">Configure your Digital Securities purchase</p>
+                <p className="text-xs sm:text-sm text-gray-600">Configure your Digital Securities purchase and scenario parameters</p>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
                 {/* Left Column - Controls */}
-                <div>
-                  <div className="text-center mb-4">
-                    <h4 className="text-base sm:text-lg md:text-xl font-bold mb-2">Investment Configuration</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Set your investment parameters</p>
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-center mb-4">
+                      <h4 className="text-base sm:text-lg font-bold mb-2">Investment Configuration</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">Set your investment parameters</p>
+                    </div>
+                    <InvestmentControls
+                      tokenQuantity={tokenQuantity}
+                      setTokenQuantity={setTokenQuantity}
+                      investorType={investorType}
+                      setInvestorType={setInvestorType}
+                      currency={currency}
+                      setCurrency={setCurrency}
+                      simulationResult={simulationResult}
+                    />
                   </div>
-                  <InvestmentControls
-                    tokenQuantity={tokenQuantity}
-                    setTokenQuantity={setTokenQuantity}
-                    investorType={investorType}
-                    setInvestorType={setInvestorType}
-                    currency={currency}
-                    setCurrency={setCurrency}
-                    simulationResult={simulationResult}
+
+                  {/* Adjustment Controls */}
+                  <AdjustmentControls
+                    adjustments={adjustments}
+                    setAdjustments={setAdjustments}
                   />
                 </div>
 
                 {/* Right Column - Results */}
                 <div>
                   <div className="text-center mb-4">
-                    <h4 className="text-base sm:text-lg md:text-xl font-bold mb-2">Investment Summary</h4>
+                    <h4 className="text-base sm:text-lg font-bold mb-2">Investment Summary</h4>
                     <p className="text-xs sm:text-sm text-gray-600">Your projected returns and benefits</p>
                   </div>
                   <InvestmentResults

@@ -11,6 +11,16 @@ interface SimulationRequest {
   tokensPurchased: number
   totalTokens: number
   investorType: 'PHILIPPINE' | 'FOREIGN'
+  adjustments?: {
+    rateDelta: number
+    highOccDelta: number
+    lowOccDelta: number
+    amenityDelta: number
+  }
+}
+
+const clamp = (value: number, min: number, max: number) => {
+  return Math.min(Math.max(value, min), max);
 }
 
 serve(async (req) => {
@@ -25,17 +35,34 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_ANON_KEY') ?? ''
     )
 
-    const { tokensPurchased, totalTokens, investorType }: SimulationRequest = await req.json()
+    const { tokensPurchased, totalTokens, investorType, adjustments }: SimulationRequest = await req.json()
 
-    // Fixed Model Assumptions
-    const nightlyRate = 200 // USD
+    // Default adjustments if not provided
+    const adj = adjustments || {
+      rateDelta: 0,
+      highOccDelta: 0,
+      lowOccDelta: 0,
+      amenityDelta: 0
+    }
+
+    // Fixed Model Assumptions with adjustments
+    const baseNightlyRate = 200
+    const nightlyRate = baseNightlyRate + adj.rateDelta
+    
     const highSeasonDays = 182
     const lowSeasonDays = 183
-    const highOcc = 0.80
-    const lowOcc = 0.60
+    
+    const baseHighOcc = 0.80
+    const baseLowOcc = 0.60
+    const highOcc = clamp(baseHighOcc + (adj.highOccDelta / 100), 0, 1)
+    const lowOcc = clamp(baseLowOcc + (adj.lowOccDelta / 100), 0, 1)
+    
     const units = 10
     const dividendPayoutRatio = 0.30 // 30% of net rental revenue
-    const amenityRevenuePerUnitPct = 0.10 // 10% additional F&B/tours revenue
+    
+    const baseAmenityRevenuePct = 0.10 // 10% additional F&B/tours revenue
+    const amenityRevenuePerUnitPct = clamp(baseAmenityRevenuePct + (adj.amenityDelta / 100), 0, 1)
+    
     const operatingExpenseRatio = 0.18 // 18% of gross revenue
 
     // Validation & Enforcement
@@ -85,12 +112,12 @@ serve(async (req) => {
       }
     }
 
-    // 1. Annual Rental Revenue per unit
+    // 1. Annual Rental Revenue per unit with adjustments
     const highRev = nightlyRate * highSeasonDays * highOcc
     const lowRev = nightlyRate * lowSeasonDays * lowOcc
     const rentalRevPerUnit = highRev + lowRev
 
-    // 2. Total Gross Revenue
+    // 2. Total Gross Revenue with adjustments
     const grossRental = rentalRevPerUnit * units
     const grossAmenities = grossRental * amenityRevenuePerUnitPct
     const grossRevenue = grossRental + grossAmenities

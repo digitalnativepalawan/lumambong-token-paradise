@@ -29,5 +29,12 @@ export interface InvestmentExplanation {
   };
 }
 
+export interface SimulationAdjustments {
+  rateDelta: number;
+  highOccDelta: number;
+  lowOccDelta: number;
+  amenityDelta: number;
+}
+
 export type InvestorType = 'PHILIPPINE' | 'FOREIGN';
 export type Currency = 'USD' | 'PHP';
