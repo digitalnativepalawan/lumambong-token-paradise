@@ -74,6 +74,9 @@ serve(async (req) => {
     const assetAppreciationPct = 0.22 // 22% annual asset appreciation
     const initialTokenPrice = 25
 
+    // Bonus stay pool
+    const bonusStayPool = 5 // 5 extra nights per year
+
     // Validation & Enforcement
     const foreignCap = totalTokens * 0.40
     const philippineCap = totalTokens * 0.60
@@ -135,30 +138,33 @@ serve(async (req) => {
     const netIncome = grossRevenue * (1 - operatingExpenseRatio)
     const dividendPool = netIncome * dividendPayoutRatio
 
-    // 4. Investor Metrics
+    // 4. Basic Investor Metrics
     const ownershipPct = tokensPurchased / totalTokens
     const annualDividend = dividendPool * ownershipPct
     const totalOccupancyDays = highSeasonDays * highOcc + lowSeasonDays * lowOcc
     const annualStayDays = units * totalOccupancyDays * ownershipPct
 
-    // 5. Token Price Growth and Exit Value Calculations
-    const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
-    const exitValue = exitTokenPrice * tokensPurchased
-    const totalDividends = annualDividend * adj.exitYears
-    const capitalGain = exitValue - (tokensPurchased * initialTokenPrice)
-    const totalReturn = totalDividends + capitalGain
-    const returnMultiple = totalReturn / (tokensPurchased * initialTokenPrice)
-
-    // 6. NEW: Equity Value Calculations
+    // 5. NEW: Equity Value Calculations
     const currentEquityValue = currentProjectValue * ownershipPct
     const futureProjectValue = currentProjectValue * Math.pow(1 + assetAppreciationPct, adj.exitYears)
     const projectedEquityValue = futureProjectValue * ownershipPct
     const equityGain = projectedEquityValue - currentEquityValue
-    const cumulativeDividends = annualDividend * adj.exitYears
+
+    // 6. NEW: Exit and Return Calculations
+    const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
     const exitProceeds = exitTokenPrice * tokensPurchased
+    const cumulativeDividends = annualDividend * adj.exitYears
     const initialInvestment = tokensPurchased * initialTokenPrice
-    const totalReturnWithEquity = (exitProceeds + cumulativeDividends) - initialInvestment
-    const returnMultipleWithEquity = (exitProceeds + cumulativeDividends) / initialInvestment
+    const totalReturn = (exitProceeds + cumulativeDividends) - initialInvestment
+    const returnMultiple = (exitProceeds + cumulativeDividends) / initialInvestment
+
+    // 7. NEW: Bonus Stay Pool
+    const userBonusStayDays = bonusStayPool * ownershipPct
+
+    // Legacy calculations for backward compatibility
+    const exitValue = exitTokenPrice * tokensPurchased
+    const totalDividends = annualDividend * adj.exitYears
+    const capitalGain = exitValue - (tokensPurchased * initialTokenPrice)
 
     const result = {
       ownershipPct: Number((ownershipPct * 100).toFixed(4)), // Convert to percentage
@@ -169,14 +175,17 @@ serve(async (req) => {
       exitTokenPrice: Number(exitTokenPrice.toFixed(2)),
       exitValue: Number(exitValue.toFixed(2)),
       totalDividends: Number(totalDividends.toFixed(2)),
-      totalReturn: Number(totalReturnWithEquity.toFixed(2)),
-      returnMultiple: Number(returnMultipleWithEquity.toFixed(2)),
+      totalReturn: Number(totalReturn.toFixed(2)),
+      returnMultiple: Number(returnMultiple.toFixed(2)),
       // NEW: Equity-related fields
       currentEquityValue: Number(currentEquityValue.toFixed(2)),
       projectedEquityValue: Number(projectedEquityValue.toFixed(2)),
       equityGain: Number(equityGain.toFixed(2)),
       cumulativeDividends: Number(cumulativeDividends.toFixed(2)),
       exitProceeds: Number(exitProceeds.toFixed(2)),
+      // NEW: Bonus stay pool
+      bonusStayPool: bonusStayPool,
+      userBonusStayDays: Number(userBonusStayDays.toFixed(2)),
       breakdown: {
         grossRental: Number(grossRental.toFixed(0)),
         grossAmenities: Number(grossAmenities.toFixed(0)),

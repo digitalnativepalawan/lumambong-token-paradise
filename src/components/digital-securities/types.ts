@@ -10,12 +10,15 @@ export interface SimulationResult {
   totalDividends?: number;
   totalReturn?: number;
   returnMultiple?: number;
-  // New equity-related fields
+  // Equity-related fields
   currentEquityValue?: number;
   projectedEquityValue?: number;
   equityGain?: number;
   cumulativeDividends?: number;
   exitProceeds?: number;
+  // Bonus stay pool fields
+  bonusStayPool?: number;
+  userBonusStayDays?: number;
   breakdown: {
     grossRental: number;
     grossAmenities: number;

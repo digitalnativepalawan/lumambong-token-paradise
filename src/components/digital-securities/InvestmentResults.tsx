@@ -1,5 +1,5 @@
 
-import { AlertTriangle, DollarSign, Home, Calendar, TrendingUp, Target, Coins } from "lucide-react";
+import { AlertTriangle, DollarSign, Home, Calendar, TrendingUp, Star } from "lucide-react";
 import { SimulationResult, Currency } from "./types";
 import EquityMetrics from "./EquityMetrics";
 
@@ -68,8 +68,13 @@ const InvestmentResults = ({
           <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 mx-auto mb-1" />
           <div className="text-xs sm:text-sm font-bold text-purple-600 leading-tight">
             {simulationResult.annualStayDays}
+            {simulationResult.userBonusStayDays && (
+              <span className="text-yellow-600"> + {simulationResult.userBonusStayDays.toFixed(1)}</span>
+            )}
           </div>
-          <div className="text-xs text-purple-700 mt-1">Stay Days/Year</div>
+          <div className="text-xs text-purple-700 mt-1">
+            {simulationResult.userBonusStayDays ? 'Base + Bonus Days/Year' : 'Stay Days/Year'}
+          </div>
         </div>
 
         <div className="bg-orange-50 p-2 sm:p-3 rounded-lg text-center border border-orange-100">
@@ -88,32 +93,6 @@ const InvestmentResults = ({
             simulationResult={simulationResult}
             formatCurrency={formatCurrency}
           />
-        </div>
-      )}
-
-      {/* Exit Value Projections (if available) */}
-      {simulationResult.exitTokenPrice && simulationResult.exitValue && (
-        <div className="border-t pt-3 mt-3">
-          <h6 className="text-xs font-medium text-gray-700 mb-2 text-center">
-            Token Price Projections ({simulationResult.exitYears} years @ {((simulationResult.tokenGrowthPct || 0) * 100).toFixed(1)}%/yr)
-          </h6>
-          <div className="grid grid-cols-2 gap-2 sm:gap-3">
-            <div className="bg-emerald-50 p-2 sm:p-3 rounded-lg text-center border border-emerald-100">
-              <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 mx-auto mb-1" />
-              <div className="text-xs sm:text-sm font-bold text-emerald-600 leading-tight">
-                {formatCurrency(simulationResult.exitTokenPrice)}
-              </div>
-              <div className="text-xs text-emerald-700 mt-1">Token Price</div>
-            </div>
-
-            <div className="bg-emerald-50 p-2 sm:p-3 rounded-lg text-center border border-emerald-100">
-              <Target className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 mx-auto mb-1" />
-              <div className="text-xs sm:text-sm font-bold text-emerald-600 leading-tight">
-                {formatCurrency(simulationResult.exitValue)}
-              </div>
-              <div className="text-xs text-emerald-700 mt-1">Token Exit Value</div>
-            </div>
-          </div>
         </div>
       )}
 
