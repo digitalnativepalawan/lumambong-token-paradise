@@ -9,395 +9,174 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      blog_posts: {
+      client_profiles: {
         Row: {
-          author: string
-          content: string
-          created_at: string
-          created_by: string | null
-          excerpt: string | null
-          id: string
-          published: boolean
-          published_date: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          author: string
-          content: string
-          created_at?: string
-          created_by?: string | null
-          excerpt?: string | null
-          id?: string
-          published?: boolean
-          published_date?: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          author?: string
-          content?: string
-          created_at?: string
-          created_by?: string | null
-          excerpt?: string | null
-          id?: string
-          published?: boolean
-          published_date?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      investors: {
-        Row: {
+          city_barangay: string | null
+          country: string | null
           created_at: string
           id: string
-          investment_amount_usd: number
-          nationality: string
-          percentage: number
-          unit_id: string
+          is_vat_registered: boolean | null
+          municipality: string | null
+          name: string
+          tin_number: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          city_barangay?: string | null
+          country?: string | null
           created_at?: string
           id?: string
-          investment_amount_usd: number
-          nationality: string
-          percentage: number
-          unit_id: string
+          is_vat_registered?: boolean | null
+          municipality?: string | null
+          name: string
+          tin_number?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          city_barangay?: string | null
+          country?: string | null
           created_at?: string
           id?: string
-          investment_amount_usd?: number
-          nationality?: string
-          percentage?: number
-          unit_id?: string
+          is_vat_registered?: boolean | null
+          municipality?: string | null
+          name?: string
+          tin_number?: string | null
           updated_at?: string
           user_id?: string
         }
         Relationships: []
       }
-      kyc_documents: {
+      company_profiles: {
         Row: {
-          document_type: string | null
-          document_url: string
+          city_barangay: string | null
+          country: string | null
+          created_at: string
           id: string
-          uploaded_at: string | null
+          is_vat_registered: boolean | null
+          municipality: string | null
+          name: string
+          tin_number: string | null
+          updated_at: string
           user_id: string
-          verified_at: string | null
-          verified_by_admin: boolean | null
         }
         Insert: {
-          document_type?: string | null
-          document_url: string
+          city_barangay?: string | null
+          country?: string | null
+          created_at?: string
           id?: string
-          uploaded_at?: string | null
+          is_vat_registered?: boolean | null
+          municipality?: string | null
+          name: string
+          tin_number?: string | null
+          updated_at?: string
           user_id: string
-          verified_at?: string | null
-          verified_by_admin?: boolean | null
         }
         Update: {
-          document_type?: string | null
-          document_url?: string
+          city_barangay?: string | null
+          country?: string | null
+          created_at?: string
           id?: string
-          uploaded_at?: string | null
-          user_id?: string
-          verified_at?: string | null
-          verified_by_admin?: boolean | null
-        }
-        Relationships: []
-      }
-      lots: {
-        Row: {
-          available_tokens: number | null
-          created_at: string | null
-          description: string | null
-          id: string
-          image_url: string | null
-          name: string
-          status: string | null
-          token_price_usd: number | null
-          total_tokens: number | null
-        }
-        Insert: {
-          available_tokens?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
-          name: string
-          status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Update: {
-          available_tokens?: number | null
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          image_url?: string | null
+          is_vat_registered?: boolean | null
+          municipality?: string | null
           name?: string
-          status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Relationships: []
-      }
-      ownerships: {
-        Row: {
-          created_at: string | null
-          id: string
-          lot_id: string
-          purchase_price_usd: number | null
-          tokens_owned: number | null
-          user_id: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          lot_id: string
-          purchase_price_usd?: number | null
-          tokens_owned?: number | null
-          user_id: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          lot_id?: string
-          purchase_price_usd?: number | null
-          tokens_owned?: number | null
+          tin_number?: string | null
+          updated_at?: string
           user_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "ownerships_lot_id_fkey"
-            columns: ["lot_id"]
-            isOneToOne: false
-            referencedRelation: "lots"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      profiles: {
+      expenses: {
         Row: {
-          created_at: string | null
-          email: string | null
-          full_name: string | null
+          account_code: string | null
+          amount_purchase: number
+          bir_registered_name: string
+          category: string
+          company_address: string | null
+          created_at: string
+          creditable_input_vat: number | null
+          date: string
+          description: string
           id: string
-          kyc_status: string | null
-          nationality: string | null
-          role: string | null
-          updated_at: string | null
-          uploaded_id_url: string | null
-          wallet_address: string | null
+          image_link: string | null
+          non_creditable_input_vat: number | null
+          proprietor: string | null
+          receipt_url: string | null
+          tin_seller: string | null
+          total_less_vat: number
+          updated_at: string
+          user_id: string
         }
         Insert: {
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id: string
-          kyc_status?: string | null
-          nationality?: string | null
-          role?: string | null
-          updated_at?: string | null
-          uploaded_id_url?: string | null
-          wallet_address?: string | null
+          account_code?: string | null
+          amount_purchase: number
+          bir_registered_name: string
+          category: string
+          company_address?: string | null
+          created_at?: string
+          creditable_input_vat?: number | null
+          date: string
+          description: string
+          id?: string
+          image_link?: string | null
+          non_creditable_input_vat?: number | null
+          proprietor?: string | null
+          receipt_url?: string | null
+          tin_seller?: string | null
+          total_less_vat: number
+          updated_at?: string
+          user_id: string
         }
         Update: {
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
+          account_code?: string | null
+          amount_purchase?: number
+          bir_registered_name?: string
+          category?: string
+          company_address?: string | null
+          created_at?: string
+          creditable_input_vat?: number | null
+          date?: string
+          description?: string
           id?: string
-          kyc_status?: string | null
-          nationality?: string | null
-          role?: string | null
-          updated_at?: string | null
-          uploaded_id_url?: string | null
-          wallet_address?: string | null
+          image_link?: string | null
+          non_creditable_input_vat?: number | null
+          proprietor?: string | null
+          receipt_url?: string | null
+          tin_seller?: string | null
+          total_less_vat?: number
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
-      property_projects: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          filipino_quota: number | null
-          filipinos_tokens_sold: number | null
-          foreign_quota: number | null
-          foreign_tokens_sold: number | null
-          id: string
-          location: string | null
-          name: string
-          project_status: string | null
-          token_price_usd: number | null
-          total_tokens: number | null
-        }
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          filipino_quota?: number | null
-          filipinos_tokens_sold?: number | null
-          foreign_quota?: number | null
-          foreign_tokens_sold?: number | null
-          id?: string
-          location?: string | null
-          name: string
-          project_status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          filipino_quota?: number | null
-          filipinos_tokens_sold?: number | null
-          foreign_quota?: number | null
-          foreign_tokens_sold?: number | null
-          id?: string
-          location?: string | null
-          name?: string
-          project_status?: string | null
-          token_price_usd?: number | null
-          total_tokens?: number | null
-        }
-        Relationships: []
-      }
-      token_pools: {
+      saved_invoices: {
         Row: {
           created_at: string
           id: string
-          pool_type: string
-          sold_tokens: number
-          total_tokens: number
+          invoice_data: Json
+          invoice_number: string
+          logo_url: string | null
           updated_at: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          pool_type: string
-          sold_tokens?: number
-          total_tokens?: number
+          invoice_data: Json
+          invoice_number: string
+          logo_url?: string | null
           updated_at?: string
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          pool_type?: string
-          sold_tokens?: number
-          total_tokens?: number
+          invoice_data?: Json
+          invoice_number?: string
+          logo_url?: string | null
           updated_at?: string
-        }
-        Relationships: []
-      }
-      transactions: {
-        Row: {
-          amount_usd: number
-          created_at: string
-          id: string
-          investor_email: string
-          investor_name: string
-          investor_phone: string | null
-          notes: string | null
-          payment_method: string
-          reference_code: string
-          status: string
-          unit_id: string
-          updated_at: string
-        }
-        Insert: {
-          amount_usd: number
-          created_at?: string
-          id?: string
-          investor_email: string
-          investor_name: string
-          investor_phone?: string | null
-          notes?: string | null
-          payment_method: string
-          reference_code: string
-          status?: string
-          unit_id: string
-          updated_at?: string
-        }
-        Update: {
-          amount_usd?: number
-          created_at?: string
-          id?: string
-          investor_email?: string
-          investor_name?: string
-          investor_phone?: string | null
-          notes?: string | null
-          payment_method?: string
-          reference_code?: string
-          status?: string
-          unit_id?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      units: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          status: string
-          token_price_usd: number
-          total_tokens: number
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          status?: string
-          token_price_usd?: number
-          total_tokens?: number
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          status?: string
-          token_price_usd?: number
-          total_tokens?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      users: {
-        Row: {
-          created_at: string
-          email: string | null
-          full_name: string | null
-          id: string
-          is_admin: boolean | null
-          kyc_verified: boolean | null
-          nationality: string | null
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          email?: string | null
-          full_name?: string | null
-          id?: string
-          is_admin?: boolean | null
-          kyc_verified?: boolean | null
-          nationality?: string | null
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          email?: string | null
-          full_name?: string | null
-          id?: string
-          is_admin?: boolean | null
-          kyc_verified?: boolean | null
-          nationality?: string | null
-          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -406,21 +185,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      create_admin_user: {
-        Args: { user_email: string }
-        Returns: undefined
-      }
-      validate_token_purchase: {
-        Args: {
-          p_user_id: string
-          p_project_id: string
-          p_token_quantity: number
-        }
-        Returns: {
-          is_valid: boolean
-          error_message: string
-          available_tokens: number
-        }[]
+      check_invoice_number_unique: {
+        Args:
+          | { p_invoice_number: string; p_exclude_id?: string }
+          | {
+              p_user_id: string
+              p_invoice_number: string
+              p_invoice_id?: string
+            }
+        Returns: boolean
       }
     }
     Enums: {
