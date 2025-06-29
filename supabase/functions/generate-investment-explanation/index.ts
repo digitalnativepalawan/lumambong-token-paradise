@@ -31,13 +31,12 @@ serve(async (req) => {
   try {
     const { tokensPurchased, totalTokens, simulationResult }: ExplanationRequest = await req.json()
 
-    // Calculate additional metrics for the explanation
+    // Calculate additional metrics for the explanation using correct valuations
     const totalInvestment = tokensPurchased * 25
-    const currentProjectValue = 2500000 // $2.5M total project value (10 units x $250k each)
+    const currentProjectValue = 2585000 // $2.585M current project value
     const equityToday = (simulationResult.ownershipPct / 100) * currentProjectValue
     const yearsAhead = 12
-    const projectedGrowthRate = 0.06 // 6% annual appreciation
-    const projectedFutureValue = currentProjectValue * Math.pow(1 + projectedGrowthRate, yearsAhead)
+    const projectedFutureValue = 12130000 // $12.13M projected future value in 12 years
     const equityFuture = (simulationResult.ownershipPct / 100) * projectedFutureValue
     const equityGain = equityFuture - equityToday
     const twelveYearDividends = simulationResult.annualDividendUSD * yearsAhead
