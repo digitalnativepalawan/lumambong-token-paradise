@@ -150,6 +150,45 @@ export type Database = {
         }
         Relationships: []
       }
+      investors: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          investment_amount_usd: number | null
+          name: string
+          nationality: string | null
+          percentage: number | null
+          unit_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          investment_amount_usd?: number | null
+          name: string
+          nationality?: string | null
+          percentage?: number | null
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          investment_amount_usd?: number | null
+          name?: string
+          nationality?: string | null
+          percentage?: number | null
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       saved_invoices: {
         Row: {
           created_at: string
@@ -177,6 +216,99 @@ export type Database = {
           logo_url?: string | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      token_pools: {
+        Row: {
+          created_at: string
+          id: string
+          pool_type: string
+          sold_tokens: number
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pool_type: string
+          sold_tokens?: number
+          total_tokens: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pool_type?: string
+          sold_tokens?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          payment_method: string | null
+          status: string
+          unit_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      users: {
+        Row: {
+          auth_user_id: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          role: string | null
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          role?: string | null
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          role?: string | null
+          updated_at?: string
         }
         Relationships: []
       }

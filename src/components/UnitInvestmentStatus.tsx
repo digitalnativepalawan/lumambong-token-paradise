@@ -25,15 +25,21 @@ const UnitInvestmentStatus = ({ unit }: UnitInvestmentStatusProps) => {
 
   const fetchInvestors = async () => {
     try {
+      // Try to fetch investors, but handle the case where table doesn't exist yet
       const { data, error } = await supabase
-        .from('investors')
+        .from('investors' as any)
         .select('*')
         .eq('unit_id', unit.id);
 
-      if (error) throw error;
-      setInvestors(data || []);
+      if (error) {
+        console.log('Investors table not yet available:', error);
+        setInvestors([]);
+      } else {
+        setInvestors(data || []);
+      }
     } catch (error) {
       console.error('Error fetching investors:', error);
+      setInvestors([]);
     } finally {
       setLoading(false);
     }
@@ -42,39 +48,43 @@ const UnitInvestmentStatus = ({ unit }: UnitInvestmentStatusProps) => {
   useEffect(() => {
     fetchInvestors();
 
-    // Set up real-time subscription
-    const subscription = supabase
-      .channel(`investors-${unit.id}`)
-      .on('postgres_changes', 
-        { 
-          event: '*', 
-          schema: 'public', 
-          table: 'investors',
-          filter: `unit_id=eq.${unit.id}`
-        },
-        () => {
-          console.log('Investors data changed, refetching...');
-          fetchInvestors();
-        }
-      )
-      .subscribe();
+    // Set up real-time subscription (will fail gracefully if table doesn't exist)
+    try {
+      const subscription = supabase
+        .channel(`investors-${unit.id}`)
+        .on('postgres_changes', 
+          { 
+            event: '*', 
+            schema: 'public', 
+            table: 'investors',
+            filter: `unit_id=eq.${unit.id}`
+          },
+          () => {
+            console.log('Investors data changed, refetching...');
+            fetchInvestors();
+          }
+        )
+        .subscribe();
 
-    return () => {
-      supabase.removeChannel(subscription);
-    };
+      return () => {
+        supabase.removeChannel(subscription);
+      };
+    } catch (error) {
+      console.log('Real-time subscription not available yet:', error);
+    }
   }, [unit.id]);
 
   // Calculate ownership percentages
   const filipinoOwnership = investors
     .filter(i => i.nationality === 'ph')
-    .reduce((sum, i) => sum + Number(i.percentage), 0);
+    .reduce((sum, i) => sum + Number(i.percentage || 0), 0);
 
   const foreignOwnership = investors
     .filter(i => i.nationality === 'foreign')
-    .reduce((sum, i) => sum + Number(i.percentage), 0);
+    .reduce((sum, i) => sum + Number(i.percentage || 0), 0);
 
   const totalInvestment = investors
-    .reduce((sum, i) => sum + Number(i.investment_amount_usd), 0);
+    .reduce((sum, i) => sum + Number(i.investment_amount_usd || 0), 0);
 
   if (loading) {
     return (
