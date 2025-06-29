@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { Home, Users, DollarSign, Calendar } from "lucide-react";
+import DigitalSecuritiesSimulator from "./DigitalSecuritiesSimulator";
 
 const BingaUnitsGrid = () => {
   const { isAuthenticated } = useAuth();
@@ -153,7 +153,7 @@ const BingaUnitsGrid = () => {
             Choose Your Binga Beach Lot
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Own a fraction of paradise through our digital securities backed lots. Each lot follows Philippine law 
+            Own a fraction of paradise through our Digital Securities backed lots. Each lot follows Philippine law 
             with 60% Filipino ownership and 40% Foreign ownership structure.
           </p>
 
@@ -193,6 +193,9 @@ const BingaUnitsGrid = () => {
             </div>
           </div>
         </div>
+
+        {/* Digital Securities Simulator */}
+        <DigitalSecuritiesSimulator />
 
         {/* Lots Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
