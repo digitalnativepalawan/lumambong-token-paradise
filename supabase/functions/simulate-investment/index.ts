@@ -69,6 +69,11 @@ serve(async (req) => {
     
     const operatingExpenseRatio = 0.18 // 18% of gross revenue
 
+    // Equity valuation constants
+    const currentProjectValue = 2585000 // $2.585M current valuation
+    const assetAppreciationPct = 0.22 // 22% annual asset appreciation
+    const initialTokenPrice = 25
+
     // Validation & Enforcement
     const foreignCap = totalTokens * 0.40
     const philippineCap = totalTokens * 0.60
@@ -137,13 +142,23 @@ serve(async (req) => {
     const annualStayDays = units * totalOccupancyDays * ownershipPct
 
     // 5. Token Price Growth and Exit Value Calculations
-    const initialTokenPrice = 25
     const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
     const exitValue = exitTokenPrice * tokensPurchased
     const totalDividends = annualDividend * adj.exitYears
     const capitalGain = exitValue - (tokensPurchased * initialTokenPrice)
     const totalReturn = totalDividends + capitalGain
     const returnMultiple = totalReturn / (tokensPurchased * initialTokenPrice)
+
+    // 6. NEW: Equity Value Calculations
+    const currentEquityValue = currentProjectValue * ownershipPct
+    const futureProjectValue = currentProjectValue * Math.pow(1 + assetAppreciationPct, adj.exitYears)
+    const projectedEquityValue = futureProjectValue * ownershipPct
+    const equityGain = projectedEquityValue - currentEquityValue
+    const cumulativeDividends = annualDividend * adj.exitYears
+    const exitProceeds = exitTokenPrice * tokensPurchased
+    const initialInvestment = tokensPurchased * initialTokenPrice
+    const totalReturnWithEquity = (exitProceeds + cumulativeDividends) - initialInvestment
+    const returnMultipleWithEquity = (exitProceeds + cumulativeDividends) / initialInvestment
 
     const result = {
       ownershipPct: Number((ownershipPct * 100).toFixed(4)), // Convert to percentage
@@ -154,8 +169,14 @@ serve(async (req) => {
       exitTokenPrice: Number(exitTokenPrice.toFixed(2)),
       exitValue: Number(exitValue.toFixed(2)),
       totalDividends: Number(totalDividends.toFixed(2)),
-      totalReturn: Number(totalReturn.toFixed(2)),
-      returnMultiple: Number(returnMultiple.toFixed(2)),
+      totalReturn: Number(totalReturnWithEquity.toFixed(2)),
+      returnMultiple: Number(returnMultipleWithEquity.toFixed(2)),
+      // NEW: Equity-related fields
+      currentEquityValue: Number(currentEquityValue.toFixed(2)),
+      projectedEquityValue: Number(projectedEquityValue.toFixed(2)),
+      equityGain: Number(equityGain.toFixed(2)),
+      cumulativeDividends: Number(cumulativeDividends.toFixed(2)),
+      exitProceeds: Number(exitProceeds.toFixed(2)),
       breakdown: {
         grossRental: Number(grossRental.toFixed(0)),
         grossAmenities: Number(grossAmenities.toFixed(0)),
