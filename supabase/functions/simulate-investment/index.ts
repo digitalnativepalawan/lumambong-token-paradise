@@ -124,6 +124,10 @@ serve(async (req) => {
       }
     }
 
+    // SYNC CALCULATIONS - Ensure everything is based on tokensPurchased
+    const ownershipPct = tokensPurchased / totalTokens
+    const investment = tokensPurchased * initialTokenPrice
+
     // 1. Annual Rental Revenue per unit with adjustments
     const highRev = nightlyRate * highSeasonDays * highOcc
     const lowRev = nightlyRate * lowSeasonDays * lowOcc
@@ -138,37 +142,43 @@ serve(async (req) => {
     const netIncome = grossRevenue * (1 - operatingExpenseRatio)
     const dividendPool = netIncome * dividendPayoutRatio
 
-    // 4. Basic Investor Metrics
-    const ownershipPct = tokensPurchased / totalTokens
-    const annualDividend = dividendPool * ownershipPct
-    const totalOccupancyDays = highSeasonDays * highOcc + lowSeasonDays * lowOcc
-    const annualStayDays = units * totalOccupancyDays * ownershipPct
+    // 4. SYNCED Stay Days Calculation
+    const annualNightsPerUnit = highSeasonDays * highOcc + lowSeasonDays * lowOcc
+    const totalAnnualNights = annualNightsPerUnit * units
+    const baseStayDays = totalAnnualNights * ownershipPct
+    const userBonusStayDays = bonusStayPool * ownershipPct
+    const totalStayDays = baseStayDays + userBonusStayDays
 
-    // 5. NEW: Equity Value Calculations
+    // 5. Dividend Calculation (synced with ownership)
+    const annualDividend = dividendPool * ownershipPct
+
+    // 6. Equity Value Calculations
     const currentEquityValue = currentProjectValue * ownershipPct
     const futureProjectValue = currentProjectValue * Math.pow(1 + assetAppreciationPct, adj.exitYears)
     const projectedEquityValue = futureProjectValue * ownershipPct
     const equityGain = projectedEquityValue - currentEquityValue
 
-    // 6. NEW: Exit and Return Calculations
+    // 7. Exit and Return Calculations
     const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
     const exitProceeds = exitTokenPrice * tokensPurchased
     const cumulativeDividends = annualDividend * adj.exitYears
-    const initialInvestment = tokensPurchased * initialTokenPrice
+    const initialInvestment = investment // Use the synced investment calculation
     const totalReturn = (exitProceeds + cumulativeDividends) - initialInvestment
     const returnMultiple = (exitProceeds + cumulativeDividends) / initialInvestment
-
-    // 7. NEW: Bonus Stay Pool
-    const userBonusStayDays = bonusStayPool * ownershipPct
 
     // Legacy calculations for backward compatibility
     const exitValue = exitTokenPrice * tokensPurchased
     const totalDividends = annualDividend * adj.exitYears
-    const capitalGain = exitValue - (tokensPurchased * initialTokenPrice)
 
     const result = {
+      // Core synced values
+      investment: Number(investment.toFixed(2)),
       ownershipPct: Number((ownershipPct * 100).toFixed(4)), // Convert to percentage
-      annualStayDays: Number(annualStayDays.toFixed(1)),
+      baseStayDays: Number(baseStayDays.toFixed(1)),
+      totalStayDays: Number(totalStayDays.toFixed(1)),
+      annualStayDays: Number(totalStayDays.toFixed(1)), // For backward compatibility
+      
+      // Financial metrics
       annualDividendUSD: Number(annualDividend.toFixed(2)),
       exitYears: adj.exitYears,
       tokenGrowthPct: adj.tokenGrowthPct,
@@ -177,15 +187,18 @@ serve(async (req) => {
       totalDividends: Number(totalDividends.toFixed(2)),
       totalReturn: Number(totalReturn.toFixed(2)),
       returnMultiple: Number(returnMultiple.toFixed(2)),
-      // NEW: Equity-related fields
+      
+      // Equity-related fields
       currentEquityValue: Number(currentEquityValue.toFixed(2)),
       projectedEquityValue: Number(projectedEquityValue.toFixed(2)),
       equityGain: Number(equityGain.toFixed(2)),
       cumulativeDividends: Number(cumulativeDividends.toFixed(2)),
       exitProceeds: Number(exitProceeds.toFixed(2)),
-      // NEW: Bonus stay pool
+      
+      // Bonus stay pool
       bonusStayPool: bonusStayPool,
       userBonusStayDays: Number(userBonusStayDays.toFixed(2)),
+      
       breakdown: {
         grossRental: Number(grossRental.toFixed(0)),
         grossAmenities: Number(grossAmenities.toFixed(0)),

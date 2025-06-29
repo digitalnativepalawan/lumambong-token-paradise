@@ -1,7 +1,13 @@
 
 export interface SimulationResult {
+  // Core synced values
+  investment: number;
   ownershipPct: number;
-  annualStayDays: number;
+  baseStayDays: number;
+  totalStayDays: number;
+  annualStayDays: number; // For backward compatibility
+  
+  // Financial metrics
   annualDividendUSD: number;
   exitYears?: number;
   tokenGrowthPct?: number;
@@ -10,15 +16,18 @@ export interface SimulationResult {
   totalDividends?: number;
   totalReturn?: number;
   returnMultiple?: number;
+  
   // Equity-related fields
   currentEquityValue?: number;
   projectedEquityValue?: number;
   equityGain?: number;
   cumulativeDividends?: number;
   exitProceeds?: number;
+  
   // Bonus stay pool fields
   bonusStayPool?: number;
   userBonusStayDays?: number;
+  
   breakdown: {
     grossRental: number;
     grossAmenities: number;

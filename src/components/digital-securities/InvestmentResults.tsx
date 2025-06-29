@@ -20,8 +20,6 @@ const InvestmentResults = ({
   error,
   formatCurrency
 }: InvestmentResultsProps) => {
-  const TOKEN_PRICE = 25;
-
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-3 flex items-start gap-2">
@@ -51,7 +49,7 @@ const InvestmentResults = ({
         <div className="bg-blue-50 p-2 sm:p-3 rounded-lg text-center border border-blue-100">
           <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mx-auto mb-1" />
           <div className="text-xs sm:text-sm font-bold text-blue-600 leading-tight">
-            {formatCurrency(tokenQuantity * TOKEN_PRICE)}
+            {formatCurrency(simulationResult.investment)}
           </div>
           <div className="text-xs text-blue-700 mt-1">Investment</div>
         </div>
@@ -67,7 +65,7 @@ const InvestmentResults = ({
         <div className="bg-purple-50 p-2 sm:p-3 rounded-lg text-center border border-purple-100">
           <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 mx-auto mb-1" />
           <div className="text-xs sm:text-sm font-bold text-purple-600 leading-tight">
-            {simulationResult.annualStayDays}
+            {simulationResult.baseStayDays.toFixed(1)}
             {simulationResult.userBonusStayDays && (
               <span className="text-yellow-600"> + {simulationResult.userBonusStayDays.toFixed(1)}</span>
             )}
@@ -86,7 +84,7 @@ const InvestmentResults = ({
         </div>
       </div>
 
-      {/* NEW: Equity Metrics Section */}
+      {/* Equity Metrics Section */}
       {simulationResult.currentEquityValue && (
         <div className="border-t pt-3 mt-3">
           <EquityMetrics 
@@ -116,6 +114,15 @@ const InvestmentResults = ({
             <span className="text-xs text-gray-600 font-medium">Dividend Pool:</span>
             <span className="text-xs font-bold text-gray-800">{formatCurrency(simulationResult.breakdown.dividendPool)}</span>
           </div>
+        </div>
+      </div>
+
+      {/* Sync Validation Display */}
+      <div className="bg-blue-50 p-2 rounded-lg border border-blue-200">
+        <div className="text-xs text-blue-800">
+          <div className="font-medium mb-1">Validation Check:</div>
+          <div>Tokens: {tokenQuantity.toLocaleString()} × $25 = {formatCurrency(simulationResult.investment)}</div>
+          <div>Ownership: {simulationResult.ownershipPct}% = {simulationResult.totalStayDays.toFixed(1)} stay days/year</div>
         </div>
       </div>
     </div>
