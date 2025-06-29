@@ -2,20 +2,19 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Calculator, 
-  Download, 
   TrendingUp, 
   Calendar, 
   DollarSign,
   Info,
   Home,
-  AlertTriangle
+  AlertTriangle,
+  Sparkles
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -38,12 +37,26 @@ interface SimulationResult {
   };
 }
 
+interface InvestmentExplanation {
+  explanation: string;
+  metrics: {
+    totalInvestment: number;
+    equityToday: number;
+    equityFuture: number;
+    equityGain: number;
+    twelveYearDividends: number;
+    totalReturnMultiple: number;
+  };
+}
+
 const DigitalSecuritiesSimulator = () => {
   const [tokenQuantity, setTokenQuantity] = useState([1000]);
   const [investorType, setInvestorType] = useState<'PHILIPPINE' | 'FOREIGN'>('PHILIPPINE');
   const [currency, setCurrency] = useState<'USD' | 'PHP'>('USD');
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null);
+  const [investmentExplanation, setInvestmentExplanation] = useState<InvestmentExplanation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGeneratingExplanation, setIsGeneratingExplanation] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Constants
@@ -91,12 +104,41 @@ const DigitalSecuritiesSimulator = () => {
       }
 
       setSimulationResult(data);
+
+      // Generate explanation after successful simulation
+      generateExplanation(data);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to simulate investment';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const generateExplanation = async (simulationData: SimulationResult) => {
+    setIsGeneratingExplanation(true);
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-investment-explanation', {
+        body: {
+          tokensPurchased: tokenQuantity[0],
+          totalTokens: TOTAL_TOKENS,
+          investorType: investorType,
+          simulationResult: simulationData
+        }
+      });
+
+      if (error) {
+        console.error('Failed to generate explanation:', error);
+        return;
+      }
+
+      setInvestmentExplanation(data);
+    } catch (err) {
+      console.error('Explanation generation error:', err);
+    } finally {
+      setIsGeneratingExplanation(false);
     }
   };
 
@@ -114,37 +156,6 @@ const DigitalSecuritiesSimulator = () => {
       }
     }
   }, [simulationResult, investorType]);
-
-  const downloadSummary = () => {
-    if (!simulationResult) return;
-
-    const summaryData = {
-      tokensPurchased: tokenQuantity[0],
-      investmentAmount: formatCurrency(tokenQuantity[0] * TOKEN_PRICE),
-      investorType,
-      ownershipPercentage: `${simulationResult.ownershipPct}%`,
-      annualStayDays: simulationResult.annualStayDays,
-      annualDividend: formatCurrency(simulationResult.annualDividendUSD),
-      breakdown: {
-        grossRental: formatCurrency(simulationResult.breakdown.grossRental),
-        grossAmenities: formatCurrency(simulationResult.breakdown.grossAmenities),
-        netIncome: formatCurrency(simulationResult.breakdown.netIncome),
-        dividendPool: formatCurrency(simulationResult.breakdown.dividendPool)
-      },
-      currency,
-      generatedAt: new Date().toISOString()
-    };
-
-    const dataStr = JSON.stringify(summaryData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportFileDefaultName = `BBT-Investment-Summary-${Date.now()}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-  };
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-emerald-50 py-8 md:py-16 mt-12">
@@ -323,17 +334,35 @@ const DigitalSecuritiesSimulator = () => {
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-gray-200">
-                <Button 
-                  onClick={downloadSummary}
-                  disabled={!simulationResult}
-                  className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 py-3 text-base"
-                  size="lg"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Investment Summary
-                </Button>
-              </div>
+              {/* Investment Explanation Section */}
+              {simulationResult && (
+                <div className="pt-4 border-t border-gray-200">
+                  <div className="bg-gradient-to-r from-blue-50 to-emerald-50 p-4 md:p-6 rounded-xl border border-blue-200">
+                    <div className="flex items-start gap-3 mb-4">
+                      <Sparkles className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <h5 className="font-medium text-blue-800 mb-1">What This Means For You</h5>
+                        <p className="text-xs text-blue-700">AI-powered investment summary</p>
+                      </div>
+                    </div>
+                    
+                    {isGeneratingExplanation ? (
+                      <div className="flex items-center gap-2 text-blue-600">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+                        <span className="text-sm">Generating personalized explanation...</span>
+                      </div>
+                    ) : investmentExplanation ? (
+                      <div className="text-sm text-blue-800 leading-relaxed">
+                        {investmentExplanation.explanation}
+                      </div>
+                    ) : (
+                      <div className="text-sm text-blue-700">
+                        Adjust your investment amount to see a personalized explanation of your potential returns.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
 
