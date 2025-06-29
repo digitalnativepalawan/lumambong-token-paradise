@@ -78,165 +78,175 @@ const DigitalSecuritiesSimulator = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-emerald-50 py-16 mt-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <Badge className="mb-4 bg-emerald-100 text-emerald-800">
+    <div className="bg-gradient-to-b from-blue-50 to-emerald-50 py-8 md:py-16 mt-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-8 md:mb-12">
+          <Badge className="mb-4 bg-emerald-100 text-emerald-800 text-sm">
             <Calculator className="w-4 h-4 mr-2" />
             Investment Simulator
           </Badge>
-          <h3 className="text-3xl md:text-4xl font-bold mb-6 text-black">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 md:mb-6 text-black px-2">
             BBT Digital Securities Calculator
           </h3>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto px-4">
             Simulate your investment in Palawan real estate through our Digital Securities. 
             Each lot includes titled land, solar-powered modular homes, valued at $250,000 USD.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 mb-12">
-          {/* Input Panel */}
-          <Card className="p-8 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-            <div className="space-y-8">
+        {/* Mobile-optimized layout */}
+        <div className="space-y-6 md:space-y-8">
+          {/* Input Panel - Full width on mobile, side-by-side on desktop */}
+          <Card className="p-4 md:p-8 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
+            <div className="space-y-6 md:space-y-8">
               <div className="text-center">
-                <h4 className="text-xl font-bold mb-2">Investment Calculator</h4>
+                <h4 className="text-lg md:text-xl font-bold mb-2">Investment Calculator</h4>
                 <p className="text-sm text-gray-600">Configure your Digital Securities purchase</p>
               </div>
 
-              {/* Token Quantity Selector */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Label className="text-sm font-medium">Digital Securities Quantity</Label>
-                  <Input
-                    type="number"
-                    value={tokenQuantity[0]}
-                    onChange={(e) => setTokenQuantity([parseInt(e.target.value) || 1])}
-                    className="w-24 text-right"
-                    min="1"
-                    max="100000"
-                  />
+              {/* Mobile-first responsive grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+                {/* Left Column - Inputs */}
+                <div className="space-y-6">
+                  {/* Token Quantity Selector */}
+                  <div className="space-y-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <Label className="text-sm font-medium">Digital Securities Quantity</Label>
+                      <Input
+                        type="number"
+                        value={tokenQuantity[0]}
+                        onChange={(e) => setTokenQuantity([parseInt(e.target.value) || 1])}
+                        className="w-full sm:w-32 text-center text-lg font-medium"
+                        min="1"
+                        max="100000"
+                      />
+                    </div>
+                    <Slider
+                      value={tokenQuantity}
+                      onValueChange={setTokenQuantity}
+                      max={10000}
+                      min={1}
+                      step={1}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>1</span>
+                      <span>10,000+</span>
+                    </div>
+                  </div>
+
+                  {/* Nationality Toggle */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Investor Classification</Label>
+                    <Tabs value={nationality} onValueChange={(value) => setNationality(value as 'filipino' | 'foreign')}>
+                      <TabsList className="grid w-full grid-cols-1 sm:grid-cols-2 h-auto">
+                        <TabsTrigger value="filipino" className="text-sm py-3 px-4">
+                          🇵🇭 Filipino (60% Pool)
+                        </TabsTrigger>
+                        <TabsTrigger value="foreign" className="text-sm py-3 px-4">
+                          🌍 Foreign (40% Pool)
+                        </TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
+
+                  {/* Currency Toggle */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium">Display Currency</Label>
+                    <Tabs value={currency} onValueChange={(value) => setCurrency(value as 'USD' | 'PHP')}>
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="USD" className="py-3">USD ($)</TabsTrigger>
+                        <TabsTrigger value="PHP" className="py-3">PHP (₱)</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                  </div>
                 </div>
-                <Slider
-                  value={tokenQuantity}
-                  onValueChange={setTokenQuantity}
-                  max={10000}
-                  min={1}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>1</span>
-                  <span>10,000+</span>
+
+                {/* Right Column - Results */}
+                <div className="space-y-6">
+                  <div className="text-center">
+                    <h4 className="text-lg md:text-xl font-bold mb-2">Investment Summary</h4>
+                    <p className="text-sm text-gray-600">Your projected returns and benefits</p>
+                  </div>
+
+                  {/* Mobile-optimized grid for results */}
+                  <div className="grid grid-cols-2 gap-3 md:gap-4">
+                    <div className="bg-blue-50 p-3 md:p-4 rounded-lg text-center">
+                      <DollarSign className="w-5 h-5 md:w-6 md:h-6 text-blue-600 mx-auto mb-2" />
+                      <div className="text-sm md:text-lg font-bold text-blue-600 leading-tight">
+                        {formatCurrency(investmentAmount)}
+                      </div>
+                      <div className="text-xs text-blue-700 mt-1">Total Investment</div>
+                    </div>
+
+                    <div className="bg-green-50 p-3 md:p-4 rounded-lg text-center">
+                      <Home className="w-5 h-5 md:w-6 md:h-6 text-green-600 mx-auto mb-2" />
+                      <div className="text-sm md:text-lg font-bold text-green-600 leading-tight">
+                        {ownershipPercentage.toFixed(3)}%
+                      </div>
+                      <div className="text-xs text-green-700 mt-1">Ownership Share</div>
+                    </div>
+
+                    <div className="bg-purple-50 p-3 md:p-4 rounded-lg text-center">
+                      <Calendar className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-2" />
+                      <div className="text-sm md:text-lg font-bold text-purple-600 leading-tight">
+                        {Math.round(staysAllocation)}
+                      </div>
+                      <div className="text-xs text-purple-700 mt-1">Annual Stay Days</div>
+                    </div>
+
+                    <div className="bg-orange-50 p-3 md:p-4 rounded-lg text-center">
+                      <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-orange-600 mx-auto mb-2" />
+                      <div className="text-sm md:text-lg font-bold text-orange-600 leading-tight">
+                        {formatCurrency(annualDividend)}
+                      </div>
+                      <div className="text-xs text-orange-700 mt-1">Annual Dividend</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Nationality Toggle */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium">Investor Classification</Label>
-                <Tabs value={nationality} onValueChange={(value) => setNationality(value as 'filipino' | 'foreign')}>
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="filipino" className="text-sm">
-                      🇵🇭 Filipino (60% Pool)
-                    </TabsTrigger>
-                    <TabsTrigger value="foreign" className="text-sm">
-                      🌍 Foreign (40% Pool)
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </div>
-
-              {/* Currency Toggle */}
-              <div className="space-y-3">
-                <Label className="text-sm font-medium">Display Currency</Label>
-                <Tabs value={currency} onValueChange={(value) => setCurrency(value as 'USD' | 'PHP')}>
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="USD">USD ($)</TabsTrigger>
-                    <TabsTrigger value="PHP">PHP (₱)</TabsTrigger>
-                  </TabsList>
-                </Tabs>
+              {/* Mobile-friendly download button */}
+              <div className="pt-4 border-t border-gray-200">
+                <Button 
+                  onClick={downloadSummary}
+                  className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 py-3 text-base"
+                  size="lg"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Investment Summary
+                </Button>
               </div>
             </div>
           </Card>
 
-          {/* Results Display */}
-          <Card className="p-8 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-            <div className="space-y-6">
-              <div className="text-center">
-                <h4 className="text-xl font-bold mb-2">Investment Summary</h4>
-                <p className="text-sm text-gray-600">Your projected returns and benefits</p>
+          {/* Results Table */}
+          <SimulatorResultsTable 
+            nationality={nationality}
+            currency={currency}
+            formatCurrency={formatCurrency}
+          />
+
+          {/* Chart Visualization */}
+          <SimulatorChart 
+            nationality={nationality}
+            currency={currency}
+            formatCurrency={formatCurrency}
+          />
+
+          {/* Mobile-optimized Disclaimer */}
+          <div className="p-4 md:p-6 bg-yellow-50 rounded-xl border border-yellow-200">
+            <div className="flex items-start gap-3">
+              <Info className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+              <div className="text-sm text-yellow-800">
+                <p className="font-medium mb-2">Important Disclaimer</p>
+                <p className="leading-relaxed">
+                  Digital Securities represent fractional ownership in real estate assets. 
+                  All projections are estimates based on current market conditions and are not guaranteed. 
+                  Past performance does not indicate future results. Please consult with financial 
+                  advisors before making investment decisions.
+                </p>
               </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 p-4 rounded-lg text-center">
-                  <DollarSign className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-                  <div className="text-lg font-bold text-blue-600">
-                    {formatCurrency(investmentAmount)}
-                  </div>
-                  <div className="text-xs text-blue-700">Total Investment</div>
-                </div>
-
-                <div className="bg-green-50 p-4 rounded-lg text-center">
-                  <Home className="w-6 h-6 text-green-600 mx-auto mb-2" />
-                  <div className="text-lg font-bold text-green-600">
-                    {ownershipPercentage.toFixed(3)}%
-                  </div>
-                  <div className="text-xs text-green-700">Ownership Share</div>
-                </div>
-
-                <div className="bg-purple-50 p-4 rounded-lg text-center">
-                  <Calendar className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-                  <div className="text-lg font-bold text-purple-600">
-                    {Math.round(staysAllocation)}
-                  </div>
-                  <div className="text-xs text-purple-700">Annual Stay Days</div>
-                </div>
-
-                <div className="bg-orange-50 p-4 rounded-lg text-center">
-                  <TrendingUp className="w-6 h-6 text-orange-600 mx-auto mb-2" />
-                  <div className="text-lg font-bold text-orange-600">
-                    {formatCurrency(annualDividend)}
-                  </div>
-                  <div className="text-xs text-orange-700">Annual Dividend</div>
-                </div>
-              </div>
-
-              <Button 
-                onClick={downloadSummary}
-                className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                Download Investment Summary
-              </Button>
-            </div>
-          </Card>
-        </div>
-
-        {/* Results Table */}
-        <SimulatorResultsTable 
-          nationality={nationality}
-          currency={currency}
-          formatCurrency={formatCurrency}
-        />
-
-        {/* Chart Visualization */}
-        <SimulatorChart 
-          nationality={nationality}
-          currency={currency}
-          formatCurrency={formatCurrency}
-        />
-
-        {/* Disclaimer */}
-        <div className="mt-12 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
-          <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-            <div className="text-sm text-yellow-800">
-              <p className="font-medium mb-2">Important Disclaimer</p>
-              <p>
-                Digital Securities represent fractional ownership in real estate assets. 
-                All projections are estimates based on current market conditions and are not guaranteed. 
-                Past performance does not indicate future results. Please consult with financial 
-                advisors before making investment decisions.
-              </p>
             </div>
           </div>
         </div>
