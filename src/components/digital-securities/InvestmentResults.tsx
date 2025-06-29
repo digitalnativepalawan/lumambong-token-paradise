@@ -1,5 +1,5 @@
 
-import { AlertTriangle, DollarSign, Home, Calendar, TrendingUp } from "lucide-react";
+import { AlertTriangle, DollarSign, Home, Calendar, TrendingUp, Target, Coins } from "lucide-react";
 import { SimulationResult, Currency } from "./types";
 
 interface InvestmentResultsProps {
@@ -45,7 +45,7 @@ const InvestmentResults = ({
 
   return (
     <div className="space-y-3">
-      {/* Summary Cards Grid */}
+      {/* Current Investment Summary Cards */}
       <div className="grid grid-cols-2 gap-2 sm:gap-3">
         <div className="bg-blue-50 p-2 sm:p-3 rounded-lg text-center border border-blue-100">
           <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mx-auto mb-1" />
@@ -79,6 +79,62 @@ const InvestmentResults = ({
           <div className="text-xs text-orange-700 mt-1">Annual Dividend</div>
         </div>
       </div>
+
+      {/* Exit Value Projections (if available) */}
+      {simulationResult.exitTokenPrice && simulationResult.exitValue && (
+        <>
+          <div className="border-t pt-3 mt-3">
+            <h6 className="text-xs font-medium text-gray-700 mb-2 text-center">
+              Exit Projections ({simulationResult.exitYears} years @ {((simulationResult.tokenGrowthPct || 0) * 100).toFixed(1)}%/yr)
+            </h6>
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              <div className="bg-emerald-50 p-2 sm:p-3 rounded-lg text-center border border-emerald-100">
+                <Coins className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 mx-auto mb-1" />
+                <div className="text-xs sm:text-sm font-bold text-emerald-600 leading-tight">
+                  {formatCurrency(simulationResult.exitTokenPrice)}
+                </div>
+                <div className="text-xs text-emerald-700 mt-1">Token Price</div>
+              </div>
+
+              <div className="bg-emerald-50 p-2 sm:p-3 rounded-lg text-center border border-emerald-100">
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 mx-auto mb-1" />
+                <div className="text-xs sm:text-sm font-bold text-emerald-600 leading-tight">
+                  {formatCurrency(simulationResult.exitValue)}
+                </div>
+                <div className="text-xs text-emerald-700 mt-1">Exit Value</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Total Return Summary */}
+          {simulationResult.totalReturn && simulationResult.returnMultiple && (
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-3 rounded-lg border border-green-200">
+              <div className="text-center">
+                <div className="text-sm font-medium text-green-800 mb-1">Total Return Analysis</div>
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <div className="font-bold text-green-600">
+                      {formatCurrency(simulationResult.totalDividends || 0)}
+                    </div>
+                    <div className="text-green-700">Total Dividends</div>
+                  </div>
+                  <div>
+                    <div className="font-bold text-green-600">
+                      {simulationResult.returnMultiple.toFixed(1)}×
+                    </div>
+                    <div className="text-green-700">Return Multiple</div>
+                  </div>
+                </div>
+                <div className="mt-2 pt-2 border-t border-green-200">
+                  <div className="font-bold text-green-800">
+                    Total Gain: {formatCurrency(simulationResult.totalReturn)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
 
       {/* Revenue Breakdown Table */}
       <div className="bg-gray-50 p-3 rounded-lg border">

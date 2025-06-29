@@ -9,6 +9,7 @@ import InvestmentControls from "./digital-securities/InvestmentControls";
 import InvestmentResults from "./digital-securities/InvestmentResults";
 import InvestmentExplanation from "./digital-securities/InvestmentExplanation";
 import AdjustmentControls from "./digital-securities/AdjustmentControls";
+import TokenGrowthControls from "./digital-securities/TokenGrowthControls";
 import { SimulationResult, InvestmentExplanation as InvestmentExplanationType, InvestorType, Currency, SimulationAdjustments } from "./digital-securities/types";
 
 const DigitalSecuritiesSimulator = () => {
@@ -24,7 +25,9 @@ const DigitalSecuritiesSimulator = () => {
     rateDelta: 0,
     highOccDelta: 0,
     lowOccDelta: 0,
-    amenityDelta: 0
+    amenityDelta: 0,
+    tokenGrowthPct: 0.05, // 5% default
+    exitYears: 12
   });
 
   // Constants
@@ -148,6 +151,12 @@ const DigitalSecuritiesSimulator = () => {
                       simulationResult={simulationResult}
                     />
                   </div>
+
+                  {/* Token Growth Controls */}
+                  <TokenGrowthControls
+                    adjustments={adjustments}
+                    setAdjustments={setAdjustments}
+                  />
 
                   {/* Adjustment Controls */}
                   <AdjustmentControls

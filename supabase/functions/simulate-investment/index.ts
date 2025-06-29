@@ -16,6 +16,8 @@ interface SimulationRequest {
     highOccDelta: number
     lowOccDelta: number
     amenityDelta: number
+    tokenGrowthPct: number
+    exitYears: number
   }
 }
 
@@ -42,7 +44,9 @@ serve(async (req) => {
       rateDelta: 0,
       highOccDelta: 0,
       lowOccDelta: 0,
-      amenityDelta: 0
+      amenityDelta: 0,
+      tokenGrowthPct: 0.05,
+      exitYears: 12
     }
 
     // Fixed Model Assumptions with adjustments
@@ -132,10 +136,26 @@ serve(async (req) => {
     const totalOccupancyDays = highSeasonDays * highOcc + lowSeasonDays * lowOcc
     const annualStayDays = units * totalOccupancyDays * ownershipPct
 
+    // 5. Token Price Growth and Exit Value Calculations
+    const initialTokenPrice = 25
+    const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
+    const exitValue = exitTokenPrice * tokensPurchased
+    const totalDividends = annualDividend * adj.exitYears
+    const capitalGain = exitValue - (tokensPurchased * initialTokenPrice)
+    const totalReturn = totalDividends + capitalGain
+    const returnMultiple = totalReturn / (tokensPurchased * initialTokenPrice)
+
     const result = {
       ownershipPct: Number((ownershipPct * 100).toFixed(4)), // Convert to percentage
       annualStayDays: Number(annualStayDays.toFixed(1)),
       annualDividendUSD: Number(annualDividend.toFixed(2)),
+      exitYears: adj.exitYears,
+      tokenGrowthPct: adj.tokenGrowthPct,
+      exitTokenPrice: Number(exitTokenPrice.toFixed(2)),
+      exitValue: Number(exitValue.toFixed(2)),
+      totalDividends: Number(totalDividends.toFixed(2)),
+      totalReturn: Number(totalReturn.toFixed(2)),
+      returnMultiple: Number(returnMultiple.toFixed(2)),
       breakdown: {
         grossRental: Number(grossRental.toFixed(0)),
         grossAmenities: Number(grossAmenities.toFixed(0)),

@@ -3,6 +3,13 @@ export interface SimulationResult {
   ownershipPct: number;
   annualStayDays: number;
   annualDividendUSD: number;
+  exitYears?: number;
+  tokenGrowthPct?: number;
+  exitTokenPrice?: number;
+  exitValue?: number;
+  totalDividends?: number;
+  totalReturn?: number;
+  returnMultiple?: number;
   breakdown: {
     grossRental: number;
     grossAmenities: number;
@@ -34,6 +41,8 @@ export interface SimulationAdjustments {
   highOccDelta: number;
   lowOccDelta: number;
   amenityDelta: number;
+  tokenGrowthPct: number;
+  exitYears: number;
 }
 
 export type InvestorType = 'PHILIPPINE' | 'FOREIGN';
