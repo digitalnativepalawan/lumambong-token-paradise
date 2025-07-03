@@ -7,16 +7,16 @@ import { TrendingUp, DollarSign, PieChart as PieChartIcon, Calculator } from "lu
 
 const FinancialProjections = () => {
   const revenueProjections = [
-    { year: "2025", securitySales: 2500000, rentalIncome: 624500, amenities: 50000, total: 3174500, noi: 512090 },
-    { year: "2026", securitySales: 0, rentalIncome: 624500, amenities: 50000, total: 674500, noi: 512090 },
-    { year: "2027", securitySales: 0, rentalIncome: 650000, amenities: 55000, total: 705000, noi: 577900 },
-    { year: "2028", securitySales: 0, rentalIncome: 680000, amenities: 60000, total: 740000, noi: 606800 },
-    { year: "2029", securitySales: 0, rentalIncome: 715000, amenities: 65000, total: 780000, noi: 639600 },
-    { year: "2030", securitySales: 0, rentalIncome: 750000, amenities: 70000, total: 820000, noi: 672400 },
-    { year: "2031", securitySales: 0, rentalIncome: 780000, amenities: 75000, total: 855000, noi: 701100 },
-    { year: "2032", securitySales: 0, rentalIncome: 815000, amenities: 80000, total: 895000, noi: 733700 },
-    { year: "2033", securitySales: 0, rentalIncome: 850000, amenities: 85000, total: 935000, noi: 766700 },
-    { year: "2034", securitySales: 0, rentalIncome: 890000, amenities: 90000, total: 980000, noi: 803600 }
+    { year: "2025", securitySales: 2500000, rentalIncome: 624500, amenities: 50000, total: 3174500, operatingRevenue: 674500, noi: 2553190 },
+    { year: "2026", securitySales: 0, rentalIncome: 624500, amenities: 50000, total: 674500, operatingRevenue: 674500, noi: 553090 },
+    { year: "2027", securitySales: 0, rentalIncome: 650000, amenities: 55000, total: 705000, operatingRevenue: 705000, noi: 578100 },
+    { year: "2028", securitySales: 0, rentalIncome: 680000, amenities: 60000, total: 740000, operatingRevenue: 740000, noi: 606800 },
+    { year: "2029", securitySales: 0, rentalIncome: 715000, amenities: 65000, total: 780000, operatingRevenue: 780000, noi: 639600 },
+    { year: "2030", securitySales: 0, rentalIncome: 750000, amenities: 70000, total: 820000, operatingRevenue: 820000, noi: 672400 },
+    { year: "2031", securitySales: 0, rentalIncome: 780000, amenities: 75000, total: 855000, operatingRevenue: 855000, noi: 701100 },
+    { year: "2032", securitySales: 0, rentalIncome: 815000, amenities: 80000, total: 895000, operatingRevenue: 895000, noi: 733700 },
+    { year: "2033", securitySales: 0, rentalIncome: 850000, amenities: 85000, total: 935000, operatingRevenue: 935000, noi: 766700 },
+    { year: "2034", securitySales: 0, rentalIncome: 890000, amenities: 90000, total: 980000, operatingRevenue: 980000, noi: 803600 }
   ];
 
   const propertyValueProjection = [
@@ -164,6 +164,60 @@ const FinancialProjections = () => {
               <div className="text-2xl font-bold text-orange-600 mb-2">$7.8M</div>
               <div className="text-sm text-gray-600">Property Value (Y10)</div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* 10-Year Financial Summary Table */}
+      <Card className="border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-2xl text-black">10-Year Financial Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="overflow-x-auto">
+            <ModernTable>
+              <ModernTableHeader>
+                <ModernTableRow>
+                  <ModernTableHeadCell>Year</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Total Revenue (USD)</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">NOI (USD)</ModernTableHeadCell>
+                  <ModernTableHeadCell align="right">Property Value (USD)</ModernTableHeadCell>
+                </ModernTableRow>
+              </ModernTableHeader>
+              <ModernTableBody>
+                {revenueProjections.map((projection, index) => (
+                  <ModernTableRow key={projection.year}>
+                    <ModernTableCell className="font-semibold">{projection.year}</ModernTableCell>
+                    <ModernTableCell align="right" className="font-medium">
+                      {index === 0 ? (
+                        <div className="text-right">
+                          <div className="text-blue-600 font-bold">
+                            ~${(projection.total / 1000000).toFixed(2)}M
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            (includes $2.5M sale)
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-blue-600 font-bold">
+                          ~${projection.total < 1000000 ? `${(projection.total / 1000).toFixed(0)}K` : `${(projection.total / 1000000).toFixed(2)}M`}
+                        </span>
+                      )}
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="font-medium">
+                      <span className="text-green-600 font-bold">
+                        ~${projection.noi < 1000000 ? `${(projection.noi / 1000).toFixed(0)}K` : `${(projection.noi / 1000000).toFixed(2)}M`}
+                      </span>
+                    </ModernTableCell>
+                    <ModernTableCell align="right" className="font-medium">
+                      <span className="text-purple-600 font-bold">
+                        ~${propertyValueProjection[index] ? `${(propertyValueProjection[index].value / 1000000).toFixed(1)}M` : 'N/A'}
+                      </span>
+                    </ModernTableCell>
+                  </ModernTableRow>
+                ))}
+              </ModernTableBody>
+            </ModernTable>
           </div>
         </CardContent>
       </Card>
