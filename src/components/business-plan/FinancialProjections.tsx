@@ -20,16 +20,16 @@ const FinancialProjections = () => {
   ];
 
   const propertyValueProjection = [
-    { year: "2025", value: 2500000, tokenValue: 25.00 },
-    { year: "2026", value: 2800000, tokenValue: 28.00 },
-    { year: "2027", value: 3136000, tokenValue: 31.36 },
-    { year: "2028", value: 3512320, tokenValue: 35.12 },
-    { year: "2029", value: 3933798, tokenValue: 39.34 },
-    { year: "2030", value: 4405854, tokenValue: 44.06 },
-    { year: "2031", value: 4934557, tokenValue: 49.35 },
-    { year: "2032", value: 5526704, tokenValue: 55.27 },
-    { year: "2033", value: 6189908, tokenValue: 61.90 },
-    { year: "2034", value: 6932697, tokenValue: 69.33 }
+    { year: "2025", value: 2500000, tokenValue: 25.00, optimisticValue: 2500000, optimisticTokenValue: 25.00 },
+    { year: "2026", value: 2700000, tokenValue: 27.00, optimisticValue: 2800000, optimisticTokenValue: 28.00 },
+    { year: "2027", value: 2916000, tokenValue: 29.16, optimisticValue: 3136000, optimisticTokenValue: 31.36 },
+    { year: "2028", value: 3149280, tokenValue: 31.49, optimisticValue: 3512320, optimisticTokenValue: 35.12 },
+    { year: "2029", value: 3401222, tokenValue: 34.01, optimisticValue: 3933798, optimisticTokenValue: 39.34 },
+    { year: "2030", value: 3673320, tokenValue: 36.73, optimisticValue: 4405854, optimisticTokenValue: 44.06 },
+    { year: "2031", value: 3967186, tokenValue: 39.67, optimisticValue: 4934557, optimisticTokenValue: 49.35 },
+    { year: "2032", value: 4284561, tokenValue: 42.85, optimisticValue: 5526704, optimisticTokenValue: 55.27 },
+    { year: "2033", value: 4627326, tokenValue: 46.27, optimisticValue: 6189908, optimisticTokenValue: 61.90 },
+    { year: "2034", value: 5000312, tokenValue: 50.00, optimisticValue: 6932697, optimisticTokenValue: 69.33 }
   ];
 
   const coreAssumptions = {
@@ -391,6 +391,109 @@ const FinancialProjections = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Property Value Growth Scenarios */}
+      <div className="space-y-8">
+        <Card className="border-gray-200">
+          <CardHeader>
+            <CardTitle className="text-2xl text-black">Projected Property Value Growth (10-Year)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-80 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={propertyValueProjection} margin={{ top: 20, right: 30, left: 40, bottom: 80 }}>
+                  <XAxis 
+                    dataKey="year" 
+                    tick={{ fontSize: 11 }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 11 }}
+                    tickFormatter={(value) => `$${(value / 1000000).toFixed(1)}M`}
+                  />
+                  <ChartTooltip 
+                    content={<ChartTooltipContent 
+                      formatter={(value, name) => [
+                        `$${(Number(value) / 1000000).toFixed(2)}M`,
+                        name
+                      ]}
+                    />} 
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#F59E0B"
+                    strokeWidth={3}
+                    dot={{ fill: "#F59E0B", strokeWidth: 2, r: 4 }}
+                    name="Conservative (8%)"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="optimisticValue"
+                    stroke="#EF4444"
+                    strokeWidth={3}
+                    dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
+                    name="Optimistic (12%)"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+
+        <Card className="border-gray-200">
+          <CardHeader>
+            <CardTitle className="text-2xl text-black">Projected Exit Value per Token (10-Year)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChartContainer config={chartConfig} className="h-80 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={propertyValueProjection} margin={{ top: 20, right: 30, left: 40, bottom: 80 }}>
+                  <XAxis 
+                    dataKey="year" 
+                    tick={{ fontSize: 11 }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={80}
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 11 }}
+                    tickFormatter={(value) => `$${value}`}
+                  />
+                  <ChartTooltip 
+                    content={<ChartTooltipContent 
+                      formatter={(value, name) => [
+                        `$${Number(value).toFixed(2)}`,
+                        name
+                      ]}
+                    />} 
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="tokenValue"
+                    stroke="#F59E0B"
+                    strokeWidth={3}
+                    dot={{ fill: "#F59E0B", strokeWidth: 2, r: 4 }}
+                    name="Conservative (8%)"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="optimisticTokenValue"
+                    stroke="#EF4444"
+                    strokeWidth={3}
+                    dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
+                    name="Optimistic (12%)"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Key Financial Assumptions */}
       <Card className="border-gray-200">
