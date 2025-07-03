@@ -16,11 +16,17 @@ const NewsletterSignup = () => {
 
     setIsLoading(true);
     try {
-      // For now, we'll use a simple mailto until backend is set up
-      const subject = "Newsletter Signup - HBCX Digital Securities";
-      const body = `New newsletter signup from: ${email}`;
-      
-      window.location.href = `mailto:david@bingabeach.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const response = await fetch('/functions/v1/newsletter-signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send newsletter signup');
+      }
       
       toast({
         title: "Thank you for signing up!",
