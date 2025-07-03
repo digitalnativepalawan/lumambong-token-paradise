@@ -5,6 +5,7 @@ import { ArrowRight, Play, TrendingUp, Users, MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
+import NewsletterSignup from "./NewsletterSignup";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -108,6 +109,11 @@ const Hero = () => {
             </div>
           </div>
         )}
+
+        {/* Newsletter Signup & Disclaimer */}
+        <div className="mb-12">
+          <NewsletterSignup />
+        </div>
 
         {/* Stats grid */}
         <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">

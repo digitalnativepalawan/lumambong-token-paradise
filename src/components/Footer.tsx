@@ -129,6 +129,14 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Legal Disclaimer */}
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mt-8 sm:mt-12">
+          <p className="text-amber-800 text-sm sm:text-base text-center">
+            <strong>Legal Notice:</strong> HBCX Digital Securities are not currently for sale. This web app is an informational front-end preview only. 
+            No investment commitments or offers are being accepted at this time. Please consult official project updates for future launch announcements.
+          </p>
+        </div>
+
         {/* Bottom section */}
         <div className="border-t border-gray-200 mt-8 sm:mt-12 pt-6 sm:pt-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
