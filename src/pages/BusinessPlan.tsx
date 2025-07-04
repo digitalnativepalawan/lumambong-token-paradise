@@ -9,8 +9,9 @@ import ManagementStructure from "@/components/business-plan/ManagementStructure"
 import RiskAssessment from "@/components/business-plan/RiskAssessment";
 import FinancialProjections from "@/components/business-plan/FinancialProjections";
 import TechnicalImplementation from "@/components/business-plan/TechnicalImplementation";
+import SandboxSECPhilippines from "@/components/business-plan/SandboxSECPhilippines";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Download, Share2, Menu, Users } from "lucide-react";
+import { ChevronRight, Share2, Menu, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const BusinessPlan = () => {
@@ -27,6 +28,7 @@ const BusinessPlan = () => {
     { id: "risk-assessment", title: "Risk Assessment", component: RiskAssessment },
     { id: "financial-projections", title: "Financial Projections", component: FinancialProjections },
     { id: "technical", title: "Technical Implementation", component: TechnicalImplementation },
+    { id: "sandbox-sec", title: "Sandbox SEC Philippines", component: SandboxSECPhilippines },
   ];
 
   const scrollToSection = (sectionId: string) => {
@@ -42,12 +44,6 @@ const BusinessPlan = () => {
     window.open('https://drive.google.com/file/d/18yJQc1Qq7r8SZuSTUFwu5O2xwSqINgyW/view?usp=sharing', '_blank');
   };
 
-  const handleDownloadPDF = () => {
-    toast({
-      title: "PDF Download",
-      description: "PDF download functionality will be available soon. Please contact us for a copy of the business plan.",
-    });
-  };
 
   const handleSharePlan = async () => {
     const currentUrl = window.location.href;
@@ -104,13 +100,6 @@ const BusinessPlan = () => {
             
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2 max-w-md sm:max-w-none mx-auto">
-              <Button 
-                onClick={handleDownloadPDF}
-                className="modern-button px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
-              >
-                <Download className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
-                <span className="truncate">Download PDF</span>
-              </Button>
               <Button 
                 onClick={handleAngelInvestorClick}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
