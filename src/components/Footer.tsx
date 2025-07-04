@@ -38,7 +38,7 @@ const Footer = () => {
   const quickLinks = [
     { label: "The Project", href: "#project" },
     { label: "Token Utility", href: "#utility" }, 
-    { label: "Investment Opportunities", href: "#investment" },
+    { label: "Blog", href: "/blog" },
     { label: "Location & Amenities", href: "#location" },
     { label: "Business Plan", href: "/business-plan" },
     { label: "Governance", href: "/governance" },

@@ -63,10 +63,10 @@ const UserMenu = () => {
         Sign In
       </Button>
       <Button 
-        onClick={handleInvestClick}
+        onClick={() => navigate('/blog')}
         className="modern-button px-3 lg:px-6 py-1.5 lg:py-2 rounded-xl text-xs lg:text-sm"
       >
-        Invest in BBT
+        Admin
       </Button>
     </div>
   );

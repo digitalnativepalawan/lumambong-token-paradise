@@ -44,7 +44,7 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
   const navItems = [
     { label: "Project", href: "#project" },
     { label: "Digital Securities", href: "#utility" }, 
-    { label: "Investment", href: "#investment" },
+    { label: "Blog", href: "/blog" },
     { label: "Location", href: "#location" },
     { label: "Business Plan", href: "/business-plan" }
   ];

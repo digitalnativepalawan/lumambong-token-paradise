@@ -39,7 +39,7 @@ const MobileMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen, scrollToContact }: 
   const navItems = [
     { label: "Project", href: "#project" },
     { label: "Token Utility", href: "#utility" }, 
-    { label: "Investment", href: "#investment" },
+    { label: "Blog", href: "/blog" },
     { label: "Location", href: "#location" },
     { label: "Business Plan", href: "/business-plan" }
   ];
@@ -172,12 +172,12 @@ const MobileMenu = ({ isMobileMenuOpen, setIsMobileMenuOpen, scrollToContact }: 
             </Button>
             <Button 
               onClick={() => {
-                handleInvestClick();
+                navigate('/blog');
                 setIsMobileMenuOpen(false);
               }}
               className="w-full modern-button"
             >
-              Invest in BBT
+              Admin
             </Button>
           </div>
         )}
