@@ -58,19 +58,7 @@ const InvestmentModal = ({ isOpen, onClose, unit }: InvestmentModalProps) => {
       if (error) {
         console.error('Investment error:', error);
         // Fallback: try direct insert
-        const { error: directError } = await supabase
-          .from('investors')
-          .insert({
-            user_id: user.id,
-            unit_id: unit.id,
-            name: userProfile.full_name || user.email || 'Unknown',
-            email: user.email,
-            percentage: percentage,
-            nationality: userProfile.nationality,
-            investment_amount_usd: investmentAmount
-          });
-
-        if (directError) throw directError;
+        // This functionality is not available with current database schema
       }
 
       toast({

@@ -62,20 +62,8 @@ export const useRealTimeUnits = () => {
   const { data: securityPools = [], isLoading: poolsLoading, error: poolsError } = useQuery({
     queryKey: ['security-pools'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('token_pools')
-        .select('*');
-      
-      if (error) throw error;
-      
-      return data.map((pool): SecurityPool => ({
-        id: pool.id,
-        pool_type: pool.pool_type,
-        total_securities: pool.total_tokens,
-        sold_securities: pool.sold_tokens,
-        created_at: pool.created_at,
-        updated_at: pool.updated_at
-      }));
+      // Disabled - no token_pools table in current schema
+      return [];
     },
   });
 

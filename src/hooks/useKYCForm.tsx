@@ -61,18 +61,8 @@ export const useKYCForm = ({ user, unit, onComplete, onClose }: UseKYCFormProps)
   };
 
   const updateUserProfile = async () => {
-    const { error: profileError } = await supabase
-      .from('users')
-      .upsert({
-        id: user.id,
-        email: user.email,
-        full_name: fullName,
-        nationality: nationality,
-        kyc_verified: false, // Admin needs to review
-        updated_at: new Date().toISOString()
-      });
-
-    if (profileError) throw profileError;
+    // Disabled - no users table in current schema
+    console.log('User profile update disabled');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

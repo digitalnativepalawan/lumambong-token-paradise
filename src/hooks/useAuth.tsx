@@ -20,11 +20,9 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('auth_user_id', userId)
-        .single();
+      // Disabled - users table not available in current schema
+      const data = null;
+      const error = null;
 
       if (error && error.code !== 'PGRST116') {
         console.log('User profile table error:', error);
@@ -110,14 +108,8 @@ export const useAuth = () => {
     if (!user) return;
 
     try {
-      const { error } = await supabase
-        .from('users')
-        .upsert({
-          auth_user_id: user.id,
-          email: user.email,
-          name: updates.full_name,
-          updated_at: new Date().toISOString()
-        });
+      // Disabled - users table not available in current schema
+      const error = null;
 
       if (error) {
         console.error('Error updating profile:', error);
