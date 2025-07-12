@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 
 const DevelopmentRoadmap = () => {
   const roadmapItems = [
-    { phase: "Q1 2025", title: "Digital Securities Launch", status: "completed" },
-    { phase: "Q2 2025", title: "Development Start", status: "active" },
-    { phase: "Q3 2025", title: "Resort Opening", status: "upcoming" },
-    { phase: "Q4 2025", title: "Full Operations", status: "upcoming" }
+    { phase: "Q4 2025", title: "Digital Securities Launch", status: "active" },
+    { phase: "Q1 2026", title: "Development Start", status: "upcoming" },
+    { phase: "Q2 2026", title: "Resort Opening", status: "upcoming" },
+    { phase: "Q3 2026", title: "Full Operations", status: "upcoming" }
   ];
 
   return (
