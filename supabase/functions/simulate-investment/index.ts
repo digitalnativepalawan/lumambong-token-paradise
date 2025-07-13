@@ -154,6 +154,12 @@ Deno.serve(async (req) => {
         grossAmenities: Number(totalGrossAmenities.toFixed(2)),
         netIncome: Number(totalNetIncome.toFixed(2)),
         dividendPool: Number(dividendPool.toFixed(2))
+      },
+      caps: {
+        foreignCap: Number(foreignCap.toFixed(0)),
+        philippineCap: Number(philippineCap.toFixed(0)),
+        remainingForeign: Number(foreignCap.toFixed(0)), // Simplified - assuming no tokens sold yet
+        remainingPhilippine: Number(philippineCap.toFixed(0)) // Simplified - assuming no tokens sold yet
       }
     };
 
