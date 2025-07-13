@@ -1,6 +1,4 @@
-
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.5'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -8,226 +6,170 @@ const corsHeaders = {
 }
 
 interface SimulationRequest {
-  tokensPurchased: number
-  totalTokens: number
-  investorType: 'PHILIPPINE' | 'FOREIGN'
+  tokensPurchased: number;
+  totalTokens: number;
+  investorType: 'PHILIPPINE' | 'FOREIGN';
   adjustments?: {
-    rateDelta: number
-    highOccDelta: number
-    lowOccDelta: number
-    amenityDelta: number
-    tokenGrowthPct: number
-    exitYears: number
-  }
+    rateDelta: number;
+    highOccDelta: number;
+    lowOccDelta: number;
+    amenityDelta: number;
+    tokenGrowthPct: number;
+    exitYears: number;
+  };
 }
 
-const clamp = (value: number, min: number, max: number) => {
+function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, { headers: corsHeaders });
   }
 
   try {
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
-    )
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
 
-    const { tokensPurchased, totalTokens, investorType, adjustments }: SimulationRequest = await req.json()
-
-    // Default adjustments if not provided
-    const adj = adjustments || {
-      rateDelta: 0,
-      highOccDelta: 0,
-      lowOccDelta: 0,
-      amenityDelta: 0,
-      tokenGrowthPct: 0.05,
-      exitYears: 12
-    }
-
-    // Fixed Model Assumptions with adjustments
-    const baseNightlyRate = 200
-    const nightlyRate = baseNightlyRate + adj.rateDelta
-    
-    const highSeasonDays = 182
-    const lowSeasonDays = 183
-    
-    const baseHighOcc = 0.80
-    const baseLowOcc = 0.60
-    const highOcc = clamp(baseHighOcc + (adj.highOccDelta / 100), 0, 1)
-    const lowOcc = clamp(baseLowOcc + (adj.lowOccDelta / 100), 0, 1)
-    
-    const units = 10
-    const dividendPayoutRatio = 0.30 // 30% of net rental revenue
-    
-    const baseAmenityRevenuePct = 0.10 // 10% additional F&B/tours revenue
-    const amenityRevenuePerUnitPct = clamp(baseAmenityRevenuePct + (adj.amenityDelta / 100), 0, 1)
-    
-    const operatingExpenseRatio = 0.18 // 18% of gross revenue
-
-    // Equity valuation constants
-    const currentProjectValue = 2585000 // $2.585M current valuation
-    const assetAppreciationPct = 0.22 // 22% annual asset appreciation
-    const initialTokenPrice = 25
-
-    // Bonus stay pool
-    const bonusStayPool = 5 // 5 extra nights per year
-
-    // Validation & Enforcement
-    const foreignCap = totalTokens * 0.40
-    const philippineCap = totalTokens * 0.60
-
-    // Get current token distribution from database
-    const { data: tokenPools } = await supabase
-      .from('token_pools')
-      .select('*')
-
-    let currentForeignTokens = 0
-    let currentPhilippineTokens = 0
-
-    if (tokenPools) {
-      const foreignPool = tokenPools.find(pool => pool.pool_type === 'FOREIGN')
-      const philippinePool = tokenPools.find(pool => pool.pool_type === 'PHILIPPINE')
-      
-      currentForeignTokens = foreignPool?.sold_tokens || 0
-      currentPhilippineTokens = philippinePool?.sold_tokens || 0
-    }
-
-    // Validate purchase against caps
-    if (investorType === 'FOREIGN') {
-      if (currentForeignTokens + tokensPurchased > foreignCap) {
-        return new Response(
-          JSON.stringify({ 
-            error: `Purchase exceeds foreign investor cap. Available: ${foreignCap - currentForeignTokens} tokens` 
-          }),
-          { 
-            status: 400, 
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-          }
-        )
+    const {
+      tokensPurchased,
+      totalTokens,
+      investorType,
+      adjustments = {
+        rateDelta: 0,
+        highOccDelta: 0,
+        lowOccDelta: 0,
+        amenityDelta: 0,
+        tokenGrowthPct: 0.05,
+        exitYears: 12
       }
-    } else if (investorType === 'PHILIPPINE') {
-      if (currentPhilippineTokens + tokensPurchased > philippineCap) {
-        return new Response(
-          JSON.stringify({ 
-            error: `Purchase exceeds Philippine investor cap. Available: ${philippineCap - currentPhilippineTokens} tokens` 
-          }),
-          { 
-            status: 400, 
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-          }
-        )
-      }
+    }: SimulationRequest = await req.json();
+
+    console.log('Simulation request:', { tokensPurchased, totalTokens, investorType, adjustments });
+
+    // Validate inputs
+    if (!tokensPurchased || tokensPurchased <= 0) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid token quantity' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
     }
 
-    // SYNC CALCULATIONS - Ensure everything is based on tokensPurchased
-    const ownershipPct = tokensPurchased / totalTokens
-    const investment = tokensPurchased * initialTokenPrice
+    // Investor caps validation
+    const foreignCap = totalTokens * 0.40; // 40% for foreign investors
+    const philippineCap = totalTokens * 0.60; // 60% for Philippine investors
 
-    // 1. Annual Rental Revenue per unit with adjustments
-    const highRev = nightlyRate * highSeasonDays * highOcc
-    const lowRev = nightlyRate * lowSeasonDays * lowOcc
-    const rentalRevPerUnit = highRev + lowRev
+    if (investorType === 'FOREIGN' && tokensPurchased > foreignCap) {
+      return new Response(
+        JSON.stringify({ error: `Foreign investors are limited to ${Math.floor(foreignCap)} tokens (40% cap)` }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
 
-    // 2. Total Gross Revenue with adjustments
-    const grossRental = rentalRevPerUnit * units
-    const grossAmenities = grossRental * amenityRevenuePerUnitPct
-    const grossRevenue = grossRental + grossAmenities
+    if (investorType === 'PHILIPPINE' && tokensPurchased > philippineCap) {
+      return new Response(
+        JSON.stringify({ error: `Philippine investors are limited to ${Math.floor(philippineCap)} tokens (60% cap)` }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
+      );
+    }
 
-    // 3. Net Income Available for Distribution
-    const netIncome = grossRevenue * (1 - operatingExpenseRatio)
-    const dividendPool = netIncome * dividendPayoutRatio
+    // Constants for calculation
+    const TOKEN_PRICE = 25; // $25 per token
+    const PROPERTY_VALUE = 250000; // $250,000 per property
+    const TOTAL_PROPERTIES = 62; // 62 properties
+    const TOTAL_PROPERTY_VALUE = PROPERTY_VALUE * TOTAL_PROPERTIES;
+    
+    // Base rates with adjustments
+    const baseHighSeasonRate = clamp(350 + adjustments.rateDelta, 250, 500);
+    const baseLowSeasonRate = clamp(250 + adjustments.rateDelta, 150, 350);
+    const baseHighOccupancy = clamp(0.85 + adjustments.highOccDelta, 0.60, 0.95);
+    const baseLowOccupancy = clamp(0.65 + adjustments.lowOccDelta, 0.40, 0.85);
+    const baseAmenityRevenue = clamp(150000 + adjustments.amenityDelta, 50000, 300000);
 
-    // 4. SYNCED Stay Days Calculation
-    const annualNightsPerUnit = highSeasonDays * highOcc + lowSeasonDays * lowOcc
-    const totalAnnualNights = annualNightsPerUnit * units
-    const baseStayDays = totalAnnualNights * ownershipPct
-    const userBonusStayDays = bonusStayPool * ownershipPct
-    const totalStayDays = baseStayDays + userBonusStayDays
+    // Calculate investment metrics
+    const investment = tokensPurchased * TOKEN_PRICE;
+    const ownershipPct = (tokensPurchased / totalTokens) * 100;
+    
+    // Stay days calculation (1 day per $1000 invested, minimum 7 days)
+    const baseStayDays = Math.max(investment / 1000, 7);
+    const userBonusStayDays = ownershipPct > 5 ? baseStayDays * 0.2 : 0; // 20% bonus if >5% ownership
+    const totalStayDays = baseStayDays + userBonusStayDays;
 
-    // 5. Dividend Calculation (synced with ownership)
-    const annualDividend = dividendPool * ownershipPct
+    // Revenue calculations
+    const highSeasonDays = 120; // 4 months
+    const lowSeasonDays = 245; // 8 months
+    
+    const grossRentalPerProperty = (baseHighSeasonRate * highSeasonDays * baseHighOccupancy) + 
+                                   (baseLowSeasonRate * lowSeasonDays * baseLowOccupancy);
+    const totalGrossRental = grossRentalPerProperty * TOTAL_PROPERTIES;
+    
+    // Operating expenses (40% of gross rental)
+    const operatingExpenses = totalGrossRental * 0.40;
+    const netRentalIncome = totalGrossRental - operatingExpenses;
+    
+    // Amenity revenue
+    const totalGrossAmenities = baseAmenityRevenue;
+    const amenityExpenses = totalGrossAmenities * 0.30; // 30% expenses
+    const netAmenityIncome = totalGrossAmenities - amenityExpenses;
+    
+    // Total net income
+    const totalNetIncome = netRentalIncome + netAmenityIncome;
+    
+    // Dividend calculation (30% of net income)
+    const dividendPool = totalNetIncome * 0.30;
+    const userDividend = dividendPool * (ownershipPct / 100);
 
-    // 6. Equity Value Calculations
-    const currentEquityValue = currentProjectValue * ownershipPct
-    const futureProjectValue = currentProjectValue * Math.pow(1 + assetAppreciationPct, adj.exitYears)
-    const projectedEquityValue = futureProjectValue * ownershipPct
-    const equityGain = projectedEquityValue - currentEquityValue
-
-    // 7. Exit and Return Calculations
-    const exitTokenPrice = initialTokenPrice * Math.pow(1 + adj.tokenGrowthPct, adj.exitYears)
-    const exitProceeds = exitTokenPrice * tokensPurchased
-    const cumulativeDividends = annualDividend * adj.exitYears
-    const initialInvestment = investment // Use the synced investment calculation
-    const totalReturn = (exitProceeds + cumulativeDividends) - initialInvestment
-    const returnMultiple = (exitProceeds + cumulativeDividends) / initialInvestment
-
-    // Legacy calculations for backward compatibility
-    const exitValue = exitTokenPrice * tokensPurchased
-    const totalDividends = annualDividend * adj.exitYears
+    // Equity calculations with token growth
+    const currentEquityValue = investment;
+    const annualTokenGrowth = 1 + adjustments.tokenGrowthPct;
+    const projectedEquityValue = currentEquityValue * Math.pow(annualTokenGrowth, adjustments.exitYears);
+    const equityGain = projectedEquityValue - currentEquityValue;
+    
+    // Calculate cumulative dividends over exit years
+    const cumulativeDividends = userDividend * adjustments.exitYears;
+    
+    // Exit proceeds and total return
+    const exitProceeds = projectedEquityValue + cumulativeDividends;
+    const returnMultiple = exitProceeds / investment;
 
     const result = {
-      // Core synced values
-      investment: Number(investment.toFixed(2)),
-      ownershipPct: Number((ownershipPct * 100).toFixed(4)), // Convert to percentage
+      investment,
+      ownershipPct: Number(ownershipPct.toFixed(3)),
       baseStayDays: Number(baseStayDays.toFixed(1)),
+      userBonusStayDays: userBonusStayDays > 0 ? Number(userBonusStayDays.toFixed(1)) : null,
       totalStayDays: Number(totalStayDays.toFixed(1)),
-      annualStayDays: Number(totalStayDays.toFixed(1)), // For backward compatibility
-      
-      // Financial metrics
-      annualDividendUSD: Number(annualDividend.toFixed(2)),
-      exitYears: adj.exitYears,
-      tokenGrowthPct: adj.tokenGrowthPct,
-      exitTokenPrice: Number(exitTokenPrice.toFixed(2)),
-      exitValue: Number(exitValue.toFixed(2)),
-      totalDividends: Number(totalDividends.toFixed(2)),
-      totalReturn: Number(totalReturn.toFixed(2)),
-      returnMultiple: Number(returnMultiple.toFixed(2)),
-      
-      // Equity-related fields
+      annualDividendUSD: Number(userDividend.toFixed(2)),
       currentEquityValue: Number(currentEquityValue.toFixed(2)),
       projectedEquityValue: Number(projectedEquityValue.toFixed(2)),
       equityGain: Number(equityGain.toFixed(2)),
       cumulativeDividends: Number(cumulativeDividends.toFixed(2)),
       exitProceeds: Number(exitProceeds.toFixed(2)),
-      
-      // Bonus stay pool
-      bonusStayPool: bonusStayPool,
-      userBonusStayDays: Number(userBonusStayDays.toFixed(2)),
-      
+      returnMultiple: Number(returnMultiple.toFixed(2)),
       breakdown: {
-        grossRental: Number(grossRental.toFixed(0)),
-        grossAmenities: Number(grossAmenities.toFixed(0)),
-        netIncome: Number(netIncome.toFixed(0)),
-        dividendPool: Number(dividendPool.toFixed(0))
-      },
-      caps: {
-        foreignCap,
-        philippineCap,
-        remainingForeign: foreignCap - currentForeignTokens,
-        remainingPhilippine: philippineCap - currentPhilippineTokens
+        grossRental: Number(totalGrossRental.toFixed(2)),
+        grossAmenities: Number(totalGrossAmenities.toFixed(2)),
+        netIncome: Number(totalNetIncome.toFixed(2)),
+        dividendPool: Number(dividendPool.toFixed(2))
       }
-    }
+    };
+
+    console.log('Simulation result:', result);
 
     return new Response(
       JSON.stringify(result),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    )
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
 
   } catch (error) {
-    console.error('Simulation error:', error)
+    console.error('Simulation error:', error);
+    
     return new Response(
-      JSON.stringify({ error: 'Internal server error' }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    )
+      JSON.stringify({ error: 'Failed to process simulation' }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+    );
   }
-})
+});
