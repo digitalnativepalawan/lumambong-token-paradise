@@ -26,7 +26,7 @@ const InvestmentControls = ({
   simulationResult
 }: InvestmentControlsProps) => {
   const getMaxTokens = () => {
-    if (!simulationResult) return 10000;
+    if (!simulationResult || !simulationResult.caps) return 10000;
     return investorType === 'FOREIGN' 
       ? simulationResult.caps.remainingForeign
       : simulationResult.caps.remainingPhilippine;
@@ -88,7 +88,7 @@ const InvestmentControls = ({
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        {simulationResult && (
+        {simulationResult && simulationResult.caps && (
           <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded border">
             <div className="font-medium mb-1">Pool Availability</div>
             <div>
