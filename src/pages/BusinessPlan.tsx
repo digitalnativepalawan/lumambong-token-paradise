@@ -41,7 +41,15 @@ const BusinessPlan = () => {
   };
 
   const handleAngelInvestorClick = () => {
-    window.open('https://drive.google.com/file/d/18yJQc1Qq7r8SZuSTUFwu5O2xwSqINgyW/view?usp=sharing', '_blank');
+    window.open('https://drive.google.com/file/d/1TZRI0g0Wpkh-y07WKSHbdBacxpIzbeCx/view?usp=sharing', '_blank');
+  };
+
+  const handleModulePriceClick = () => {
+    window.open('https://drive.google.com/file/d/12ipQxG1LQONp8Fcb9DsPjh7nyuuZqEiB/view?usp=sharing', '_blank');
+  };
+
+  const handleModuleSpecsClick = () => {
+    window.open('https://drive.google.com/file/d/1nSow1wwZnDee7CQur0rmU3rxFhEc4Y46/view?usp=sharing', '_blank');
   };
 
 
@@ -99,13 +107,25 @@ const BusinessPlan = () => {
             </p>
             
             {/* Action buttons */}
-            <div className="flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2 max-w-md sm:max-w-none mx-auto">
+            <div className="flex flex-col sm:flex-row gap-2 md:gap-4 justify-center px-2 max-w-4xl mx-auto">
               <Button 
                 onClick={handleAngelInvestorClick}
                 className="bg-purple-600 hover:bg-purple-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
               >
                 <Users className="w-4 h-4 md:w-5 md:h-5 mr-2 flex-shrink-0" />
                 <span className="truncate">Angel Investor</span>
+              </Button>
+              <Button 
+                onClick={handleModulePriceClick}
+                className="bg-green-600 hover:bg-green-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
+              >
+                <span className="truncate">Module Price</span>
+              </Button>
+              <Button 
+                onClick={handleModuleSpecsClick}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-6 py-2 md:py-3 rounded-xl text-sm md:text-base w-full sm:w-auto"
+              >
+                <span className="truncate">Module Specs</span>
               </Button>
               <Button 
                 onClick={handleSharePlan}
