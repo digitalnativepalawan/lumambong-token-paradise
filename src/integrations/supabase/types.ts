@@ -200,6 +200,7 @@ export type Database = {
           customer_whatsapp: string
           id: string
           location: string
+          messaging_platform: string
           special_requests: string | null
           status: string
           total_amount: number
@@ -211,6 +212,7 @@ export type Database = {
           customer_whatsapp: string
           id?: string
           location: string
+          messaging_platform?: string
           special_requests?: string | null
           status?: string
           total_amount: number
@@ -222,6 +224,7 @@ export type Database = {
           customer_whatsapp?: string
           id?: string
           location?: string
+          messaging_platform?: string
           special_requests?: string | null
           status?: string
           total_amount?: number

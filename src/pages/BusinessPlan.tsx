@@ -41,7 +41,7 @@ const BusinessPlan = () => {
   };
 
   const handleAngelInvestorClick = () => {
-    window.open('https://drive.google.com/file/d/1TZRI0g0Wpkh-y07WKSHbdBacxpIzbeCx/view?usp=sharing', '_blank');
+    window.open('https://manus.im/share/file/d996efe4-6ff4-462e-9e9a-4f191f7a8804', '_blank');
   };
 
   const handleModulePriceClick = () => {
