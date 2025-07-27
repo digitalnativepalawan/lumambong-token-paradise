@@ -99,7 +99,7 @@ const EquityMetrics = ({ simulationResult, formatCurrency }: EquityMetricsProps)
         <div className="text-center">
           <div className="text-sm font-medium text-emerald-800 mb-2">Total Return Summary</div>
           <div className="text-lg font-bold text-emerald-600">
-            {formatCurrency(simulationResult.totalReturn || 0)}
+            {formatCurrency((simulationResult.exitProceeds || 0) + (simulationResult.cumulativeDividends || 0))}
           </div>
           <div className="text-xs text-emerald-700 mt-1">
             Total Return ({simulationResult.returnMultiple?.toFixed(1)}× your investment)
