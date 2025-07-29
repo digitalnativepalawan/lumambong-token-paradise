@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, Shield, Users, TrendingUp, CheckCircle } from "lucide-react";
+import { Download, FileText, Shield, Users, TrendingUp, CheckCircle, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Whitepaper = () => {
+  const navigate = useNavigate();
+  
   const handleDownloadWhitepaper = () => {
     // Create a link to download the whitepaper PDF
     const link = document.createElement('a');
@@ -19,6 +22,16 @@ const Whitepaper = () => {
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
+            <div className="flex justify-center mb-6">
+              <Button 
+                onClick={() => navigate('/')}
+                variant="outline"
+                className="mr-4"
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Back to Home
+              </Button>
+            </div>
             <Badge className="mb-6 bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2">
               Official Documentation
             </Badge>
@@ -517,13 +530,23 @@ const Whitepaper = () => {
             Download the full technical documentation including detailed testing protocols, 
             compliance frameworks, and implementation roadmap.
           </p>
-          <Button 
-            onClick={handleDownloadWhitepaper}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto max-w-sm"
-          >
-            <Download className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
-            Download Full Whitepaper PDF
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button 
+              onClick={handleDownloadWhitepaper}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto max-w-sm"
+            >
+              <Download className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
+              Download Full Whitepaper PDF
+            </Button>
+            <Button 
+              onClick={() => navigate('/')}
+              variant="outline"
+              className="px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto max-w-sm"
+            >
+              <Home className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
+              Back to Home
+            </Button>
+          </div>
         </div>
       </div>
     </div>
