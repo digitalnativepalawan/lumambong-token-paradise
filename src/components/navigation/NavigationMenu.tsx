@@ -46,7 +46,8 @@ const NavigationMenu = ({ scrollToContact }: NavigationMenuProps) => {
     { label: "Digital Securities", href: "#utility" }, 
     { label: "Blog", href: "/blog" },
     { label: "Location", href: "#location" },
-    { label: "Business Plan", href: "/business-plan" }
+    { label: "Business Plan", href: "/business-plan" },
+    { label: "Whitepaper", href: "/whitepaper" }
   ];
 
   return (
