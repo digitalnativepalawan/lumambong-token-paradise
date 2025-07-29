@@ -30,7 +30,7 @@ const Whitepaper = () => {
             </p>
             <Button 
               onClick={handleDownloadWhitepaper}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto max-w-sm"
             >
               <Download className="w-5 h-5 mr-2" />
               Download Full Whitepaper
@@ -511,17 +511,17 @@ const Whitepaper = () => {
         </Card>
 
         {/* Download CTA */}
-        <div className="text-center bg-blue-50 rounded-lg p-12">
-          <h2 className="text-3xl font-bold mb-4">Get the Complete Whitepaper</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <div className="text-center bg-blue-50 rounded-lg p-6 sm:p-12">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4">Get the Complete Whitepaper</h2>
+          <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
             Download the full technical documentation including detailed testing protocols, 
             compliance frameworks, and implementation roadmap.
           </p>
           <Button 
             onClick={handleDownloadWhitepaper}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg w-full sm:w-auto max-w-sm"
           >
-            <Download className="w-6 h-6 mr-3" />
+            <Download className="w-5 h-5 sm:w-6 sm:h-6 mr-2 sm:mr-3" />
             Download Full Whitepaper PDF
           </Button>
         </div>
