@@ -364,11 +364,14 @@ const Whitepaper = () => {
                 Halo Bloc fully complies with this by operating through an SEC-registered Philippine corporation (Halo Bloc Inc.) 
                 where 60% of the shares are owned by Filipino citizens.
               </p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 <strong>Foreign investors</strong> participate economically through their up to 40% stake via HBCX tokens, which represent 
                 beneficial interest in the company/project. This structure provides a <strong>legal investment route for foreigners</strong> 
-                while respecting national ownership laws. We've structured HBCX to give foreign investors rights to profits 
-                <strong>without giving title to land</strong>, staying within the compliant corporation framework.
+                while respecting national ownership laws. 
+              </p>
+              <p className="text-gray-600">
+                We've structured HBCX to give foreign investors rights to profits <strong>without giving title to land</strong>, 
+                staying within the compliant corporation framework.
               </p>
             </div>
 
