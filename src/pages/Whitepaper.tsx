@@ -4,6 +4,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, FileText, Shield, Users, TrendingUp, CheckCircle } from "lucide-react";
 
 const Whitepaper = () => {
+  const handleDownloadWhitepaper = () => {
+    // Create a link to download the whitepaper PDF
+    const link = document.createElement('a');
+    link.href = 'https://drive.google.com/file/d/1lEUW4tBWYpKNLYSxH_oXedd2EJZ6Rpxk/view?usp=sharing';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.click();
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
@@ -19,7 +28,10 @@ const Whitepaper = () => {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
               StratBox Testing Plan, Investor Summary, and Regulatory Alignment for HBCX Digital Asset Platform
             </p>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+            <Button 
+              onClick={handleDownloadWhitepaper}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+            >
               <Download className="w-5 h-5 mr-2" />
               Download Full Whitepaper
             </Button>
@@ -505,7 +517,10 @@ const Whitepaper = () => {
             Download the full technical documentation including detailed testing protocols, 
             compliance frameworks, and implementation roadmap.
           </p>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg">
+          <Button 
+            onClick={handleDownloadWhitepaper}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg"
+          >
             <Download className="w-6 h-6 mr-3" />
             Download Full Whitepaper PDF
           </Button>
