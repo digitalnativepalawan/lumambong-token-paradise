@@ -126,8 +126,8 @@ const Whitepaper = () => {
             </div>
 
             <p className="text-lg font-semibold text-blue-600 text-center">
-              Halo Bloc is ushering in a <strong>new era of real estate investment</strong> in the Philippines – one that is 
-              <strong>inclusive, tech-driven, and secure</strong>. Join us in becoming part-owner of paradise and share in the success of 
+              Halo Bloc is ushering in a <strong>new era of real estate investment</strong> in the Philippines – one that is{" "}
+              <strong>inclusive, tech-driven, and secure</strong>. Join us in becoming part-owner of paradise and share in the success of{" "}
               Palawan's thriving real estate market. 🏝️✨
             </p>
           </CardContent>
