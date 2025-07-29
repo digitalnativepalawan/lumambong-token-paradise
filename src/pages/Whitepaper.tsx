@@ -7,7 +7,7 @@ const Whitepaper = () => {
   const handleDownloadWhitepaper = () => {
     // Create a link to download the whitepaper PDF
     const link = document.createElement('a');
-    link.href = 'https://drive.google.com/file/d/1lEUW4tBWYpKNLYSxH_oXedd2EJZ6Rpxk/view?usp=sharing';
+    link.href = 'https://docs.google.com/document/d/1Ox7db0ZN5MTSmH-ODzJj8-9kA0gXKUMP4J4iUl43L1Q/edit?usp=sharing';
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     link.click();
