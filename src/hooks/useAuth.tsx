@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import type { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 
 interface UserProfile {
@@ -20,44 +20,46 @@ export const useAuth = () => {
 
   const fetchUserProfile = async (userId: string) => {
     try {
-      // Disabled - users table not available in current schema
-      const data = null;
-      const error = null;
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, email, full_name, nationality, kyc_verified, is_admin')
+        .eq('id', userId)
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') {
-        console.log('User profile table error:', error);
-        // Create a basic profile from auth user data
-        setUserProfile({
-          id: userId,
-          email: user?.email || null,
-          full_name: null,
-          nationality: null,
-          kyc_verified: false,
-          is_admin: false
-        });
-        return;
+      if (error) {
+        console.log('User profile fetch error:', error);
       }
-      
+
       if (data) {
         setUserProfile({
           id: data.id,
           email: data.email,
-          full_name: data.name,
-          nationality: null, // This would need to be added to users table
-          kyc_verified: false, // This would need to be added to users table
-          is_admin: data.role === 'admin'
+          full_name: data.full_name,
+          nationality: data.nationality,
+          kyc_verified: data.kyc_verified,
+          is_admin: data.is_admin,
         });
+        return;
       }
-    } catch (error) {
-      console.error('Error fetching user profile:', error);
-      // Fallback profile
+
+      // Fallback if no profile row exists yet
       setUserProfile({
         id: userId,
         email: user?.email || null,
         full_name: null,
         nationality: null,
         kyc_verified: false,
-        is_admin: false
+        is_admin: false,
+      });
+    } catch (err) {
+      console.error('Error fetching user profile:', err);
+      setUserProfile({
+        id: userId,
+        email: user?.email || null,
+        full_name: null,
+        nationality: null,
+        kyc_verified: false,
+        is_admin: false,
       });
     }
   };
@@ -67,11 +69,11 @@ export const useAuth = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         fetchUserProfile(session.user.id);
       }
-      
+
       setLoading(false);
     });
 
@@ -80,16 +82,16 @@ export const useAuth = () => {
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         if (session?.user) {
           // Defer profile fetch to avoid potential deadlocks
           setTimeout(() => {
-            fetchUserProfile(session.user.id);
+            fetchUserProfile(session.user!.id);
           }, 0);
         } else {
           setUserProfile(null);
         }
-        
+
         setLoading(false);
       }
     );
@@ -107,21 +109,28 @@ export const useAuth = () => {
   const updateProfile = async (updates: Partial<UserProfile>) => {
     if (!user) return;
 
+    // Only send allowed fields to the profiles table
+    const payload: Partial<UserProfile> = {};
+    if (typeof updates.full_name !== 'undefined') payload.full_name = updates.full_name;
+    if (typeof updates.nationality !== 'undefined') payload.nationality = updates.nationality;
+    if (typeof updates.kyc_verified !== 'undefined') payload.kyc_verified = updates.kyc_verified;
+    if (typeof updates.email !== 'undefined') payload.email = updates.email;
+
     try {
-      // Disabled - users table not available in current schema
-      const error = null;
+      const { error } = await supabase
+        .from('profiles')
+        .update(payload)
+        .eq('id', user.id);
 
       if (error) {
         console.error('Error updating profile:', error);
         throw error;
       }
 
-      // Refresh profile
       await fetchUserProfile(user.id);
     } catch (error) {
-      console.log('Profile update not available yet, storing locally');
-      // Update local state as fallback
-      setUserProfile(prev => prev ? { ...prev, ...updates } : null);
+      console.log('Profile update failed, updating local state as fallback');
+      setUserProfile(prev => prev ? { ...prev, ...payload } as UserProfile : prev);
     }
   };
 
@@ -134,6 +143,7 @@ export const useAuth = () => {
     updateProfile,
     isAuthenticated: !!user,
     isKYCVerified: userProfile?.kyc_verified || false,
-    isAdmin: userProfile?.is_admin || false
+    isAdmin: userProfile?.is_admin || false,
   };
 };
+

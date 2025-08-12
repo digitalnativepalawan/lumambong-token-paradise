@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -51,7 +50,7 @@ export const useKYCForm = ({ user, unit, onComplete, onClose }: UseKYCFormProps)
   const uploadDocument = async (file: File): Promise<string> => {
     const fileExt = file.name.split('.').pop();
     const fileName = `${user.id}/${unit?.id || 'general'}_kyc_${Date.now()}.${fileExt}`;
-    
+
     const { data: fileData, error: uploadError } = await supabase.storage
       .from('kyc-docs')
       .upload(fileName, file);
@@ -61,13 +60,22 @@ export const useKYCForm = ({ user, unit, onComplete, onClose }: UseKYCFormProps)
   };
 
   const updateUserProfile = async () => {
-    // Disabled - no users table in current schema
-    console.log('User profile update disabled');
+    // Update the profile with provided name and nationality; keep kyc_verified as false (pending review)
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        full_name: fullName,
+        nationality: nationality,
+        kyc_verified: false,
+      })
+      .eq('id', user.id);
+
+    if (error) throw error;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsSubmitting(true);

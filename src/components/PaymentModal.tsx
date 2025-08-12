@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -77,8 +76,12 @@ const PaymentModal = ({ isOpen, onClose, selectedUnit }: PaymentModalProps) => {
             amount: amount,
             currency: 'USD',
             payment_method: paymentMethod,
-            status: 'pending'
+            status: 'pending',
+            reference_code: refCode,
           });
+        if (error) {
+          console.log('Transaction insert error:', error);
+        }
       } catch (error) {
         console.log('Transaction insert failed, continuing with payment flow:', error);
       }

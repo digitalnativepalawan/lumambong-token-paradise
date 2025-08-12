@@ -97,20 +97,377 @@ export type Database = {
           hourly_rate: number
           id: string
           name: string
+          position: string | null
+          shift_type: string | null
         }
         Insert: {
           created_at?: string
           hourly_rate?: number
           id?: string
           name: string
+          position?: string | null
+          shift_type?: string | null
         }
         Update: {
           created_at?: string
           hourly_rate?: number
           id?: string
           name?: string
+          position?: string | null
+          shift_type?: string | null
         }
         Relationships: []
+      }
+      expense_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      expense_transactions: {
+        Row: {
+          amount: number
+          category_id: string
+          created_at: string
+          description: string
+          id: string
+          notes: string | null
+          payment_account_id: string | null
+          transaction_date: string
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          category_id: string
+          created_at?: string
+          description: string
+          id?: string
+          notes?: string | null
+          payment_account_id?: string | null
+          transaction_date: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          category_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          notes?: string | null
+          payment_account_id?: string | null
+          transaction_date?: string
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expense_transactions_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "expense_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expense_transactions_payment_account_id_fkey"
+            columns: ["payment_account_id"]
+            isOneToOne: false
+            referencedRelation: "payment_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "expense_transactions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guest_tab_items: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string
+          guest_tab_id: string
+          id: string
+          item_date: string
+          notes: string | null
+        }
+        Insert: {
+          amount?: number
+          created_at?: string
+          description: string
+          guest_tab_id: string
+          id?: string
+          item_date: string
+          notes?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string
+          guest_tab_id?: string
+          id?: string
+          item_date?: string
+          notes?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_tab_items_guest_tab_id_fkey"
+            columns: ["guest_tab_id"]
+            isOneToOne: false
+            referencedRelation: "guest_tabs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guest_tabs: {
+        Row: {
+          check_in_date: string | null
+          check_out_date: string | null
+          created_at: string
+          guest_name: string
+          id: string
+          is_settled: boolean
+          notes: string | null
+          payment_account_id: string | null
+          settled_at: string | null
+          total_balance: number
+          unit_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          check_in_date?: string | null
+          check_out_date?: string | null
+          created_at?: string
+          guest_name: string
+          id?: string
+          is_settled?: boolean
+          notes?: string | null
+          payment_account_id?: string | null
+          settled_at?: string | null
+          total_balance?: number
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          check_in_date?: string | null
+          check_out_date?: string | null
+          created_at?: string
+          guest_name?: string
+          id?: string
+          is_settled?: boolean
+          notes?: string | null
+          payment_account_id?: string | null
+          settled_at?: string | null
+          total_balance?: number
+          unit_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_tabs_payment_account_id_fkey"
+            columns: ["payment_account_id"]
+            isOneToOne: false
+            referencedRelation: "payment_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guest_tabs_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      income_transactions: {
+        Row: {
+          channel_id: string
+          created_at: string
+          description: string | null
+          extra_fees: number
+          id: string
+          net_income: number
+          notes: string | null
+          payment_account_id: string | null
+          rental_income: number
+          tax_amount: number
+          transaction_date: string
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          channel_id: string
+          created_at?: string
+          description?: string | null
+          extra_fees?: number
+          id?: string
+          net_income?: number
+          notes?: string | null
+          payment_account_id?: string | null
+          rental_income?: number
+          tax_amount?: number
+          transaction_date: string
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          channel_id?: string
+          created_at?: string
+          description?: string | null
+          extra_fees?: number
+          id?: string
+          net_income?: number
+          notes?: string | null
+          payment_account_id?: string | null
+          rental_income?: number
+          tax_amount?: number
+          transaction_date?: string
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "income_transactions_channel_id_fkey"
+            columns: ["channel_id"]
+            isOneToOne: false
+            referencedRelation: "rental_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "income_transactions_payment_account_id_fkey"
+            columns: ["payment_account_id"]
+            isOneToOne: false
+            referencedRelation: "payment_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "income_transactions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_items: {
+        Row: {
+          category: string
+          cost_per_unit: number
+          created_at: string
+          current_stock: number
+          id: string
+          is_needed: boolean
+          minimum_stock: number
+          name: string
+          needed_quantity: number | null
+          notes: string | null
+          supplier: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          cost_per_unit?: number
+          created_at?: string
+          current_stock?: number
+          id?: string
+          is_needed?: boolean
+          minimum_stock?: number
+          name: string
+          needed_quantity?: number | null
+          notes?: string | null
+          supplier?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          cost_per_unit?: number
+          created_at?: string
+          current_stock?: number
+          id?: string
+          is_needed?: boolean
+          minimum_stock?: number
+          name?: string
+          needed_quantity?: number | null
+          notes?: string | null
+          supplier?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      investors: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          investment_amount_usd: number
+          name: string
+          nationality: string
+          percentage: number
+          unit_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          investment_amount_usd?: number
+          name: string
+          nationality: string
+          percentage: number
+          unit_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          investment_amount_usd?: number
+          name?: string
+          nationality?: string
+          percentage?: number
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investors_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       menu_items: {
         Row: {
@@ -119,6 +476,8 @@ export type Database = {
           description: string | null
           food_cost: number
           id: string
+          image_url: string | null
+          inventory_amount: number
           is_available: boolean
           name: string
           price: number
@@ -130,6 +489,8 @@ export type Database = {
           description?: string | null
           food_cost?: number
           id?: string
+          image_url?: string | null
+          inventory_amount?: number
           is_available?: boolean
           name: string
           price?: number
@@ -141,6 +502,8 @@ export type Database = {
           description?: string | null
           food_cost?: number
           id?: string
+          image_url?: string | null
+          inventory_amount?: number
           is_available?: boolean
           name?: string
           price?: number
@@ -188,6 +551,13 @@ export type Database = {
             foreignKeyName: "order_items_order_id_fkey"
             columns: ["order_id"]
             isOneToOne: false
+            referencedRelation: "financial_tracker_orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
             referencedRelation: "orders"
             referencedColumns: ["id"]
           },
@@ -228,6 +598,176 @@ export type Database = {
           special_requests?: string | null
           status?: string
           total_amount?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_accounts: {
+        Row: {
+          account_type: string
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          account_type: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_notes: {
+        Row: {
+          created_at: string
+          employee_id: string
+          id: string
+          note: string
+          time_entry_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          employee_id: string
+          id?: string
+          note: string
+          time_entry_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          employee_id?: string
+          id?: string
+          note?: string
+          time_entry_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_notes_employee_fk"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_notes_time_entry_fk"
+            columns: ["time_entry_id"]
+            isOneToOne: false
+            referencedRelation: "time_entries"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          is_admin: boolean
+          kyc_verified: boolean
+          nationality: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          is_admin?: boolean
+          kyc_verified?: boolean
+          nationality?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_admin?: boolean
+          kyc_verified?: boolean
+          nationality?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profit_goals: {
+        Row: {
+          created_at: string
+          goal_amount: number
+          id: string
+          month: number
+          unit_id: string | null
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          goal_amount?: number
+          id?: string
+          month: number
+          unit_id?: string | null
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          created_at?: string
+          goal_amount?: number
+          id?: string
+          month?: number
+          unit_id?: string | null
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profit_goals_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rental_channels: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
           updated_at?: string
         }
         Relationships: []
@@ -285,6 +825,146 @@ export type Database = {
           },
         ]
       }
+      token_pools: {
+        Row: {
+          created_at: string
+          id: string
+          pool_type: string
+          sold_tokens: number
+          total_tokens: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pool_type: string
+          sold_tokens?: number
+          total_tokens: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pool_type?: string
+          sold_tokens?: number
+          total_tokens?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          payment_method: string | null
+          reference_code: string | null
+          status: string
+          unit_id: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          reference_code?: string | null
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          payment_method?: string | null
+          reference_code?: string | null
+          status?: string
+          unit_id?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      units: {
+        Row: {
+          available_securities: number
+          created_at: string
+          description: string | null
+          funded_percentage: number
+          id: string
+          is_active: boolean
+          name: string
+          ownership_type: string
+          security_price_usd: number
+          status: string
+          total_securities: number
+          unit_type: string | null
+          updated_at: string
+        }
+        Insert: {
+          available_securities?: number
+          created_at?: string
+          description?: string | null
+          funded_percentage?: number
+          id?: string
+          is_active?: boolean
+          name: string
+          ownership_type?: string
+          security_price_usd?: number
+          status?: string
+          total_securities?: number
+          unit_type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          available_securities?: number
+          created_at?: string
+          description?: string | null
+          funded_percentage?: number
+          id?: string
+          is_active?: boolean
+          name?: string
+          ownership_type?: string
+          security_price_usd?: number
+          status?: string
+          total_securities?: number
+          unit_type?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       weekly_schedules: {
         Row: {
           created_at: string
@@ -325,13 +1005,61 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      financial_tracker_orders: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          customer_name: string | null
+          customer_whatsapp: string | null
+          id: string | null
+          location: string | null
+          messaging_platform: string | null
+          notes: string | null
+          status: string | null
+          transaction_date: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          customer_name?: string | null
+          customer_whatsapp?: string | null
+          id?: string | null
+          location?: string | null
+          messaging_platform?: string | null
+          notes?: string | null
+          status?: string | null
+          transaction_date?: never
+          updated_at?: string | null
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          customer_name?: string | null
+          customer_whatsapp?: string | null
+          id?: string | null
+          location?: string | null
+          messaging_platform?: string | null
+          notes?: string | null
+          status?: string | null
+          transaction_date?: never
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      delete_employee_and_related: {
+        Args: { p_employee_id: string }
+        Returns: boolean
+      }
+      has_role: {
+        Args: { _role: Database["public"]["Enums"]["app_role"] }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "manager" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -458,6 +1186,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["manager", "user"],
+    },
   },
 } as const
