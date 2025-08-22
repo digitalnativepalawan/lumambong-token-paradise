@@ -58,13 +58,13 @@ const FAQ = () => {
   ];
 
   return (
-    <section id="faq" className="bg-black py-20">
+    <section id="faq" className="bg-gray-50 py-20">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-semibold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
             Real Estate Digital Securities Project FAQ
           </h2>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Get answers to common questions about digital securities real estate investment
           </p>
         </div>
@@ -73,19 +73,19 @@ const FAQ = () => {
           {faqData.map((item, index) => (
             <div
               key={index}
-              className="modern-card rounded-2xl overflow-hidden"
+              className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
             >
               <button
                 onClick={() => toggleItem(index)}
-                className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-white/10 transition-colors"
+                className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50 transition-colors"
               >
-                <h3 className="text-lg font-semibold text-white pr-4">
+                <h3 className="text-lg font-semibold text-black pr-4">
                   {item.question}
                 </h3>
                 {openItems.includes(index) ? (
-                  <ChevronUp className="w-5 h-5 text-primary flex-shrink-0" />
+                  <ChevronUp className="w-5 h-5 text-blue-600 flex-shrink-0" />
                 ) : (
-                  <ChevronDown className="w-5 h-5 text-white/60 flex-shrink-0" />
+                  <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
                 )}
               </button>
               
@@ -94,7 +94,7 @@ const FAQ = () => {
                 openItems.includes(index) ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
               )}>
                 <div className="px-8 pb-6">
-                  <div className="text-white/80 leading-relaxed whitespace-pre-line">
+                  <div className="text-gray-600 leading-relaxed whitespace-pre-line">
                     {item.answer}
                   </div>
                 </div>

@@ -40,7 +40,7 @@ interface ModernTableCellProps {
 
 const ModernTable = ({ children, className }: ModernTableProps) => {
   return (
-    <div className="w-full overflow-x-auto glass-table mb-8">
+    <div className="w-full overflow-x-auto bg-white rounded-xl shadow-sm border border-gray-100 mb-8">
       <Table className={cn("w-full border-collapse font-sans", className)}>
         {children}
       </Table>
@@ -50,7 +50,7 @@ const ModernTable = ({ children, className }: ModernTableProps) => {
 
 const ModernTableHeader = ({ children, className }: ModernTableHeaderProps) => {
   return (
-    <TableHeader className={cn("bg-white/5 border-b border-white/10", className)}>
+    <TableHeader className={cn("bg-gray-50", className)}>
       {children}
     </TableHeader>
   );
@@ -68,8 +68,8 @@ const ModernTableRow = ({ children, className, isClickable, onClick }: ModernTab
   return (
     <TableRow 
       className={cn(
-        "border-b border-white/10 transition-all duration-300 hover:bg-white/5",
-        isClickable && "cursor-pointer hover:bg-white/10 hover:shadow-glow",
+        "border-b border-gray-100 transition-colors hover:bg-gray-50",
+        isClickable && "cursor-pointer hover:bg-blue-50",
         className
       )}
       onClick={onClick}
@@ -88,7 +88,7 @@ const ModernTableCell = ({ children, className, align = 'left' }: ModernTableCel
 
   return (
     <TableCell className={cn(
-      "p-4 font-medium text-white text-sm",
+      "p-4 font-medium text-gray-900 text-sm",
       alignmentClass[align],
       className
     )}>
@@ -106,7 +106,7 @@ const ModernTableHeadCell = ({ children, className, align = 'left' }: ModernTabl
 
   return (
     <TableHead className={cn(
-      "p-4 text-xs font-semibold text-white/80 uppercase tracking-wider",
+      "p-4 text-xs font-semibold text-gray-600 uppercase tracking-wider",
       alignmentClass[align],
       className
     )}>
