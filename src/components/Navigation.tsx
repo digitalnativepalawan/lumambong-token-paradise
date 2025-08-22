@@ -41,8 +41,8 @@ const Navigation = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled 
-          ? 'bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm' 
-          : 'bg-white/80 backdrop-blur-sm'
+          ? 'bg-black/95 backdrop-blur-sm border-b border-white/10 shadow-glow' 
+          : 'bg-black/80 backdrop-blur-sm'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16 sm:h-20">
@@ -55,7 +55,7 @@ const Navigation = () => {
                 <Button
                   onClick={() => navigate('/dashboard')}
                   variant="ghost"
-                  className="text-gray-600 hover:text-black hover:bg-gray-100 text-sm"
+                  className="text-white/80 hover:text-white hover:bg-white/10 text-sm rounded-xl"
                 >
                   My Dashboard
                 </Button>
@@ -65,7 +65,7 @@ const Navigation = () => {
               <div className="hidden xl:flex">
                 <SocialMediaIcons 
                   variant="header" 
-                  className="text-gray-600 hover:text-black" 
+                  className="text-white/80 hover:text-white" 
                 />
               </div>
 
@@ -78,7 +78,7 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 z-60 relative text-gray-600 hover:text-black"
+              className="lg:hidden p-2 z-60 relative text-white/80 hover:text-white"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}

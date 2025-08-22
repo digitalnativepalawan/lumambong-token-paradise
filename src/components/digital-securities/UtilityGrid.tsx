@@ -8,32 +8,32 @@ const UtilityGrid = () => {
       icon: Shield,
       title: "Ownership Rights",
       description: "Direct fractional ownership of premium beachfront property with legal title protection",
-      color: "text-purple-600",
-      bgColor: "bg-purple-50",
+      color: "text-primary",
+      bgColor: "bg-primary/20",
       features: ["Legal ownership documents", "Property appreciation", "Asset backing"]
     },
     {
       icon: Calendar,
       title: "Timeshare Benefits", 
       description: "Proportional annual usage rights with flexible booking and rental options",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
+      color: "text-primary",
+      bgColor: "bg-primary/20",
       features: ["~36 nights per 10% ownership", "Flexible booking system", "Rent unused nights"]
     },
     {
       icon: Vote,
       title: "Governance Power",
       description: "On-chain voting rights for property decisions and community proposals",
-      color: "text-green-600",
-      bgColor: "bg-green-50",
+      color: "text-primary",
+      bgColor: "bg-primary/20",
       features: ["Property management votes", "Budget approvals", "Development decisions"]
     },
     {
       icon: TrendingUp,
       title: "Revenue Share",
       description: "Automatic dividend distribution from resort operations and rental income",
-      color: "text-orange-600",
-      bgColor: "bg-orange-50",
+      color: "text-primary",
+      bgColor: "bg-primary/20",
       features: ["30% revenue distribution", "Monthly payouts", "Compound growth"]
     }
   ];

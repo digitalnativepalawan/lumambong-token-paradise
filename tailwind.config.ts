@@ -18,6 +18,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'sans': ['Inter', 'DM Sans', 'system-ui', 'sans-serif'],
+				'display': ['DM Sans', 'Inter', 'system-ui', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,7 +65,21 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Web3 Dark Theme Colors
+				web3: {
+					purple: 'hsl(272 100% 60%)', // #8A2BE2
+					'purple-glow': 'hsl(272 100% 70%)',
+					'purple-dark': 'hsl(272 100% 50%)',
 				}
+			},
+			backdropBlur: {
+				'xs': '2px',
+			},
+			boxShadow: {
+				'glow': '0 0 20px hsl(272 100% 60% / 0.3)',
+				'glow-lg': '0 0 40px hsl(272 100% 60% / 0.4)',
+				'glass': '0 8px 32px rgba(0, 0, 0, 0.3)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

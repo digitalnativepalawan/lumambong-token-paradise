@@ -49,18 +49,18 @@ const ProjectOverview = () => {
     <section id="project" className="section-alt">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-20">
-          <Badge className="mb-6 bg-blue-50 text-blue-700 border border-blue-200 px-4 py-2 text-sm">
+          <Badge className="mb-6 bg-primary/20 text-primary border border-primary/30 px-4 py-2 text-sm backdrop-blur-sm">
             The Project
           </Badge>
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 text-black">
+          <h2 className="text-3xl md:text-5xl font-semibold mb-8 text-white">
             Binga Beach
             <br />
             Development
           </h2>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-lg text-white/80 max-w-4xl mx-auto leading-relaxed">
             A pioneering real estate development that merges premium beachfront property 
             with blockchain technology, offering fractional ownership through 
-            <span className="text-black font-semibold"> Binga Beach Digital Securities (BBT)</span>.
+            <span className="text-white font-medium"> Binga Beach Digital Securities (BBT)</span>.
           </p>
         </div>
 
@@ -69,17 +69,17 @@ const ProjectOverview = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Investment stats */}
             <div>
-              <h3 className="text-3xl font-bold mb-8 text-black">Project Investment</h3>
+              <h3 className="text-2xl font-semibold mb-8 text-white">Project Investment</h3>
               <div className="grid grid-cols-2 gap-6">
                 {investmentHighlights.map((item, index) => (
-                  <div key={item.label} className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                  <div key={item.label} className="bg-white/5 p-4 rounded-2xl border border-white/10 backdrop-blur-sm">
                     <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 rounded-lg bg-white border border-gray-200">
-                        <item.icon className="w-5 h-5 text-gray-700" />
+                      <div className="p-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                        <item.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <span className="text-sm text-gray-600">{item.label}</span>
+                      <span className="text-sm text-white/80">{item.label}</span>
                     </div>
-                    <div className="text-xl font-bold text-black">{item.value}</div>
+                    <div className="text-xl font-semibold text-white">{item.value}</div>
                   </div>
                 ))}
               </div>
@@ -87,14 +87,14 @@ const ProjectOverview = () => {
 
             {/* Security benefits */}
             <div>
-              <h3 className="text-3xl font-bold mb-8 text-black">Security Benefits</h3>
+              <h3 className="text-2xl font-semibold mb-8 text-white">Security Benefits</h3>
               <div className="space-y-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-4 group">
-                    <div className="p-1 rounded-full bg-black mt-1">
+                    <div className="p-1 rounded-full bg-primary mt-1 glow-purple">
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     </div>
-                    <span className="text-gray-600 group-hover:text-black transition-colors">
+                    <span className="text-white/80 group-hover:text-white transition-colors">
                       {benefit}
                     </span>
                   </div>
@@ -113,14 +113,14 @@ const ProjectOverview = () => {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gray-50 border border-gray-200 p-4 mx-auto mb-4 group-hover:bg-gray-100 transition-colors">
-                  <feature.icon className="w-full h-full text-gray-700" />
+                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 p-4 mx-auto mb-4 group-hover:bg-white/10 transition-all duration-300 backdrop-blur-sm glow-purple">
+                  <feature.icon className="w-full h-full text-primary" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-black">
+              <h3 className="text-lg font-semibold mb-4 text-white">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-white/80 leading-relaxed text-sm">
                 {feature.description}
               </p>
             </div>
