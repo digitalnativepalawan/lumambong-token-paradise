@@ -1,0 +1,396 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar, User, Edit, Trash2, Plus, Eye } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  date: string;
+  category: string;
+}
+
+const BlogManagement = () => {
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '' });
+  const [isLoading, setIsLoading] = useState(true);
+  const [showReadMore, setShowReadMore] = useState(false);
+  const [showAddPost, setShowAddPost] = useState(false);
+  const [showEditPost, setShowEditPost] = useState(false);
+  const { toast } = useToast();
+
+  // Fetch blog posts on component mount
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
+  // Fetch blog posts from database
+  const fetchBlogPosts = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+
+      setBlogPosts(data || []);
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load blog posts",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Add new blog post
+  const handleAddPost = async () => {
+    if (!newPost.title || !newPost.content || !newPost.author || !newPost.category) {
+      toast({
+        title: "Error", 
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .insert([{
+          title: newPost.title,
+          content: newPost.content,
+          author: newPost.author,
+          category: newPost.category,
+        }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Blog post added successfully!",
+      });
+
+      setNewPost({ title: '', content: '', author: '', category: '' });
+      setShowAddPost(false);
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error adding blog post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Delete blog post
+  const handleDelete = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Blog post deleted successfully!",
+      });
+
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error deleting blog post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Edit blog post
+  const handleEditPost = async () => {
+    if (!editingPost) return;
+
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .update({
+          title: editingPost.title,
+          content: editingPost.content,
+          author: editingPost.author,
+          category: editingPost.category,
+        })
+        .eq('id', editingPost.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Blog post updated successfully!",
+      });
+
+      setEditingPost(null);
+      setShowEditPost(false);
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error updating blog post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Clear all posts
+  const handleClearAllPosts = async () => {
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "All blog posts cleared successfully!",
+      });
+
+      fetchBlogPosts();
+    } catch (error) {
+      console.error('Error clearing blog posts:', error);
+      toast({
+        title: "Error",
+        description: "Failed to clear blog posts",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          Blog Management
+          <div className="flex gap-2">
+            <Dialog open={showAddPost} onOpenChange={setShowAddPost}>
+              <DialogTrigger asChild>
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add New Post
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>Add New Blog Post</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <Input
+                    placeholder="Post Title"
+                    value={newPost.title}
+                    onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                  />
+                  <Input
+                    placeholder="Author Name"
+                    value={newPost.author}
+                    onChange={(e) => setNewPost({ ...newPost, author: e.target.value })}
+                  />
+                  <Input
+                    placeholder="Category"
+                    value={newPost.category}
+                    onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
+                  />
+                  <Textarea
+                    placeholder="Post Content"
+                    value={newPost.content}
+                    onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                    rows={8}
+                  />
+                  <div className="flex gap-2 justify-end">
+                    <Button variant="outline" onClick={() => setShowAddPost(false)}>
+                      Cancel
+                    </Button>
+                    <Button onClick={handleAddPost}>
+                      Add Post
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+            
+            <Button 
+              size="sm" 
+              variant="destructive"
+              onClick={handleClearAllPosts}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Clear All Posts
+            </Button>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4 max-h-96 overflow-y-auto">
+          {blogPosts.length === 0 ? (
+            <p className="text-gray-600 text-center py-8">No blog posts available</p>
+          ) : (
+            blogPosts.map((post) => (
+              <div key={post.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Badge variant="secondary" className="bg-blue-50 text-blue-700">
+                        {post.category}
+                      </Badge>
+                      <div className="flex items-center text-sm text-gray-500 gap-2">
+                        <Calendar className="w-3 h-3" />
+                        <span>{formatDate(post.date)}</span>
+                        <User className="w-3 h-3" />
+                        <span>{post.author}</span>
+                      </div>
+                    </div>
+                    <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
+                    <p className="text-gray-600 text-sm">
+                      {post.content.length > 100 ? `${post.content.substring(0, 100)}...` : post.content}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 ml-4">
+                    <Dialog open={showReadMore && selectedPost?.id === post.id} onOpenChange={(open) => {
+                      setShowReadMore(open);
+                      if (!open) setSelectedPost(null);
+                    }}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="sm" 
+                          variant="ghost"
+                          onClick={() => setSelectedPost(post)}
+                        >
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl">{selectedPost?.title}</DialogTitle>
+                          <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
+                            <span>By {selectedPost?.author}</span>
+                            <span>•</span>
+                            <span>{selectedPost && formatDate(selectedPost.date)}</span>
+                            <span>•</span>
+                            <Badge variant="secondary">{selectedPost?.category}</Badge>
+                          </div>
+                        </DialogHeader>
+                        <div className="mt-4">
+                          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                            {selectedPost?.content}
+                          </p>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+
+                    <Dialog open={showEditPost && editingPost?.id === post.id} onOpenChange={(open) => {
+                      setShowEditPost(open);
+                      if (!open) setEditingPost(null);
+                    }}>
+                      <DialogTrigger asChild>
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className="text-blue-600 hover:text-blue-800"
+                          onClick={() => setEditingPost(post)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle>Edit Blog Post</DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <Input
+                            placeholder="Post Title"
+                            value={editingPost?.title || ''}
+                            onChange={(e) => setEditingPost(editingPost ? { ...editingPost, title: e.target.value } : null)}
+                          />
+                          <Input
+                            placeholder="Author Name"
+                            value={editingPost?.author || ''}
+                            onChange={(e) => setEditingPost(editingPost ? { ...editingPost, author: e.target.value } : null)}
+                          />
+                          <Input
+                            placeholder="Category"
+                            value={editingPost?.category || ''}
+                            onChange={(e) => setEditingPost(editingPost ? { ...editingPost, category: e.target.value } : null)}
+                          />
+                          <Textarea
+                            placeholder="Post Content"
+                            value={editingPost?.content || ''}
+                            onChange={(e) => setEditingPost(editingPost ? { ...editingPost, content: e.target.value } : null)}
+                            rows={8}
+                          />
+                          <div className="flex gap-2 justify-end">
+                            <Button variant="outline" onClick={() => setShowEditPost(false)}>
+                              Cancel
+                            </Button>
+                            <Button onClick={handleEditPost}>
+                              Update Post
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                    
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="text-red-600 hover:text-red-800"
+                      onClick={() => handleDelete(post.id)}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default BlogManagement;

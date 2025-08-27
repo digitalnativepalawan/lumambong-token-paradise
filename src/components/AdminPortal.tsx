@@ -9,6 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import AdminAuth from './AdminAuth';
 import SocialMediaTimeline from './SocialMediaTimeline';
 import MindMap from './MindMap';
+import BlogManagement from './BlogManagement';
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -110,14 +111,7 @@ const AdminPortal = () => {
                 </TabsContent>
 
                 <TabsContent value="content" className="mt-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Content Management</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600">Content management functionality coming soon...</p>
-                    </CardContent>
-                  </Card>
+                  <BlogManagement />
                 </TabsContent>
 
                 <TabsContent value="settings" className="mt-6">

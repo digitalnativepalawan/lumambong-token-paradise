@@ -2,10 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, User, Edit, Trash2, Plus, Eye } from "lucide-react";
+import { Calendar, User, Eye } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -23,14 +21,9 @@ interface BlogPost {
 
 const Blog = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
-  const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '' });
   const [isLoading, setIsLoading] = useState(true);
   const [showReadMore, setShowReadMore] = useState(false);
-  const [showAddPost, setShowAddPost] = useState(false);
-  const [showEditPost, setShowEditPost] = useState(false);
   const { toast } = useToast();
 
   // Fetch blog posts on component mount
@@ -62,142 +55,6 @@ const Blog = () => {
     }
   };
 
-  // Add new blog post
-  const handleAddPost = async () => {
-    if (!isAdmin) {
-      toast({
-        title: "Admin Required",
-        description: "Please enter admin mode to add blog posts",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (!newPost.title || !newPost.content || !newPost.author || !newPost.category) {
-      toast({
-        title: "Error", 
-        description: "Please fill in all fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('blog_posts')
-        .insert([{
-          title: newPost.title,
-          content: newPost.content,
-          author: newPost.author,
-          category: newPost.category,
-        }]);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Blog post added successfully!",
-      });
-
-      setNewPost({ title: '', content: '', author: '', category: '' });
-      setShowAddPost(false);
-      fetchBlogPosts();
-    } catch (error) {
-      console.error('Error adding blog post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to add blog post",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Delete blog post
-  const handleDelete = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('blog_posts')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Blog post deleted successfully!",
-      });
-
-      fetchBlogPosts();
-    } catch (error) {
-      console.error('Error deleting blog post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to delete blog post",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Edit blog post
-  const handleEditPost = async () => {
-    if (!editingPost) return;
-
-    try {
-      const { error } = await supabase
-        .from('blog_posts')
-        .update({
-          title: editingPost.title,
-          content: editingPost.content,
-          author: editingPost.author,
-          category: editingPost.category,
-        })
-        .eq('id', editingPost.id);
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "Blog post updated successfully!",
-      });
-
-      setEditingPost(null);
-      setShowEditPost(false);
-      fetchBlogPosts();
-    } catch (error) {
-      console.error('Error updating blog post:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update blog post",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Clear all posts
-  const handleClearAllPosts = async () => {
-    try {
-      const { error } = await supabase
-        .from('blog_posts')
-        .delete()
-        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all
-
-      if (error) throw error;
-
-      toast({
-        title: "Success",
-        description: "All blog posts cleared successfully!",
-      });
-
-      fetchBlogPosts();
-    } catch (error) {
-      console.error('Error clearing blog posts:', error);
-      toast({
-        title: "Error",
-        description: "Failed to clear blog posts",
-        variant: "destructive",
-      });
-    }
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -207,10 +64,6 @@ const Blog = () => {
     });
   };
 
-  // Remove unused auth functions
-  const toggleAdmin = () => {
-    setIsAdmin(!isAdmin);
-  };
 
   if (isLoading) {
     return (
@@ -237,82 +90,8 @@ const Blog = () => {
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Stay updated with the latest news, insights, and developments in digital real estate securities and our Binga Beach project.
             </p>
-            
-            {/* Admin Toggle */}
-            <div className="mt-8">
-              <Button
-                onClick={toggleAdmin}
-                variant={isAdmin ? "destructive" : "default"}
-                className="modern-button"
-              >
-                {isAdmin ? "Exit Admin Mode" : "Enter Admin Mode"}
-              </Button>
-            </div>
           </div>
 
-          {/* Admin Controls */}
-          {isAdmin && (
-            <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-xl">
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-                <h3 className="text-lg font-semibold text-red-800">Admin Controls</h3>
-                <div className="flex gap-2">
-                  <Dialog open={showAddPost} onOpenChange={setShowAddPost}>
-                    <DialogTrigger asChild>
-                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add New Post
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-2xl">
-                      <DialogHeader>
-                        <DialogTitle>Add New Blog Post</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <Input
-                          placeholder="Post Title"
-                          value={newPost.title}
-                          onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-                        />
-                        <Input
-                          placeholder="Author Name"
-                          value={newPost.author}
-                          onChange={(e) => setNewPost({ ...newPost, author: e.target.value })}
-                        />
-                        <Input
-                          placeholder="Category"
-                          value={newPost.category}
-                          onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
-                        />
-                        <Textarea
-                          placeholder="Post Content"
-                          value={newPost.content}
-                          onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                          rows={8}
-                        />
-                        <div className="flex gap-2 justify-end">
-                          <Button variant="outline" onClick={() => setShowAddPost(false)}>
-                            Cancel
-                          </Button>
-                          <Button onClick={handleAddPost}>
-                            Add Post
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                  
-                  <Button 
-                    size="sm" 
-                    variant="destructive"
-                    onClick={handleClearAllPosts}
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Clear All Posts
-                  </Button>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Blog Posts Grid */}
           <div className="grid gap-8 md:gap-12">
@@ -384,71 +163,6 @@ const Blog = () => {
                             </div>
                           </DialogContent>
                         </Dialog>
-                        
-                        {isAdmin && (
-                          <div className="flex gap-2">
-                            <Dialog open={showEditPost && editingPost?.id === post.id} onOpenChange={(open) => {
-                              setShowEditPost(open);
-                              if (!open) setEditingPost(null);
-                            }}>
-                              <DialogTrigger asChild>
-                                <Button 
-                                  size="sm" 
-                                  variant="ghost" 
-                                  className="text-blue-600 hover:text-blue-800"
-                                  onClick={() => setEditingPost(post)}
-                                >
-                                  <Edit className="w-4 h-4" />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="max-w-2xl">
-                                <DialogHeader>
-                                  <DialogTitle>Edit Blog Post</DialogTitle>
-                                </DialogHeader>
-                                <div className="space-y-4">
-                                  <Input
-                                    placeholder="Post Title"
-                                    value={editingPost?.title || ''}
-                                    onChange={(e) => setEditingPost(editingPost ? { ...editingPost, title: e.target.value } : null)}
-                                  />
-                                  <Input
-                                    placeholder="Author Name"
-                                    value={editingPost?.author || ''}
-                                    onChange={(e) => setEditingPost(editingPost ? { ...editingPost, author: e.target.value } : null)}
-                                  />
-                                  <Input
-                                    placeholder="Category"
-                                    value={editingPost?.category || ''}
-                                    onChange={(e) => setEditingPost(editingPost ? { ...editingPost, category: e.target.value } : null)}
-                                  />
-                                  <Textarea
-                                    placeholder="Post Content"
-                                    value={editingPost?.content || ''}
-                                    onChange={(e) => setEditingPost(editingPost ? { ...editingPost, content: e.target.value } : null)}
-                                    rows={8}
-                                  />
-                                  <div className="flex gap-2 justify-end">
-                                    <Button variant="outline" onClick={() => setShowEditPost(false)}>
-                                      Cancel
-                                    </Button>
-                                    <Button onClick={handleEditPost}>
-                                      Update Post
-                                    </Button>
-                                  </div>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                            
-                            <Button 
-                              size="sm" 
-                              variant="ghost" 
-                              className="text-red-600 hover:text-red-800"
-                              onClick={() => handleDelete(post.id)}
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        )}
                       </div>
                     </CardContent>
                   </div>
