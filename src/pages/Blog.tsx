@@ -31,6 +31,8 @@ const Blog = () => {
   const [showReadMore, setShowReadMore] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
 
   // Fetch blog posts from database
@@ -59,6 +61,15 @@ const Blog = () => {
 
   // Add new blog post
   const handleAddPost = async () => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to add blog posts",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!newPost.title || !newPost.content || !newPost.author || !newPost.category) {
       toast({
         title: "Error", 
@@ -197,9 +208,24 @@ const Blog = () => {
     setIsAdmin(!isAdmin);
   };
 
-  // Set up real-time subscription and load posts
+  // Check authentication and set up real-time subscription
   useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+      setIsAuthenticated(!!session?.user);
+    };
+    
+    checkAuth();
     fetchBlogPosts();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user || null);
+        setIsAuthenticated(!!session?.user);
+      }
+    );
 
     // Set up real-time subscription for blog posts
     let channel: RealtimeChannel;
@@ -254,8 +280,51 @@ const Blog = () => {
       if (channel) {
         supabase.removeChannel(channel);
       }
+      subscription.unsubscribe();
     };
   }, [toast]);
+
+  // Sign in function for admin access
+  const handleSignIn = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/blog'
+        }
+      });
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign in",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Sign out function
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
+      setIsAdmin(false);
+      toast({
+        title: "Success",
+        description: "Signed out successfully",
+      });
+    } catch (error) {
+      console.error('Error signing out:', error);
+      toast({
+        title: "Error",
+        description: "Failed to sign out",
+        variant: "destructive",
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -283,15 +352,35 @@ const Blog = () => {
               Stay updated with the latest news, insights, and developments in digital real estate securities and our Binga Beach project.
             </p>
             
-            {/* Admin Toggle */}
-            <div className="mt-8">
-              <Button
-                onClick={toggleAdmin}
-                variant={isAdmin ? "destructive" : "default"}
-                className="modern-button"
-              >
-                {isAdmin ? "Exit Admin Mode" : "Admin Mode"}
-              </Button>
+            {/* Authentication Controls */}
+            <div className="mt-8 space-y-4">
+              {!isAuthenticated ? (
+                <div className="text-center">
+                  <p className="text-gray-600 mb-4">Sign in to access admin features</p>
+                  <Button
+                    onClick={handleSignIn}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    Sign In with Google
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <span className="text-green-600">✓ Signed in as {user?.email}</span>
+                    <Button onClick={handleSignOut} variant="outline" size="sm">
+                      Sign Out
+                    </Button>
+                  </div>
+                  <Button
+                    onClick={toggleAdmin}
+                    variant={isAdmin ? "destructive" : "default"}
+                    className="modern-button"
+                  >
+                    {isAdmin ? "Exit Admin Mode" : "Enter Admin Mode"}
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
