@@ -19,7 +19,7 @@ const AdminAuth = ({ onAuthSuccess }: AdminAuthProps) => {
   const { toast } = useToast();
 
   const ADMIN_EMAILS = ['david@bingabeach.com'];
-  const ADMIN_PASSKEY = 'LumambongBeach5309';
+  const ADMIN_PASSKEY = '4467';
 
   const handleAuth = () => {
     setIsLoading(true);
