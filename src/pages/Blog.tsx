@@ -33,6 +33,11 @@ const Blog = () => {
   const [showEditPost, setShowEditPost] = useState(false);
   const { toast } = useToast();
 
+  // Fetch blog posts on component mount
+  useEffect(() => {
+    fetchBlogPosts();
+  }, []);
+
   // Fetch blog posts from database
   const fetchBlogPosts = async () => {
     try {
