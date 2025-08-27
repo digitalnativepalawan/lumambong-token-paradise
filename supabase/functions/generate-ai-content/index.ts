@@ -17,8 +17,8 @@ serve(async (req) => {
   try {
     if (!openrouterApiKey) {
       return new Response(
-        JSON.stringify({ disabled: true, message: 'OpenRouter API key missing. Set OPENROUTER_API_KEY.' }),
-        { status: 501, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ disabled: true, error: true, message: 'OpenRouter API key missing. Set OPENROUTER_API_KEY.' }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -67,8 +67,8 @@ serve(async (req) => {
       const errorData = await response.text();
       console.error('OpenRouter API Error:', response.status, errorData);
       return new Response(
-        JSON.stringify({ error: 'OpenRouter API error', status: response.status, details: errorData }),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: true, message: 'OpenRouter API error', status: response.status, details: errorData }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
 
@@ -82,8 +82,8 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in generate-ai-content function:', error);
     return new Response(
-      JSON.stringify({ error: String(error) }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ error: true, message: String(error) }),
+      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });

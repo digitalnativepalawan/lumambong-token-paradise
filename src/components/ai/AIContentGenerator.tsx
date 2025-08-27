@@ -79,6 +79,11 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
         throw error;
       }
 
+      if ((data as any)?.error) {
+        setErrorMessage((data as any)?.message || 'AI service error.');
+        return;
+      }
+
       if (!data || !data.content) {
         if ((data as any)?.disabled) {
           setAiDisabled(true);
@@ -88,7 +93,8 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
           });
           return;
         }
-        throw new Error('No content returned');
+        setErrorMessage((data as any)?.message || 'No content returned from AI.');
+        return;
       }
 
       setGeneratedContent(data.content);
