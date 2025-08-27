@@ -1,10 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Users, Target, BarChart3, Rocket, TrendingUp } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Calendar, Users, Target, BarChart3, Rocket, TrendingUp, Sparkles } from 'lucide-react';
+import AIContentGenerator from './ai/AIContentGenerator';
 
 const SocialMediaTimeline = () => {
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
+  const [newTimelineContent, setNewTimelineContent] = useState('');
   const timelineData = {
     prelaunch: [
       {
@@ -136,54 +141,93 @@ const SocialMediaTimeline = () => {
 
   return (
     <div className="space-y-6">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-2">Lumambong Beach Social Media Timeline</h2>
-        <p className="text-gray-600">Project marketing strategy and content calendar for team coordination</p>
-      </div>
-
-      <PhaseSection 
-        title="Pre-Launch: Legal & Setup (May-June 2025)"
-        icon={Calendar}
-        data={timelineData.prelaunch}
-        color="text-blue-600"
-      />
-
-      <PhaseSection 
-        title="Launch Phase"
-        icon={Rocket}
-        data={timelineData.launch}
-        color="text-green-600"
-      />
-
-      <PhaseSection 
-        title="Ongoing Growth (6+ Months Post-Launch)"
-        icon={TrendingUp}
-        data={timelineData.growth}
-        color="text-purple-600"
-      />
-
-      <Card className="bg-emerald-50 border-emerald-200">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-emerald-800">
-            <BarChart3 className="w-5 h-5" />
-            Key Performance Indicators
+          <CardTitle className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Target className="w-5 h-5 text-blue-600" />
+              Social Media Marketing Timeline
+            </div>
+            <Dialog open={showAIGenerator} onOpenChange={setShowAIGenerator}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Generate Content
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl">
+                <DialogHeader>
+                  <DialogTitle>AI Timeline Content Generator</DialogTitle>
+                </DialogHeader>
+                <AIContentGenerator
+                  contentType="timeline_content"
+                  onContentGenerated={(content) => {
+                    setNewTimelineContent(content);
+                    setShowAIGenerator(false);
+                  }}
+                  placeholder="Generate timeline content (e.g., 'Create social media activities for resort pre-launch phase', 'Generate Instagram content strategy for luxury beach resort')"
+                  context="Lumambong Beach Resort Development - luxury eco-friendly resort social media marketing"
+                />
+              </DialogContent>
+            </Dialog>
           </CardTitle>
+          <p className="text-muted-foreground">
+            Comprehensive social media strategy for Lumambong Beach project launch and growth phases
+          </p>
+          {newTimelineContent && (
+            <div className="mt-4 p-4 bg-muted/50 rounded-lg">
+              <h4 className="font-medium mb-2">AI Generated Content:</h4>
+              <div className="whitespace-pre-wrap text-sm">{newTimelineContent}</div>
+            </div>
+          )}
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-white rounded-lg">
-              <p className="text-sm font-medium text-gray-600">Follower Growth</p>
-              <p className="text-lg font-bold text-emerald-600">Track Monthly</p>
-            </div>
-            <div className="text-center p-4 bg-white rounded-lg">
-              <p className="text-sm font-medium text-gray-600">Click-Through Rate</p>
-              <p className="text-lg font-bold text-emerald-600">Monitor CTR</p>
-            </div>
-            <div className="text-center p-4 bg-white rounded-lg">
-              <p className="text-sm font-medium text-gray-600">Lead Conversions</p>
-              <p className="text-lg font-bold text-emerald-600">Weekly Review</p>
-            </div>
-          </div>
+        <CardContent className="space-y-6">
+
+          <PhaseSection 
+            title="Pre-Launch: Legal & Setup (May-June 2025)"
+            icon={Calendar}
+            data={timelineData.prelaunch}
+            color="text-blue-600"
+          />
+
+          <PhaseSection 
+            title="Launch Phase"
+            icon={Rocket}
+            data={timelineData.launch}
+            color="text-green-600"
+          />
+
+          <PhaseSection 
+            title="Ongoing Growth (6+ Months Post-Launch)"
+            icon={TrendingUp}
+            data={timelineData.growth}
+            color="text-purple-600"
+          />
+
+          <Card className="bg-emerald-50 border-emerald-200">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-emerald-800">
+                <BarChart3 className="w-5 h-5" />
+                Key Performance Indicators
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="text-center p-4 bg-white rounded-lg">
+                  <p className="text-sm font-medium text-gray-600">Follower Growth</p>
+                  <p className="text-lg font-bold text-emerald-600">Track Monthly</p>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg">
+                  <p className="text-sm font-medium text-gray-600">Click-Through Rate</p>
+                  <p className="text-lg font-bold text-emerald-600">Monitor CTR</p>
+                </div>
+                <div className="text-center p-4 bg-white rounded-lg">
+                  <p className="text-sm font-medium text-gray-600">Lead Conversions</p>
+                  <p className="text-lg font-bold text-emerald-600">Weekly Review</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </CardContent>
       </Card>
     </div>

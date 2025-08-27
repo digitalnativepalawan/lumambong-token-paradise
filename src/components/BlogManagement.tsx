@@ -5,9 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Calendar, User, Edit, Trash2, Plus, Eye } from "lucide-react";
+import { Calendar, User, Edit, Trash2, Plus, Eye, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import AIContentGenerator from './ai/AIContentGenerator';
 
 interface BlogPost {
   id: string;
@@ -27,6 +28,7 @@ const BlogManagement = () => {
   const [showReadMore, setShowReadMore] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
   const { toast } = useToast();
 
   // Fetch blog posts on component mount
@@ -215,39 +217,74 @@ const BlogManagement = () => {
                   Add New Post
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-2xl">
+              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                  <DialogTitle>Add New Blog Post</DialogTitle>
+                  <DialogTitle className="flex items-center justify-between">
+                    Add New Blog Post
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowAIGenerator(!showAIGenerator)}
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      AI Assistant
+                    </Button>
+                  </DialogTitle>
                 </DialogHeader>
-                <div className="space-y-4">
-                  <Input
-                    placeholder="Post Title"
-                    value={newPost.title}
-                    onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-                  />
-                  <Input
-                    placeholder="Author Name"
-                    value={newPost.author}
-                    onChange={(e) => setNewPost({ ...newPost, author: e.target.value })}
-                  />
-                  <Input
-                    placeholder="Category"
-                    value={newPost.category}
-                    onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
-                  />
-                  <Textarea
-                    placeholder="Post Content"
-                    value={newPost.content}
-                    onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                    rows={8}
-                  />
-                  <div className="flex gap-2 justify-end">
-                    <Button variant="outline" onClick={() => setShowAddPost(false)}>
-                      Cancel
-                    </Button>
-                    <Button onClick={handleAddPost}>
-                      Add Post
-                    </Button>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {showAIGenerator && (
+                    <div className="lg:col-span-1">
+                      <AIContentGenerator
+                        contentType="blog_post"
+                        onContentGenerated={(content) => {
+                          const lines = content.split('\n');
+                          const titleLine = lines.find(line => line.toLowerCase().includes('title') || line.startsWith('#'));
+                          if (titleLine) {
+                            const title = titleLine.replace(/^#\s*/, '').replace(/title:\s*/i, '').trim();
+                            setNewPost(prev => ({ ...prev, title }));
+                          }
+                          setNewPost(prev => ({ ...prev, content }));
+                        }}
+                        placeholder="Describe the blog post you want to create (e.g., 'Write about sustainable beach resort development and investment opportunities')"
+                        context="Lumambong Beach Resort Development Project - a luxury eco-friendly resort investment opportunity"
+                      />
+                    </div>
+                  )}
+                  
+                  <div className={showAIGenerator ? "lg:col-span-1" : "lg:col-span-2"}>
+                    <div className="space-y-4">
+                      <Input
+                        placeholder="Post Title"
+                        value={newPost.title}
+                        onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                      />
+                      <Input
+                        placeholder="Author Name"
+                        value={newPost.author}
+                        onChange={(e) => setNewPost({ ...newPost, author: e.target.value })}
+                      />
+                      <Input
+                        placeholder="Category"
+                        value={newPost.category}
+                        onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
+                      />
+                      <Textarea
+                        placeholder="Post Content"
+                        value={newPost.content}
+                        onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                        rows={12}
+                      />
+                      <div className="flex gap-2 justify-end">
+                        <Button variant="outline" onClick={() => setShowAddPost(false)}>
+                          Cancel
+                        </Button>
+                        <Button onClick={handleAddPost}>
+                          Add Post
+                        </Button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </DialogContent>

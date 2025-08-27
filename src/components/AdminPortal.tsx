@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Shield, Calendar, Users, FileText, Settings, Brain } from 'lucide-react';
+import { Shield, Calendar, Users, FileText, Settings, Brain, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import AdminAuth from './AdminAuth';
 import SocialMediaTimeline from './SocialMediaTimeline';
 import MindMap from './MindMap';
 import BlogManagement from './BlogManagement';
+import AIContentHub from './ai/AIContentHub';
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,26 +69,30 @@ const AdminPortal = () => {
               </div>
 
               <Tabs defaultValue="timeline" className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
+                <TabsList className="grid w-full grid-cols-6">
                   <TabsTrigger value="timeline" className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    Timeline
+                    <span className="hidden sm:inline">Timeline</span>
                   </TabsTrigger>
                   <TabsTrigger value="mindmap" className="flex items-center gap-2">
                     <Brain className="w-4 h-4" />
-                    Mind Map
-                  </TabsTrigger>
-                  <TabsTrigger value="users" className="flex items-center gap-2">
-                    <Users className="w-4 h-4" />
-                    Users
+                    <span className="hidden sm:inline">Mind Map</span>
                   </TabsTrigger>
                   <TabsTrigger value="content" className="flex items-center gap-2">
                     <FileText className="w-4 h-4" />
-                    Content
+                    <span className="hidden sm:inline">Content</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="ai-hub" className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    <span className="hidden sm:inline">AI Hub</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="users" className="flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    <span className="hidden sm:inline">Users</span>
                   </TabsTrigger>
                   <TabsTrigger value="settings" className="flex items-center gap-2">
                     <Settings className="w-4 h-4" />
-                    Settings
+                    <span className="hidden sm:inline">Settings</span>
                   </TabsTrigger>
                 </TabsList>
 
@@ -99,6 +104,14 @@ const AdminPortal = () => {
                   <MindMap />
                 </TabsContent>
 
+                <TabsContent value="content" className="mt-6">
+                  <BlogManagement />
+                </TabsContent>
+
+                <TabsContent value="ai-hub" className="mt-6">
+                  <AIContentHub />
+                </TabsContent>
+
                 <TabsContent value="users" className="mt-6">
                   <Card>
                     <CardHeader>
@@ -108,10 +121,6 @@ const AdminPortal = () => {
                       <p className="text-gray-600">User management functionality coming soon...</p>
                     </CardContent>
                   </Card>
-                </TabsContent>
-
-                <TabsContent value="content" className="mt-6">
-                  <BlogManagement />
                 </TabsContent>
 
                 <TabsContent value="settings" className="mt-6">
