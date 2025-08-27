@@ -89,6 +89,7 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
       }
 
       setGeneratedContent(data.content);
+      setAiDisabled(false);
       toast({
         title: "Content generated",
         description: "AI content has been generated successfully"
@@ -163,11 +164,11 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
 
         <Button 
           onClick={generateContent} 
-          disabled={aiDisabled || isGenerating || !prompt.trim()}
+          disabled={isGenerating || !prompt.trim()}
           className="w-full"
         >
           {aiDisabled ? (
-            <>AI disabled</>
+            <>AI disabled — try again</>
           ) : isGenerating ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
