@@ -116,22 +116,28 @@ const AdminPortal = () => {
                           </div>
                         </div>
                       ) : (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-blue-300 text-blue-700 hover:bg-blue-100 text-xs h-8 relative"
-                          onClick={() => window.open(action.url, '_blank')}
-                        >
-                          <ExternalLink className="w-3 h-3 mr-1" />
-                          {action.name}
-                          <Edit3 
-                            className="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 cursor-pointer"
+                        <div className="relative">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-blue-300 text-blue-700 hover:bg-blue-100 text-xs h-8 pr-8"
+                            onClick={() => window.open(action.url, '_blank')}
+                          >
+                            <ExternalLink className="w-3 h-3 mr-1" />
+                            {action.name}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="absolute right-0 top-0 h-8 w-8 p-0 hover:bg-blue-100"
                             onClick={(e) => {
                               e.stopPropagation();
                               setEditingQuickAction(index);
                             }}
-                          />
-                        </Button>
+                          >
+                            <Edit3 className="w-3 h-3" />
+                          </Button>
+                        </div>
                       )}
                     </div>
                   ))}
