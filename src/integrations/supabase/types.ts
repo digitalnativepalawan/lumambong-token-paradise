@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -481,6 +481,7 @@ export type Database = {
           is_available: boolean
           name: string
           price: number
+          staff_id: string | null
           updated_at: string
         }
         Insert: {
@@ -494,6 +495,7 @@ export type Database = {
           is_available?: boolean
           name: string
           price?: number
+          staff_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -507,6 +509,7 @@ export type Database = {
           is_available?: boolean
           name?: string
           price?: number
+          staff_id?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -674,6 +677,47 @@ export type Database = {
           },
         ]
       }
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          employee_id: string
+          id: string
+          note: string
+          paid_at: string
+          payment_date: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          employee_id: string
+          id?: string
+          note: string
+          paid_at?: string
+          payment_date?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          employee_id?: string
+          id?: string
+          note?: string
+          paid_at?: string
+          payment_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -769,6 +813,24 @@ export type Database = {
           is_active?: boolean
           name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      staff: {
+        Row: {
+          created_at: string | null
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          role?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -1057,9 +1119,31 @@ export type Database = {
         Args: { _role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
       }
+      is_staff: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      set_menu_item_availability: {
+        Args: { p_available: boolean; p_item_id: string }
+        Returns: {
+          id: string
+          is_available: boolean
+          updated_at: string
+        }[]
+      }
+      toggle_menu_item_availability: {
+        Args:
+          | { i_is_available: boolean; i_item_id: string }
+          | { p_item_id: number }
+        Returns: {
+          id: number
+          name: string
+          new_availability: boolean
+        }[]
+      }
     }
     Enums: {
-      app_role: "manager" | "user"
+      app_role: "manager" | "user" | "admin" | "staff"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1187,7 +1271,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["manager", "user"],
+      app_role: ["manager", "user", "admin", "staff"],
     },
   },
 } as const
