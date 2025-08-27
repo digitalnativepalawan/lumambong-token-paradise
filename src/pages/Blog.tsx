@@ -10,6 +10,7 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 interface BlogPost {
   id: string;
@@ -196,10 +197,65 @@ const Blog = () => {
     setIsAdmin(!isAdmin);
   };
 
-  // Load posts on component mount
+  // Set up real-time subscription and load posts
   useEffect(() => {
     fetchBlogPosts();
-  }, []);
+
+    // Set up real-time subscription for blog posts
+    let channel: RealtimeChannel;
+    
+    const setupRealtimeSubscription = () => {
+      channel = supabase
+        .channel('blog_posts_changes')
+        .on('postgres_changes', 
+          { 
+            event: '*', 
+            schema: 'public', 
+            table: 'blog_posts' 
+          }, 
+          (payload) => {
+            console.log('Real-time change detected:', payload);
+            
+            if (payload.eventType === 'INSERT') {
+              setBlogPosts(prev => [payload.new as BlogPost, ...prev]);
+              toast({
+                title: "New Post Added",
+                description: `"${(payload.new as BlogPost).title}" has been published`,
+              });
+            } else if (payload.eventType === 'UPDATE') {
+              setBlogPosts(prev => prev.map(post => 
+                post.id === payload.new.id ? payload.new as BlogPost : post
+              ));
+              toast({
+                title: "Post Updated",
+                description: `"${(payload.new as BlogPost).title}" has been updated`,
+              });
+            } else if (payload.eventType === 'DELETE') {
+              setBlogPosts(prev => prev.filter(post => post.id !== payload.old.id));
+              toast({
+                title: "Post Deleted",
+                description: "A blog post has been removed",
+                variant: "destructive",
+              });
+            }
+          }
+        )
+        .subscribe((status) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Successfully subscribed to blog posts changes');
+          }
+        });
+    };
+
+    setupRealtimeSubscription();
+
+    // Cleanup function
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel);
+      }
+    };
+  }, [toast]);
 
   if (isLoading) {
     return (
