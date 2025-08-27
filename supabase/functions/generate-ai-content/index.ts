@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const openrouterApiKey = Deno.env.get('OPENROUTER_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,8 +15,8 @@ serve(async (req) => {
   }
 
   try {
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key not found');
+    if (!openrouterApiKey) {
+      throw new Error('OpenRouter API key not found');
     }
 
     const { contentType, prompt, context, options = {} } = await req.json();
@@ -42,26 +42,28 @@ serve(async (req) => {
         systemPrompt = 'You are a helpful assistant creating content for a luxury beach resort development project.';
     }
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
+        'Authorization': `Bearer ${openrouterApiKey}`,
         'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://etwzlfmijfoyfazlxhtu.supabase.co',
+        'X-Title': 'Beach Resort AI Content Generator',
       },
       body: JSON.stringify({
-        model: 'gpt-5-2025-08-07',
+        model: 'openrouter/auto',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `${context ? `Context: ${context}\n\n` : ''}${prompt}` }
         ],
-        max_completion_tokens: options.maxTokens || 2000,
+        max_tokens: options.maxTokens || 2000,
       }),
     });
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('OpenAI API Error:', errorData);
-      throw new Error(`OpenAI API error: ${response.status} - ${errorData}`);
+      console.error('OpenRouter API Error:', errorData);
+      throw new Error(`OpenRouter API error: ${response.status} - ${errorData}`);
     }
 
     const data = await response.json();
