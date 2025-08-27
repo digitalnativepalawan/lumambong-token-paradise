@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Plus, Edit3, Trash2, Save, X, ArrowUp, ArrowDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -191,114 +193,156 @@ const AdminPageContentManager = ({ onClose }: AdminPageContentManagerProps) => {
     }
   };
 
-  const ContentList = ({ content, pageType }: { content: PageContent[], pageType: string }) => (
-    <div className="space-y-4">
-      {content.map((item, index) => (
-        <Card key={item.id}>
-          <CardHeader className="pb-3">
-            <div className="flex justify-between items-center">
-              <CardTitle className="text-lg">{item.title}</CardTitle>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleReorder(item, 'up')}
-                  disabled={index === 0}
-                >
-                  <ArrowUp className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => handleReorder(item, 'down')}
-                  disabled={index === content.length - 1}
-                >
-                  <ArrowDown className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setEditingItem(item.id)}
-                >
-                  <Edit3 className="w-4 h-4" />
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {editingItem === item.id ? (
-              <div className="space-y-4">
-                <Input
-                  value={item.section_id}
-                  onChange={(e) => {
-                    const updated = content.map(c => 
-                      c.id === item.id ? { ...c, section_id: e.target.value } : c
-                    );
-                    if (pageType === 'whitepaper') {
-                      setWhitepaperContent(updated);
-                    } else {
-                      setBusinessPlanContent(updated);
-                    }
-                  }}
-                  placeholder="Section ID"
-                />
-                <Input
-                  value={item.title}
-                  onChange={(e) => {
-                    const updated = content.map(c => 
-                      c.id === item.id ? { ...c, title: e.target.value } : c
-                    );
-                    if (pageType === 'whitepaper') {
-                      setWhitepaperContent(updated);
-                    } else {
-                      setBusinessPlanContent(updated);
-                    }
-                  }}
-                  placeholder="Section Title"
-                />
-                <Textarea
-                  value={item.content}
-                  onChange={(e) => {
-                    const updated = content.map(c => 
-                      c.id === item.id ? { ...c, content: e.target.value } : c
-                    );
-                    if (pageType === 'whitepaper') {
-                      setWhitepaperContent(updated);
-                    } else {
-                      setBusinessPlanContent(updated);
-                    }
-                  }}
-                  placeholder="Section Content"
-                  rows={6}
-                />
-                <div className="flex gap-2">
-                  <Button onClick={() => handleSave(item)}>
-                    <Save className="w-4 h-4 mr-2" />
-                    Save
-                  </Button>
-                  <Button variant="outline" onClick={() => setEditingItem(null)}>
-                    <X className="w-4 h-4 mr-2" />
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <p className="text-sm text-gray-600 mb-2">ID: {item.section_id}</p>
-                <p className="text-gray-700">{item.content.substring(0, 200)}...</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+  const ContentTable = ({ content, pageType }: { content: PageContent[], pageType: string }) => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Content Sections</CardTitle>
+      </CardHeader>
+      <CardContent className="p-0">
+        <ScrollArea className="h-[400px] w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Order</TableHead>
+                <TableHead>Section ID</TableHead>
+                <TableHead>Title</TableHead>
+                <TableHead className="hidden lg:table-cell">Content Preview</TableHead>
+                <TableHead className="w-[200px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {content.map((item, index) => (
+                <TableRow key={item.id}>
+                  <TableCell className="font-medium">{index + 1}</TableCell>
+                  <TableCell className="font-mono text-sm">
+                    {editingItem === item.id ? (
+                      <Input
+                        value={item.section_id}
+                        onChange={(e) => {
+                          const updated = content.map(c => 
+                            c.id === item.id ? { ...c, section_id: e.target.value } : c
+                          );
+                          if (pageType === 'whitepaper') {
+                            setWhitepaperContent(updated);
+                          } else {
+                            setBusinessPlanContent(updated);
+                          }
+                        }}
+                        className="h-8 text-xs"
+                      />
+                    ) : (
+                      item.section_id
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {editingItem === item.id ? (
+                      <Input
+                        value={item.title}
+                        onChange={(e) => {
+                          const updated = content.map(c => 
+                            c.id === item.id ? { ...c, title: e.target.value } : c
+                          );
+                          if (pageType === 'whitepaper') {
+                            setWhitepaperContent(updated);
+                          } else {
+                            setBusinessPlanContent(updated);
+                          }
+                        }}
+                        className="h-8 text-xs"
+                      />
+                    ) : (
+                      <div className="max-w-[200px] truncate">{item.title}</div>
+                    )}
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    {editingItem === item.id ? (
+                      <Textarea
+                        value={item.content}
+                        onChange={(e) => {
+                          const updated = content.map(c => 
+                            c.id === item.id ? { ...c, content: e.target.value } : c
+                          );
+                          if (pageType === 'whitepaper') {
+                            setWhitepaperContent(updated);
+                          } else {
+                            setBusinessPlanContent(updated);
+                          }
+                        }}
+                        className="h-20 text-xs resize-none"
+                      />
+                    ) : (
+                      <div className="max-w-[300px] text-xs text-muted-foreground truncate">
+                        {item.content.substring(0, 100)}...
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1 flex-wrap">
+                      {editingItem === item.id ? (
+                        <>
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleSave(item)}
+                            className="h-7 px-2"
+                          >
+                            <Save className="w-3 h-3" />
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={() => setEditingItem(null)}
+                            className="h-7 px-2"
+                          >
+                            <X className="w-3 h-3" />
+                          </Button>
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleReorder(item, 'up')}
+                            disabled={index === 0}
+                            className="h-7 px-2"
+                          >
+                            <ArrowUp className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleReorder(item, 'down')}
+                            disabled={index === content.length - 1}
+                            className="h-7 px-2"
+                          >
+                            <ArrowDown className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setEditingItem(item.id)}
+                            className="h-7 px-2"
+                          >
+                            <Edit3 className="w-3 h-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => handleDelete(item.id)}
+                            className="h-7 px-2"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </CardContent>
+    </Card>
   );
 
   if (loading) {
@@ -352,7 +396,7 @@ const AdminPageContentManager = ({ onClose }: AdminPageContentManagerProps) => {
                 </CardContent>
               </Card>
 
-              <ContentList content={whitepaperContent} pageType="whitepaper" />
+              <ContentTable content={whitepaperContent} pageType="whitepaper" />
             </TabsContent>
 
             <TabsContent value="business-plan" className="space-y-6">
@@ -384,7 +428,7 @@ const AdminPageContentManager = ({ onClose }: AdminPageContentManagerProps) => {
                 </CardContent>
               </Card>
 
-              <ContentList content={businessPlanContent} pageType="business_plan" />
+              <ContentTable content={businessPlanContent} pageType="business_plan" />
             </TabsContent>
           </Tabs>
         </div>
