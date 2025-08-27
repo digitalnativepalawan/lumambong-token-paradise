@@ -27,8 +27,8 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
   const [generatedContent, setGeneratedContent] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedTone, setSelectedTone] = useState('professional');
+  const [aiDisabled, setAiDisabled] = useState(false);
   const { toast } = useToast();
-
   const toneOptions = {
     professional: 'Professional and informative',
     friendly: 'Friendly and conversational',
@@ -62,7 +62,31 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        const msg = (error as any)?.message || '';
+        if (msg.toLowerCase().includes('not configured') || msg.toLowerCase().includes('disabled')) {
+          setAiDisabled(true);
+          toast({
+            title: "AI disabled",
+            description: "The AI provider is not configured. Please set a new API key to re-enable.",
+            variant: "destructive"
+          });
+          return;
+        }
+        throw error;
+      }
+
+      if (!data || !data.content) {
+        if ((data as any)?.disabled) {
+          setAiDisabled(true);
+          toast({
+            title: "AI disabled",
+            description: (data as any)?.message || "The AI provider is not configured. Please set a new API key to re-enable."
+          });
+          return;
+        }
+        throw new Error('No content returned');
+      }
 
       setGeneratedContent(data.content);
       toast({
@@ -139,10 +163,12 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
 
         <Button 
           onClick={generateContent} 
-          disabled={isGenerating || !prompt.trim()}
+          disabled={aiDisabled || isGenerating || !prompt.trim()}
           className="w-full"
         >
-          {isGenerating ? (
+          {aiDisabled ? (
+            <>AI disabled</>
+          ) : isGenerating ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
               Generating...
