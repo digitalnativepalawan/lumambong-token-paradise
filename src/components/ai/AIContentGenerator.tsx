@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Sparkles, Copy, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -29,6 +30,7 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
   const [selectedTone, setSelectedTone] = useState('professional');
   const [aiDisabled, setAiDisabled] = useState(false);
   const { toast } = useToast();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const toneOptions = {
     professional: 'Professional and informative',
     friendly: 'Friendly and conversational',
@@ -47,6 +49,7 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
       return;
     }
 
+    setErrorMessage(null);
     setIsGenerating(true);
     try {
       const enhancedPrompt = `Write in a ${selectedTone} tone. ${prompt}`;
@@ -90,15 +93,18 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
 
       setGeneratedContent(data.content);
       setAiDisabled(false);
+      setErrorMessage(null);
       toast({
         title: "Content generated",
         description: "AI content has been generated successfully"
       });
     } catch (error) {
       console.error('Error generating content:', error);
+      const errMsg = (error as any)?.message || "Failed to generate content. Please try again.";
+      setErrorMessage(errMsg);
       toast({
         title: "Generation failed",
-        description: "Failed to generate content. Please try again.",
+        description: errMsg,
         variant: "destructive"
       });
     } finally {
@@ -181,7 +187,16 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
             </>
           )}
         </Button>
-
+        
+        {errorMessage && (
+          <Alert variant="destructive">
+            <AlertTitle>Generation failed</AlertTitle>
+            <AlertDescription className="text-sm">
+              {errorMessage.includes('non-2xx') ? 'AI service is unavailable or misconfigured. Please try again.' : errorMessage}
+            </AlertDescription>
+          </Alert>
+        )}
+        
         {generatedContent && (
           <div className="space-y-3">
             <div className="p-4 border rounded-lg bg-muted/50">
