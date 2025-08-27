@@ -31,8 +31,6 @@ const Blog = () => {
   const [showReadMore, setShowReadMore] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
 
   // Fetch blog posts from database
@@ -61,10 +59,10 @@ const Blog = () => {
 
   // Add new blog post
   const handleAddPost = async () => {
-    if (!isAuthenticated) {
+    if (!isAdmin) {
       toast({
-        title: "Authentication Required",
-        description: "Please sign in to add blog posts",
+        title: "Admin Required",
+        description: "Please enter admin mode to add blog posts",
         variant: "destructive",
       });
       return;
@@ -204,126 +202,9 @@ const Blog = () => {
     });
   };
 
+  // Remove unused auth functions
   const toggleAdmin = () => {
     setIsAdmin(!isAdmin);
-  };
-
-  // Check authentication and set up real-time subscription
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user || null);
-      setIsAuthenticated(!!session?.user);
-    };
-    
-    checkAuth();
-    fetchBlogPosts();
-
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setUser(session?.user || null);
-        setIsAuthenticated(!!session?.user);
-      }
-    );
-
-    // Set up real-time subscription for blog posts
-    let channel: RealtimeChannel;
-    
-    const setupRealtimeSubscription = () => {
-      channel = supabase
-        .channel('blog_posts_changes')
-        .on('postgres_changes', 
-          { 
-            event: '*', 
-            schema: 'public', 
-            table: 'blog_posts' 
-          }, 
-          (payload) => {
-            console.log('Real-time change detected:', payload);
-            
-            if (payload.eventType === 'INSERT') {
-              setBlogPosts(prev => [payload.new as BlogPost, ...prev]);
-              toast({
-                title: "New Post Added",
-                description: `"${(payload.new as BlogPost).title}" has been published`,
-              });
-            } else if (payload.eventType === 'UPDATE') {
-              setBlogPosts(prev => prev.map(post => 
-                post.id === payload.new.id ? payload.new as BlogPost : post
-              ));
-              toast({
-                title: "Post Updated",
-                description: `"${(payload.new as BlogPost).title}" has been updated`,
-              });
-            } else if (payload.eventType === 'DELETE') {
-              setBlogPosts(prev => prev.filter(post => post.id !== payload.old.id));
-              toast({
-                title: "Post Deleted",
-                description: "A blog post has been removed",
-                variant: "destructive",
-              });
-            }
-          }
-        )
-        .subscribe((status) => {
-          if (status === 'SUBSCRIBED') {
-            console.log('Successfully subscribed to blog posts changes');
-          }
-        });
-    };
-
-    setupRealtimeSubscription();
-
-    // Cleanup function
-    return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
-      }
-      subscription.unsubscribe();
-    };
-  }, [toast]);
-
-  // Sign in function for admin access
-  const handleSignIn = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: window.location.origin + '/blog'
-        }
-      });
-      
-      if (error) throw error;
-    } catch (error) {
-      console.error('Error signing in:', error);
-      toast({
-        title: "Error",
-        description: "Failed to sign in",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Sign out function
-  const handleSignOut = async () => {
-    try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
-      setIsAdmin(false);
-      toast({
-        title: "Success",
-        description: "Signed out successfully",
-      });
-    } catch (error) {
-      console.error('Error signing out:', error);
-      toast({
-        title: "Error",
-        description: "Failed to sign out",
-        variant: "destructive",
-      });
-    }
   };
 
   if (isLoading) {
@@ -352,35 +233,15 @@ const Blog = () => {
               Stay updated with the latest news, insights, and developments in digital real estate securities and our Binga Beach project.
             </p>
             
-            {/* Authentication Controls */}
-            <div className="mt-8 space-y-4">
-              {!isAuthenticated ? (
-                <div className="text-center">
-                  <p className="text-gray-600 mb-4">Sign in to access admin features</p>
-                  <Button
-                    onClick={handleSignIn}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    Sign In with Google
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center gap-4">
-                  <div className="flex items-center gap-4">
-                    <span className="text-green-600">✓ Signed in as {user?.email}</span>
-                    <Button onClick={handleSignOut} variant="outline" size="sm">
-                      Sign Out
-                    </Button>
-                  </div>
-                  <Button
-                    onClick={toggleAdmin}
-                    variant={isAdmin ? "destructive" : "default"}
-                    className="modern-button"
-                  >
-                    {isAdmin ? "Exit Admin Mode" : "Enter Admin Mode"}
-                  </Button>
-                </div>
-              )}
+            {/* Admin Toggle */}
+            <div className="mt-8">
+              <Button
+                onClick={toggleAdmin}
+                variant={isAdmin ? "destructive" : "default"}
+                className="modern-button"
+              >
+                {isAdmin ? "Exit Admin Mode" : "Enter Admin Mode"}
+              </Button>
             </div>
           </div>
 
