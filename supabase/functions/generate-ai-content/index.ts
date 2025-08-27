@@ -2,6 +2,7 @@ import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const openrouterApiKey = Deno.env.get('OPENROUTER_API_KEY');
+const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,9 +16,9 @@ serve(async (req) => {
   }
 
   try {
-    if (!openrouterApiKey) {
+    if (!openrouterApiKey && !deepseekApiKey) {
       return new Response(
-        JSON.stringify({ disabled: true, error: true, message: 'OpenRouter API key missing. Set OPENROUTER_API_KEY.' }),
+        JSON.stringify({ disabled: true, error: true, message: 'No AI provider keys found. Set OPENROUTER_API_KEY or DEEPSEEK_API_KEY.' }),
         { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
@@ -45,38 +46,75 @@ serve(async (req) => {
     const model = options.model || 'deepseek/deepseek-chat';
     const max_tokens = options.maxTokens || 2000;
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openrouterApiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://etwzlfmijfoyfazlxhtu.supabase.co',
-        'X-Title': 'Beach Resort AI Content Generator',
-      },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `${context ? `Context: ${context}\n\n` : ''}${prompt}` }
-        ],
-        max_tokens,
-      }),
-    });
+    let generatedContent = '';
+    let provider = '';
+    let usage: any = null;
 
-    if (!response.ok) {
-      const errorData = await response.text();
-      console.error('OpenRouter API Error:', response.status, errorData);
-      return new Response(
-        JSON.stringify({ error: true, message: 'OpenRouter API error', status: response.status, details: errorData }),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+    const messages = [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: `${context ? `Context: ${context}\n\n` : ''}${prompt}` }
+    ];
+
+    if (openrouterApiKey) {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openrouterApiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://etwzlfmijfoyfazlxhtu.supabase.co',
+          'X-Title': 'Beach Resort AI Content Generator',
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          max_tokens,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('OpenRouter API Error:', response.status, errorData);
+        return new Response(
+          JSON.stringify({ error: true, message: 'OpenRouter API error', status: response.status, details: errorData }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const data = await response.json();
+      generatedContent = data.choices?.[0]?.message?.content ?? '';
+      provider = 'openrouter';
+      usage = data.usage ?? null;
+    } else if (deepseekApiKey) {
+      const response = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${deepseekApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages,
+          max_tokens,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('DeepSeek API Error:', response.status, errorData);
+        return new Response(
+          JSON.stringify({ error: true, message: 'DeepSeek API error', status: response.status, details: errorData }),
+          { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const data = await response.json();
+      generatedContent = data.choices?.[0]?.message?.content ?? '';
+      provider = 'deepseek';
+      usage = data.usage ?? null;
     }
 
-    const data = await response.json();
-    const generatedContent = data.choices?.[0]?.message?.content ?? '';
-
     return new Response(
-      JSON.stringify({ content: generatedContent, contentType, usage: data.usage, model }),
+      JSON.stringify({ content: generatedContent, contentType, usage, model, provider }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {
