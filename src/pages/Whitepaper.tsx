@@ -1,11 +1,47 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Download, FileText, Shield, Users, TrendingUp, CheckCircle, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+
+interface PageContent {
+  id: string;
+  page_type: string;
+  section_id: string;
+  title: string;
+  content: string;
+  order_index: number;
+  is_active: boolean;
+}
 
 const Whitepaper = () => {
   const navigate = useNavigate();
+  const [dynamicContent, setDynamicContent] = useState<PageContent[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    fetchDynamicContent();
+  }, []);
+
+  const fetchDynamicContent = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('page_content')
+        .select('*')
+        .eq('page_type', 'whitepaper')
+        .eq('is_active', true)
+        .order('order_index');
+
+      if (error) throw error;
+      setDynamicContent(data || []);
+    } catch (error) {
+      console.error('Error fetching dynamic content:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
   
   const handleDownloadWhitepaper = () => {
     // Create a link to download the whitepaper PDF
@@ -52,19 +88,37 @@ const Whitepaper = () => {
         </div>
       </div>
 
-      {/* Executive Summary */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="mb-12">
-          <CardHeader>
-            <CardTitle className="text-3xl text-center mb-6">Executive Summary</CardTitle>
-          </CardHeader>
-          <CardContent className="prose max-w-none">
-            <p className="text-lg leading-relaxed mb-6">
-              <strong>Halo Bloc</strong> offers investors a unique opportunity to own a piece of paradise in Palawan through 
-              a cutting-edge, <strong>blockchain-powered real estate investment platform</strong>. We combine the 
-              <strong>tangible value of prime Philippine real estate</strong> with the <strong>accessibility and 
-              transparency of digital assets</strong>. Here's what potential investors need to know:
-            </p>
+        {/* Dynamic Content Sections */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          {loading ? (
+            <div className="text-center">Loading content...</div>
+          ) : (
+            dynamicContent.map((section) => (
+              <Card key={section.id} className="mb-12">
+                <CardHeader>
+                  <CardTitle className="text-3xl text-center mb-6">{section.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="prose max-w-none">
+                  <div className="text-lg leading-relaxed whitespace-pre-wrap">
+                    {section.content}
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          )}
+
+          {/* Executive Summary - Static content for visual consistency */}
+          <Card className="mb-12">
+            <CardHeader>
+              <CardTitle className="text-3xl text-center mb-6">Executive Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="prose max-w-none">
+              <p className="text-lg leading-relaxed mb-6">
+                <strong>Halo Bloc</strong> offers investors a unique opportunity to own a piece of paradise in Palawan through 
+                a cutting-edge, <strong>blockchain-powered real estate investment platform</strong>. We combine the 
+                <strong>tangible value of prime Philippine real estate</strong> with the <strong>accessibility and 
+                transparency of digital assets</strong>. Here's what potential investors need to know:
+              </p>
 
             <div className="grid md:grid-cols-2 gap-8 my-8">
               <div className="space-y-6">

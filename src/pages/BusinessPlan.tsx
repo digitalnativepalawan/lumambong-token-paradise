@@ -11,13 +11,49 @@ import FinancialProjections from "@/components/business-plan/FinancialProjection
 import TechnicalImplementation from "@/components/business-plan/TechnicalImplementation";
 import SandboxSECPhilippines from "@/components/business-plan/SandboxSECPhilippines";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronRight, Share2, Menu, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+
+interface PageContent {
+  id: string;
+  page_type: string;
+  section_id: string;
+  title: string;
+  content: string;
+  order_index: number;
+  is_active: boolean;
+}
 
 const BusinessPlan = () => {
   const [activeSection, setActiveSection] = useState("executive-summary");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dynamicContent, setDynamicContent] = useState<PageContent[]>([]);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetchDynamicContent();
+  }, []);
+
+  const fetchDynamicContent = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('page_content')
+        .select('*')
+        .eq('page_type', 'business_plan')
+        .eq('is_active', true)
+        .order('order_index');
+
+      if (error) throw error;
+      setDynamicContent(data || []);
+    } catch (error) {
+      console.error('Error fetching dynamic content:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const sections = [
     { id: "executive-summary", title: "Executive Summary", component: ExecutiveSummary },
@@ -178,6 +214,25 @@ const BusinessPlan = () => {
           {/* Main Content */}
           <div className="flex-1 lg:ml-6 xl:ml-12 min-w-0">
             <div className="space-y-8 md:space-y-12">
+              {/* Dynamic Content */}
+              {loading ? (
+                <div className="text-center">Loading content...</div>
+              ) : (
+                dynamicContent.map((section) => (
+                  <Card key={section.id} id={section.section_id} className="scroll-mt-20 md:scroll-mt-24">
+                    <CardHeader>
+                      <CardTitle className="text-2xl">{section.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="whitespace-pre-wrap text-gray-700">
+                        {section.content}
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
+
+              {/* Static Sections */}
               {sections.map((section) => {
                 const Component = section.component;
                 return (

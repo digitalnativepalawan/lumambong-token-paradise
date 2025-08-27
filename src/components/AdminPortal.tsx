@@ -13,11 +13,13 @@ import SocialMediaTimeline from './SocialMediaTimeline';
 import MindMap from './MindMap';
 import BlogManagement from './BlogManagement';
 import AIContentHub from './ai/AIContentHub';
+import AdminPageContentManager from './AdminPageContentManager';
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [editingQuickAction, setEditingQuickAction] = useState<number | null>(null);
+  const [showPageManager, setShowPageManager] = useState(false);
   const [quickActions, setQuickActions] = useState([
     { name: 'Analytics', url: 'https://analytics.example.com' },
     { name: 'Database', url: 'https://supabase.com/dashboard' },
@@ -150,6 +152,15 @@ const AdminPortal = () => {
                     <Plus className="w-3 h-3" />
                   </Button>
                   <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setShowPageManager(true)}
+                    className="border-blue-300 text-blue-700 hover:bg-blue-100 text-xs h-8"
+                  >
+                    <FileText className="w-3 h-3 mr-1" />
+                    Manage Pages
+                  </Button>
+                  <Button
                     onClick={handleClose}
                     variant="outline"
                     size="sm"
@@ -230,6 +241,11 @@ const AdminPortal = () => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Page Content Manager Modal */}
+      {showPageManager && (
+        <AdminPageContentManager onClose={() => setShowPageManager(false)} />
+      )}
     </>
   );
 };

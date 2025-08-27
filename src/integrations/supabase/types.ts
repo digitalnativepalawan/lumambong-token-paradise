@@ -605,6 +605,42 @@ export type Database = {
         }
         Relationships: []
       }
+      page_content: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_active: boolean
+          order_index: number
+          page_type: string
+          section_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          page_type: string
+          section_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          order_index?: number
+          page_type?: string
+          section_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       payment_accounts: {
         Row: {
           account_type: string
