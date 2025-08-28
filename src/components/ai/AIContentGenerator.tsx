@@ -9,6 +9,9 @@ import { Loader2, Sparkles, Copy, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 interface AIContentGeneratorProps {
   contentType: 'blog_post' | 'timeline_content' | 'mind_map' | 'general_content';
   onContentGenerated: (content: string) => void;
@@ -208,7 +211,9 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
         {generatedContent && (
           <div className="space-y-3">
             <div className="p-4 border rounded-lg bg-muted/50">
-              <div className="whitespace-pre-wrap text-sm">{generatedContent}</div>
+              <article className="prose prose-neutral dark:prose-invert max-w-none text-sm">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{generatedContent}</ReactMarkdown>
+              </article>
             </div>
             
             <div className="flex gap-2">
