@@ -52,7 +52,7 @@ const Hero = () => {
 
         {/* Main heading */}
         <div className="mb-8 space-y-4">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight text-black">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-inter font-light leading-tight text-black">
             Own a Fraction
             <br />
             of Paradise
