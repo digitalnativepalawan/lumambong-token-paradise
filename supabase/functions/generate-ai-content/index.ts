@@ -33,64 +33,90 @@ Write a formal, forward-looking blog post that is cleanly formatted in Markdown 
 
 Return the output in this EXACT structure:
 
-META
-- Title (≤60 chars, compelling, includes primary keyword)
-- Slug (kebab-case)
-- Meta Description (≤155 chars)
-- Primary Keyword
-- Secondary Keywords (3–6)
-- Category (choose ONLY from: Technology, Off Grid, Travel, Web3, Palawan)
-- Tags (5–10, comma-separated)
-- Canonical URL (placeholder)
-- OG Title (≤60)
-- OG Description (≤110)
-- Featured Image Prompt (concise prompt for a hero image; include style, subject, and mood)
-- Image Alt Text (≤120 chars)
-- Reading Time (minutes)
-
-EXCERPT
+## EXCERPT
 A 1–2 sentence summary (≤35 words) for list previews.
 
-BODY (Markdown starts below)
-# H1: (same as Title)
+## BLOG CONTENT
+# H1: (article title without symbols or asterisks)
 
 > Key Takeaway (1–2 sentence forward-looking insight)
 
 ## Introduction
-- Hook the reader with a problem/insight relevant to off-grid beachfront living, modular homes, or digital securities.
-- Promise what the reader will learn.
+Hook the reader with a problem/insight relevant to off-grid beachfront living, modular homes, or digital securities.
+Promise what the reader will learn.
 
-## Section 1 — Context & Why It Matters
-- Use short paragraphs (≤3 lines).
-- Add a 3–5 item bullet list of benefits or risks.
+## Context & Why It Matters
+Use short paragraphs (≤3 lines).
+Add a 3–5 item bullet list of benefits or risks.
 
-## Section 2 — Practical Framework / How-To
-- Numbered steps or checklist.
-- Include **bold** key terms and an inline example.
+## Practical Framework / How-To
+Numbered steps or checklist.
+Include bold key terms and an inline example.
 
-## Section 3 — Data, Compliance, or Technical Notes
-- Explain clearly without jargon.
-- Use a small table if useful (Markdown table).
+## Data, Compliance, or Technical Notes
+Explain clearly without jargon.
+Use a small table if useful (Markdown table).
 
-## Section 4 — Case/Application at Lumambong Beach (Palawan)
-- Tie ideas to our modular homes, solar systems (10kVA), SPV + digital securities compliance, and passive-income operations.
-- Add 1 internal link placeholder like: [See our project overview](/blog/project-overview)
+## Case Application at Lumambong Beach (Palawan)
+Tie ideas to our modular homes, solar systems (10kVA), SPV + digital securities compliance, and passive-income operations.
+Add 1 internal link placeholder like: [See our project overview](/blog/project-overview)
 
-## FAQs (3–5)
-- Short, precise answers.
+## Frequently Asked Questions
+3–5 short, precise answers.
 
 ## Call to Action
-- Invite readers to learn more, join the waitlist, or request the white paper.
+Invite readers to learn more, join the waitlist, or request the white paper.
 
 ## References
-- List 3–6 sources as Markdown links with human-readable anchor text:
-  - [Source Title](https://example.com)
-  - [Source Title](https://example.com)
+List 3–6 sources as Markdown links with human-readable anchor text:
+- [Source Title](https://example.com)
+- [Source Title](https://example.com)
+
+## META DATA
+### Title
+≤60 chars, compelling, includes primary keyword
+
+### Slug
+kebab-case
+
+### Meta Description
+≤155 chars
+
+### Primary Keyword
+Main keyword for SEO
+
+### Secondary Keywords
+3–6 related keywords
+
+### Category
+Choose ONLY from: Technology, Off Grid, Travel, Web3, Palawan
+
+### Tags
+5–10, comma-separated
+
+### Canonical URL
+placeholder
+
+### OG Title
+≤60 chars
+
+### OG Description
+≤110 chars
+
+### Featured Image Prompt
+Concise prompt for a hero image; include style, subject, and mood
+
+### Image Alt Text
+≤120 chars
+
+### Reading Time
+minutes
 
 FORMATTING RULES
-- Use Markdown only (no raw HTML).
+- Use clean Markdown only (no raw HTML).
+- NO asterisks, hashtags, or special symbols in content text.
 - Every URL must be a Markdown link like [Anchor](https://url.com).
-- Headings must be H1/H2/H3 in Markdown (#, ##, ###) so fonts render properly.
+- Headings must be H1/H2/H3 in Markdown for proper rendering.
 - Keep sentences crisp; avoid filler.
 - Prefer active voice.
 - Never use "tokenized" in consumer copy—use "digital securities" or "smart assets".
