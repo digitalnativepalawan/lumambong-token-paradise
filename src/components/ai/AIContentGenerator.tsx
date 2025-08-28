@@ -52,7 +52,7 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
     setErrorMessage(null);
     setIsGenerating(true);
     try {
-      const enhancedPrompt = `Write in a ${selectedTone} tone. ${prompt}`;
+      const enhancedPrompt = contentType === 'blog_post' ? prompt : `Write in a ${selectedTone} tone. ${prompt}`;
       
       const { data, error } = await supabase.functions.invoke('generate-ai-content', {
         body: {
@@ -147,21 +147,23 @@ const AIContentGenerator: React.FC<AIContentGeneratorProps> = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="tone">Writing Tone</Label>
-          <Select value={selectedTone} onValueChange={setSelectedTone}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.entries(toneOptions).map(([value, label]) => (
-                <SelectItem key={value} value={value}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {contentType !== 'blog_post' && (
+          <div className="space-y-2">
+            <Label htmlFor="tone">Writing Tone</Label>
+            <Select value={selectedTone} onValueChange={setSelectedTone}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.entries(toneOptions).map(([value, label]) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         <div className="space-y-2">
           <Label htmlFor="prompt">Content Prompt</Label>
