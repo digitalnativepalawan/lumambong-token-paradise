@@ -47,6 +47,36 @@ export type Database = {
         }
         Relationships: []
       }
+      business_plan_buttons: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          order_index: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          order_index?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          order_index?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       employee_tasks: {
         Row: {
           assigned_date: string

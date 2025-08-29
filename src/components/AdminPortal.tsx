@@ -14,6 +14,7 @@ import MindMap from './MindMap';
 import BlogManagement from './BlogManagement';
 import AIContentHub from './ai/AIContentHub';
 import AdminPageContentManager from './AdminPageContentManager';
+import AdminBusinessPlanButtons from './AdminBusinessPlanButtons';
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -172,7 +173,7 @@ const AdminPortal = () => {
               </div>
 
               <Tabs defaultValue="timeline" className="w-full">
-                <TabsList className="grid w-full grid-cols-6">
+                <TabsList className="grid w-full grid-cols-7">
                   <TabsTrigger value="timeline" className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     <span className="hidden sm:inline">Timeline</span>
@@ -188,6 +189,10 @@ const AdminPortal = () => {
                   <TabsTrigger value="ai-hub" className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4" />
                     <span className="hidden sm:inline">AI Hub</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="buttons" className="flex items-center gap-2">
+                    <ExternalLink className="w-4 h-4" />
+                    <span className="hidden sm:inline">Buttons</span>
                   </TabsTrigger>
                   <TabsTrigger value="users" className="flex items-center gap-2">
                     <Users className="w-4 h-4" />
@@ -213,6 +218,10 @@ const AdminPortal = () => {
 
                 <TabsContent value="ai-hub" className="mt-6">
                   <AIContentHub />
+                </TabsContent>
+
+                <TabsContent value="buttons" className="mt-6">
+                  <AdminBusinessPlanButtons />
                 </TabsContent>
 
                 <TabsContent value="users" className="mt-6">
