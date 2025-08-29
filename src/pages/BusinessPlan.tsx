@@ -147,49 +147,45 @@ const BusinessPlan = () => {
             
             {/* Action buttons */}
             <div className="space-y-4 max-w-5xl mx-auto">
-              {/* Original buttons - now with modern web3 styling */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2">
+              {/* Original buttons - now with sleek modern styling */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 px-2">
                 <button 
                   onClick={handleAngelInvestorClick}
-                  className="web3-button web3-button-purple min-h-[48px] flex items-center justify-center gap-2"
+                  className="web3-button gap-1"
                 >
-                  <Users className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-xs font-medium truncate">Angel Investor</span>
+                  <Users className="w-3 h-3 flex-shrink-0" />
+                  <span className="truncate">Angel Investor</span>
                 </button>
                 <button 
                   onClick={handleModulePriceClick}
-                  className="web3-button web3-button-green min-h-[48px] flex items-center justify-center"
+                  className="web3-button"
                 >
-                  <span className="text-xs font-medium truncate">Module Price</span>
+                  <span className="truncate">Module Price</span>
                 </button>
                 <button 
                   onClick={handleModuleSpecsClick}
-                  className="web3-button min-h-[48px] flex items-center justify-center"
+                  className="web3-button"
                 >
-                  <span className="text-xs font-medium truncate">Module Specs</span>
+                  <span className="truncate">Module Specs</span>
                 </button>
                 <button 
                   onClick={handleUpgradedModuleClick}
-                  className="web3-button web3-button-orange min-h-[48px] flex items-center justify-center"
+                  className="web3-button"
                 >
-                  <span className="text-xs font-medium truncate">Upgraded Module</span>
+                  <span className="truncate">Upgraded Module</span>
                 </button>
               </div>
 
               {/* Configurable buttons */}
               {configButtons.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-2">
-                  {configButtons.map((button, index) => (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 px-2">
+                  {configButtons.map((button) => (
                     <button 
                       key={button.id}
                       onClick={() => window.open(button.url, '_blank')}
-                      className={`web3-button min-h-[48px] flex items-center justify-center ${
-                        index % 4 === 0 ? 'web3-button-purple' : 
-                        index % 4 === 1 ? 'web3-button-green' : 
-                        index % 4 === 2 ? '' : 'web3-button-orange'
-                      }`}
+                      className="web3-button"
                     >
-                      <span className="text-xs font-medium truncate">{button.name}</span>
+                      <span className="truncate">{button.name}</span>
                     </button>
                   ))}
                 </div>
