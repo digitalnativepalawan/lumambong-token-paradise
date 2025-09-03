@@ -112,13 +112,11 @@ const Hero = () => {
 
         {/* SEC Sandbox Infographic */}
         <div className="mb-16 max-w-6xl mx-auto">
-          <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white p-4 group cursor-pointer">
+          <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-200 bg-white p-4">
             <img 
               src="/lovable-uploads/376d87e3-16bd-42c1-976f-2105f0cfe80f.png" 
               alt="StratBox Sandbox Philippines - SEC Regulatory Framework" 
-              className="w-full h-auto object-contain transition-transform duration-300 ease-in-out 
-                         md:group-hover:scale-110 
-                         scale-125 md:scale-100"
+              className="w-full h-auto object-contain"
             />
           </div>
         </div>
