@@ -18,7 +18,7 @@ const AngelInvestorModal = ({ isOpen, onClose }: AngelInvestorModalProps) => {
       title: "Angel Investor Opportunity",
       content: (
         <div className="space-y-6">
-          <h3 className="text-2xl font-bold text-black">Binga Beach Token (BBT)</h3>
+          <h3 className="text-2xl font-bold text-black">Palawan Collective Token (BBT)</h3>
           <p className="text-lg text-gray-700">
             Revolutionary tokenized real estate investment opportunity in pristine Palawan beachfront property.
           </p>

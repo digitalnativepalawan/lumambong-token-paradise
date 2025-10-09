@@ -92,7 +92,7 @@ const Governance = () => {
               Community Governance
             </h1>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Shape the future of Binga Beach through democratic voting. Every BBT token 
+              Shape the future of Palawan Collective through democratic voting. Every BBT token 
               represents one vote in key property decisions.
             </p>
           </div>

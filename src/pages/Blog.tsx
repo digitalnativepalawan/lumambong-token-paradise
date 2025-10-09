@@ -88,7 +88,7 @@ const Blog = () => {
               HBCX Blog
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Stay updated with the latest news, insights, and developments in digital real estate securities and our Binga Beach project.
+              Stay updated with the latest news, insights, and developments in digital real estate securities and our Palawan Collective project.
             </p>
           </div>
 

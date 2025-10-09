@@ -60,7 +60,7 @@ const QRCodePayment = ({ amount, referenceCode, paymentMethod }: QRCodePaymentPr
           <div className="bg-white p-4 rounded-lg border-2 border-gray-200 shadow-sm">
             <img 
               src="/lovable-uploads/d2c11454-3569-4892-b9b9-561db319c843.png" 
-              alt="Binga Beach Payment QR Code"
+              alt="Palawan Collective Payment QR Code"
               className="w-64 h-64 object-contain"
             />
           </div>

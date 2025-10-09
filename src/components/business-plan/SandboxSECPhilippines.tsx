@@ -8,12 +8,12 @@ const SandboxSECPhilippines = () => {
         
         <div className="prose prose-lg max-w-none text-gray-700">
           <h3 className="text-2xl font-bold text-black mb-4">
-            Implementation Timeline for Binga Beach Tokenized Real Estate Project
+            Implementation Timeline for Palawan Collective Tokenized Real Estate Project
           </h3>
           
           <h4 className="text-xl font-semibold text-black mb-3">Overview</h4>
           <p className="mb-6">
-            The Binga Beach Tokenized Real Estate project aims to launch a marketing campaign and secure $100,000 in funding for 15% equity by August 2025, focusing on tokenized fractional ownership of 10 premium beachfront lots with solar-powered modular homes in Palawan, Philippines. This timeline integrates the use of the SEC's Regulatory Sandbox (StratBox) and a partnership with Coins.ph to facilitate tokenization, while ensuring compliance with real estate regulations. Given the current date (July 4, 2025), the timeline prioritizes preparation in July 2025 to meet the August 2025 marketing launch goal, with subsequent steps for development and deployment.
+            The Palawan Collective Tokenized Real Estate project aims to launch a marketing campaign and secure $100,000 in funding for 15% equity by August 2025, focusing on tokenized fractional ownership of 10 premium beachfront lots with solar-powered modular homes in Palawan, Philippines. This timeline integrates the use of the SEC's Regulatory Sandbox (StratBox) and a partnership with Coins.ph to facilitate tokenization, while ensuring compliance with real estate regulations. Given the current date (July 4, 2025), the timeline prioritizes preparation in July 2025 to meet the August 2025 marketing launch goal, with subsequent steps for development and deployment.
           </p>
 
           <h4 className="text-xl font-semibold text-black mb-3">Timeline</h4>
@@ -258,7 +258,7 @@ const SandboxSECPhilippines = () => {
             <div>
               <span className="font-semibold text-black">Tokenization Compliance:</span>
               <p className="mt-1">
-                Binga Beach Tokens (BBT) must adhere to SEC regulations for digital asset securities, using standards like ERC-3643 for investor whitelisting and transfer restrictions.<br/>
+                Palawan Collective Tokens (BBT) must adhere to SEC regulations for digital asset securities, using standards like ERC-3643 for investor whitelisting and transfer restrictions.<br/>
                 Engage international legal counsel for global investor compliance.<br/>
                 <em>Question: How might a robust compliance framework attract international investors?</em>
               </p>

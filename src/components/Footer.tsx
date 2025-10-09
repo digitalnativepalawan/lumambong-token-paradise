@@ -141,7 +141,7 @@ const Footer = () => {
         <div className="border-t border-gray-200 mt-8 sm:mt-12 pt-6 sm:pt-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6">
             <p className="text-gray-600 text-sm sm:text-base">
-              &copy; 2025 Binga Beach. All rights reserved.
+              2025 Palawan Collective. All rights reserved.
             </p>
             <div className="flex flex-wrap gap-4 sm:gap-6">
               {legalLinks.map((link, index) => (

@@ -61,7 +61,7 @@ const Dashboard = () => {
                   Welcome back, {userProfile?.full_name || user?.email}
                 </h1>
                 <p className="text-blue-100">
-                  Your Binga Beach Paradise Dashboard
+                  Your Palawan Collective Paradise Dashboard
                 </p>
               </div>
               <div className="mt-4 md:mt-0 flex items-center gap-4">

@@ -47,7 +47,7 @@ const BusinessModel = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-700 text-lg leading-relaxed">
-            The BBT (Binga Beach Digital Security) represents fractional ownership in premium beachfront property. 
+            The BBT (Palawan Collective Digital Security) represents fractional ownership in premium beachfront property. 
             Each security provides holders with four core benefits: property ownership rights, governance 
             participation, revenue sharing, and timeshare access. This model democratizes access to 
             high-value real estate while maintaining regulatory compliance.

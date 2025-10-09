@@ -110,7 +110,7 @@ const EquityMetrics = ({ simulationResult, formatCurrency }: EquityMetricsProps)
       {/* Explanatory text */}
       <div className="text-xs text-gray-600 bg-gray-50 p-2 rounded border">
         <div className="font-medium mb-1">Understanding Your Investment:</div>
-        <div>Your Digital Securities represent real equity ownership in Binga Beach property. 
+        <div>Your Digital Securities represent real equity ownership in Palawan Collective property. 
         Your equity value grows through 22%/yr asset appreciation, while you also earn 
         dividends from operations and enjoy bonus complimentary nights.</div>
       </div>

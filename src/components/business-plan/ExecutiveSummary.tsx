@@ -44,14 +44,14 @@ const ExecutiveSummary = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-700 text-lg leading-relaxed">
-            Binga Beach represents a pioneering approach to real estate investment through blockchain digital securities. 
+            Palawan Collective represents a pioneering approach to real estate investment through blockchain digital securities. 
             Located on the pristine shores of Lumambong Beach in Palawan, Philippines, this project combines 
             sustainable eco-tourism development with innovative financial technology to create accessible 
             investment opportunities in premium beachfront property.
           </p>
           
           <p className="text-gray-700 text-lg leading-relaxed">
-            Through the BBT (Binga Beach Digital Security) ecosystem, investors can own fractional shares of modular 
+            Through the BBT (Palawan Collective Digital Security) ecosystem, investors can own fractional shares of modular 
             beachfront homes, participate in governance decisions, enjoy timeshare rights, and benefit from 
             multiple revenue streams including rental income and security value appreciation.
           </p>

@@ -28,8 +28,8 @@ const FAQ = () => {
       answer: "Real estate digital securities are already in use in major markets such as New York, Dubai, and Singapore. These projects allow global investors to participate in property ownership and benefit from increased liquidity."
     },
     {
-      question: "Who are Binga Beach Brothers Inc.?",
-      answer: "Binga Beach Brothers Inc. is a SEC-registered Philippine corporation managing this project. The company already operates the fully permitted and environmentally compliant Binga Beach Resort, maintaining a strong relationship with TIEZA and the local government (LGU)."
+      question: "Who are Palawan Collective Brothers Inc.?",
+      answer: "Palawan Collective Brothers Inc. is a SEC-registered Philippine corporation managing this project. The company already operates the fully permitted and environmentally compliant Palawan Collective Resort, maintaining a strong relationship with TIEZA and the local government (LGU)."
     },
     {
       question: "What permits and environmental compliances does the project have?",
@@ -53,7 +53,7 @@ const FAQ = () => {
     },
     {
       question: "Who is leading this project?",
-      answer: "The project is led by partners of Binga Beach Brothers Inc., including David Le, who successfully created Binga Beach Resort and established the Lumambong Beach retreat with all permits and environmental compliance. Quennie Azarraga, also a partner, brings expertise from her glass and aluminum business as well as aggregates and construction ventures. Other key team members include:\n\nJulius Leuteric – Lead Solar Technician\nJasper Arcinas – Survivalist, Conservation Guide, Researcher\nRommel Cruz – Blue Bird Philippines, Mountain Expeditions\nAlfie Laos – Pinoy Mountaineer, Researcher, Drone Cinematographer, Food Science Video Editor\nCM Madrid – Environmental Planner, Consultant, Researcher\nMelinda Acala – Accountant, TESDA Course Instructor\n\nThis multidisciplinary team ensures expertise in property development, compliance, sustainability, and technology."
+      answer: "The project is led by partners of Palawan Collective Brothers Inc., including David Le, who successfully created Palawan Collective Resort and established the Lumambong Beach retreat with all permits and environmental compliance. Quennie Azarraga, also a partner, brings expertise from her glass and aluminum business as well as aggregates and construction ventures. Other key team members include:\n\nJulius Leuteric – Lead Solar Technician\nJasper Arcinas – Survivalist, Conservation Guide, Researcher\nRommel Cruz – Blue Bird Philippines, Mountain Expeditions\nAlfie Laos – Pinoy Mountaineer, Researcher, Drone Cinematographer, Food Science Video Editor\nCM Madrid – Environmental Planner, Consultant, Researcher\nMelinda Acala – Accountant, TESDA Course Instructor\n\nThis multidisciplinary team ensures expertise in property development, compliance, sustainability, and technology."
     }
   ];
 

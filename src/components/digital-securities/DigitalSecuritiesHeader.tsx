@@ -14,7 +14,7 @@ const DigitalSecuritiesHeader = () => {
       </h2>
       <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
         More than just ownership - BBT digital securities unlock a comprehensive ecosystem of 
-        benefits, rights, and opportunities in the Binga Beach community.
+        benefits, rights, and opportunities in the Palawan Collective community.
       </p>
     </div>
   );

@@ -142,7 +142,7 @@ const BusinessPlan = () => {
               Business Plan
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-4 md:mb-8 px-2">
-              Comprehensive overview of Binga Beach digital securities real estate investment opportunity
+              Comprehensive overview of Palawan Collective digital securities real estate investment opportunity
             </p>
             
             {/* Action buttons */}

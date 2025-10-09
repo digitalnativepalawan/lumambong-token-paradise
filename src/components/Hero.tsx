@@ -37,7 +37,7 @@ const Hero = () => {
         <div className="mb-8 animate-fade-in-up">
           <img 
             src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
-            alt="Binga Beach Logo" 
+            alt="Palawan Collective Logo" 
             className="w-64 h-auto mx-auto object-contain"
           />
         </div>
@@ -101,7 +101,7 @@ const Hero = () => {
             <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-2xl">
               <iframe
                 src="https://www.youtube.com/embed/mhoL96KXuSw?autoplay=1&loop=1&playlist=mhoL96KXuSw&mute=0&quality=hd1080"
-                title="Binga Beach Demo Video"
+                title="Palawan Collective Demo Video"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

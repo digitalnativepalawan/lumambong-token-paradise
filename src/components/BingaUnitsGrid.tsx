@@ -11,7 +11,7 @@ const BingaUnitsGrid = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // Mock data for the 10 Binga Beach lots with ownership structure
+  // Mock data for the 10 Palawan Collective lots with ownership structure
   const lots = [
     { 
       id: 1, 
@@ -150,7 +150,7 @@ const BingaUnitsGrid = () => {
         <div className="text-center mb-12">
           <Badge className="mb-4 bg-blue-100 text-blue-800">Investment Opportunities</Badge>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black">
-            Choose Your Binga Beach Lot
+            Choose Your Palawan Collective Lot
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
             Own a fraction of paradise through our Digital Securities backed lots. Each lot follows Philippine law 

@@ -8,7 +8,7 @@ const ManagementStructure = () => {
     {
       name: "David Le",
       role: "Co-Founder & Project Lead",
-      experience: "Successfully created Binga Beach Resort with all permits and environmental compliance",
+      experience: "Successfully created Palawan Collective Resort with all permits and environmental compliance",
       expertise: ["Resort Development", "Regulatory Compliance", "Project Management"]
     },
     {
@@ -189,7 +189,7 @@ const ManagementStructure = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <p className="text-gray-700 leading-relaxed">
-            Binga Beach Brothers Inc. operates as an SEC-registered Philippine corporation with 
+            Palawan Collective Brothers Inc. operates as an SEC-registered Philippine corporation with 
             a flat organizational structure that promotes collaboration and efficient decision-making. 
             The team combines local expertise with international best practices.
           </p>

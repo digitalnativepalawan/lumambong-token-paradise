@@ -53,14 +53,14 @@ const ProjectOverview = () => {
             The Project
           </Badge>
           <h2 className="text-4xl md:text-6xl font-bold mb-8 text-black">
-            Binga Beach
+            Palawan Collective
             <br />
             Development
           </h2>
           <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
             A pioneering real estate development that merges premium beachfront property 
             with blockchain technology, offering fractional ownership through 
-            <span className="text-black font-semibold"> Binga Beach Digital Securities (BBT)</span>.
+            <span className="text-black font-semibold"> Palawan Collective Digital Securities (BBT)</span>.
           </p>
         </div>
 
