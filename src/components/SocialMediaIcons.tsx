@@ -15,7 +15,7 @@ const SocialMediaIcons = ({ variant = "header", className = "" }: SocialMediaIco
   const socialLinks = [
     {
       icon: <Instagram className={iconSize} />,
-      url: "https://www.instagram.com/nomadpalwan",
+      url: "https://www.instagram.com/beachfronthideaway/",
       label: "Instagram"
     },
     {
