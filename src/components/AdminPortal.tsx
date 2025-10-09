@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,17 +15,25 @@ import BlogManagement from './BlogManagement';
 import AIContentHub from './ai/AIContentHub';
 import AdminPageContentManager from './AdminPageContentManager';
 import AdminBusinessPlanButtons from './AdminBusinessPlanButtons';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+// Quick action type for persistence
+interface QuickAction {
+  id: string;
+  name: string;
+  url: string;
+  order_index: number;
+  is_active: boolean;
+}
 
 const AdminPortal = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [editingQuickAction, setEditingQuickAction] = useState<number | null>(null);
   const [showPageManager, setShowPageManager] = useState(false);
-  const [quickActions, setQuickActions] = useState([
-    { name: 'Analytics', url: 'https://analytics.example.com' },
-    { name: 'Database', url: 'https://supabase.com/dashboard' },
-    { name: 'Logs', url: 'https://logs.example.com' }
-  ]);
+  const [quickActions, setQuickActions] = useState<QuickAction[]>([]);
+  const { toast } = useToast();
   const { user } = useAuth();
 
   const handleAuthSuccess = () => {
@@ -37,18 +45,95 @@ const AdminPortal = () => {
     setIsAuthenticated(false);
   };
 
+  // Load quick actions from Supabase
+  const fetchQuickActions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('admin_quick_actions')
+        .select('*')
+        .order('order_index');
+      if (error) throw error;
+
+      if (!data || data.length === 0) {
+        // Seed sensible defaults on first run
+        const defaults = [
+          { name: 'Analytics', url: 'https://analytics.google.com', order_index: 1 },
+          { name: 'Database', url: `https://supabase.com/dashboard/project/etwzlfmijfoyfazlxhtu`, order_index: 2 },
+          { name: 'Logs', url: `https://supabase.com/dashboard/project/etwzlfmijfoyfazlxhtu/functions`, order_index: 3 }
+        ];
+        const { data: inserted, error: insertErr } = await supabase
+          .from('admin_quick_actions')
+          .insert(defaults)
+          .select();
+        if (insertErr) throw insertErr;
+        setQuickActions((inserted || []) as QuickAction[]);
+        return;
+      }
+
+      setQuickActions((data || []) as QuickAction[]);
+    } catch (err) {
+      console.error('Failed to load quick actions', err);
+      toast({ title: 'Load failed', description: 'Could not fetch admin quick links', variant: 'destructive' });
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) fetchQuickActions();
+  }, [isAuthenticated]);
+  
   const updateQuickAction = (index: number, field: 'name' | 'url', value: string) => {
     setQuickActions(prev => prev.map((action, i) => 
       i === index ? { ...action, [field]: value } : action
     ));
   };
 
-  const addQuickAction = () => {
-    setQuickActions(prev => [...prev, { name: 'New Action', url: 'https://example.com' }]);
+  const handleSaveQuickAction = async (index: number) => {
+    try {
+      const action = quickActions[index];
+      const { error } = await supabase
+        .from('admin_quick_actions')
+        .update({ name: action.name, url: action.url })
+        .eq('id', action.id);
+      if (error) throw error;
+      setEditingQuickAction(null);
+      toast({ title: 'Saved', description: 'Quick link updated' });
+    } catch (err) {
+      console.error('Save failed', err);
+      toast({ title: 'Save failed', description: 'Could not update link', variant: 'destructive' });
+    }
   };
 
-  const removeQuickAction = (index: number) => {
-    setQuickActions(prev => prev.filter((_, i) => i !== index));
+  const addQuickAction = async () => {
+    try {
+      const nextOrder = quickActions.length ? Math.max(...quickActions.map(a => a.order_index)) + 1 : 1;
+      const { data, error } = await supabase
+        .from('admin_quick_actions')
+        .insert({ name: 'New Action', url: 'https://example.com', order_index: nextOrder })
+        .select()
+        .single();
+      if (error) throw error;
+      setQuickActions(prev => [...prev, data as unknown as QuickAction]);
+      toast({ title: 'Added', description: 'New quick link created' });
+    } catch (err) {
+      console.error('Add failed', err);
+      toast({ title: 'Add failed', description: 'Could not add link', variant: 'destructive' });
+    }
+  };
+  
+  const removeQuickAction = async (index: number) => {
+    try {
+      const action = quickActions[index];
+      const { error } = await supabase
+        .from('admin_quick_actions')
+        .delete()
+        .eq('id', action.id);
+      if (error) throw error;
+      setQuickActions(prev => prev.filter((_, i) => i !== index));
+      toast({ title: 'Deleted', description: 'Quick link removed' });
+    } catch (err) {
+      console.error('Delete failed', err);
+      toast({ title: 'Delete failed', description: 'Could not remove link', variant: 'destructive' });
+    }
   };
 
   return (

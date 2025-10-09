@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_quick_actions: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          order_index: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          order_index?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          order_index?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       blog_posts: {
         Row: {
           author: string
@@ -1202,9 +1232,9 @@ export type Database = {
           | { i_is_available: boolean; i_item_id: string }
           | { p_item_id: number }
         Returns: {
-          id: number
-          name: string
-          new_availability: boolean
+          id: string
+          is_available: boolean
+          updated_at: string
         }[]
       }
     }
