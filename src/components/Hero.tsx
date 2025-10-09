@@ -36,9 +36,9 @@ const Hero = () => {
         {/* Logo */}
         <div className="mb-8 animate-fade-in-up">
           <img 
-            src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
+            src="/lovable-uploads/palawan-collective-logo.png" 
             alt="Palawan Collective Logo" 
-            className="w-64 h-auto mx-auto object-contain"
+            className="w-80 h-auto mx-auto object-contain"
           />
         </div>
 

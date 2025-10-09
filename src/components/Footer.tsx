@@ -60,9 +60,9 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img 
-                src="/lovable-uploads/c5e976ca-58db-42cd-9f8b-b428bbf602fa.png" 
-                alt="Binga Beach Logo" 
-                className="w-40 sm:w-48 h-auto object-contain"
+                src="/lovable-uploads/palawan-collective-logo.png" 
+                alt="Palawan Collective Logo" 
+                className="w-40 sm:w-56 h-auto object-contain"
               />
             </div>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
