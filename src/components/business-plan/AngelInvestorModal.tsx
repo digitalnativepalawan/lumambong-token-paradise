@@ -159,7 +159,7 @@ const AngelInvestorModal = ({ isOpen, onClose }: AngelInvestorModalProps) => {
             <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
               <h4 className="font-semibold text-black mb-3">Contact Information</h4>
               <div className="space-y-2">
-                <p className="text-gray-700">📧 david@bingabeach.com</p>
+                <p className="text-gray-700">📧 david@palawancollective.com</p>
                 <p className="text-gray-700">📱 +63 947 444 3597</p>
                 <p className="text-gray-700">🌐 Visit our full presentation at:</p>
                 <a 

@@ -84,7 +84,7 @@ const Footer = () => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="text-gray-600 group-hover:text-black transition-colors">
-                    Lumambong (Binga) Beach
+                    Lumambong Beach
                   </div>
                   <div className="text-sm text-gray-500">San Vicente, Palawan</div>
                 </div>
@@ -94,10 +94,10 @@ const Footer = () => {
                   <Mail className="w-5 h-5 text-blue-600" />
                 </div>
                 <a 
-                  href="mailto:david@bingabeach.com" 
+                  href="mailto:david@palawancollective.com" 
                   className="text-gray-600 hover:text-black transition-colors break-all sm:break-normal"
                 >
-                  david@bingabeach.com
+                  david@palawancollective.com
                 </a>
               </div>
               <div className="flex items-center gap-3 group">

@@ -12,7 +12,7 @@ const ProjectOverview = () => {
     {
       icon: Waves,
       title: "5,282 sqm Beachfront", 
-      description: "Prime location in Lumambong (Binga) Beach, San Vicente, Palawan"
+      description: "Prime location in Lumambong Beach, San Vicente, Palawan"
     },
     {
       icon: Ruler,

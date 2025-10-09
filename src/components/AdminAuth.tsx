@@ -18,7 +18,7 @@ const AdminAuth = ({ onAuthSuccess }: AdminAuthProps) => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  const ADMIN_EMAILS = ['david@bingabeach.com'];
+  const ADMIN_EMAILS = ['david@palawancollective.com'];
   const ADMIN_PASSKEY = '4467';
 
   const handleAuth = () => {
