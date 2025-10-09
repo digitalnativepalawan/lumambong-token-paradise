@@ -14,6 +14,9 @@ import Marketplace from "./pages/Marketplace";
 import BusinessPlan from "./pages/BusinessPlan";
 import Blog from "./pages/Blog";
 import Whitepaper from "./pages/Whitepaper";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import RiskDisclosure from "./pages/RiskDisclosure";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +37,9 @@ const App = () => (
             <Route path="/business-plan" element={<BusinessPlan />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/whitepaper" element={<Whitepaper />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
+            <Route path="/risk-disclosure" element={<RiskDisclosure />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

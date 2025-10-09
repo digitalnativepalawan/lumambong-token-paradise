@@ -46,10 +46,10 @@ const Footer = () => {
   ];
 
   const legalLinks = [
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Whitepaper", href: "#" },
-    { label: "Risk Disclosure", href: "#" }
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "Whitepaper", href: "/whitepaper" },
+    { label: "Risk Disclosure", href: "/risk-disclosure" }
   ];
 
   return (
