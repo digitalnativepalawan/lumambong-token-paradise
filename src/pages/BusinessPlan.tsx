@@ -107,7 +107,7 @@ const BusinessPlan = () => {
 
 
   const handleUpgradedModuleClick = () => {
-    window.open('https://drive.google.com/file/d/1lEUW4tBWYpKNLYSxH_oXedd2EJZ6Rpxk/view?usp=sharing', '_blank');
+    window.open('https://drive.google.com/file/d/1NCUW6eqVCYUwgmzcwFIDba6J6MI1GhPY/view?usp=sharing', '_blank');
   };
 
   useEffect(() => {
