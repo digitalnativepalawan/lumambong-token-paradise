@@ -188,7 +188,7 @@ const AdminPortal = () => {
                           <div className="flex gap-1 mt-1">
                             <Button
                               size="sm"
-                              onClick={() => setEditingQuickAction(null)}
+                              onClick={() => handleSaveQuickAction(index)}
                               className="text-xs h-6 px-2"
                             >
                               Save
