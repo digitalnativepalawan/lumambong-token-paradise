@@ -163,7 +163,7 @@ const Blog = () => {
                                 <img 
                                   src={selectedPost.image_url} 
                                   alt={selectedPost.title}
-                                  className="w-full h-64 object-cover rounded-lg mb-6"
+                                  className="w-full rounded-lg mb-6"
                                 />
                               )}
                               <div className="prose prose-lg max-w-none text-gray-700">
@@ -189,7 +189,7 @@ const Blog = () => {
                       <img 
                         src={post.image_url} 
                         alt={post.title}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain bg-gray-50"
                       />
                     ) : (
                       <div className="bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-8 h-full">
