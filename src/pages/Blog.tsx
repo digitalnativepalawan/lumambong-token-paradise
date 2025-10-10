@@ -130,8 +130,8 @@ const Blog = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                        {post.content.length > 200 ? `${post.content.substring(0, 200)}...` : post.content}
+                      <p className="text-gray-600 text-base leading-relaxed mb-6 line-clamp-3">
+                        {post.content.replace(/[#*`]/g, "").substring(0, 250)}...
                       </p>
                       <div className="flex flex-wrap gap-3 items-center justify-between">
                         <Dialog open={showReadMore && selectedPost?.id === post.id} onOpenChange={(open) => {
@@ -148,47 +148,134 @@ const Blog = () => {
                               Read More
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-                            <DialogHeader>
-                              <DialogTitle className="text-2xl">{selectedPost?.title}</DialogTitle>
-                              <div className="flex items-center gap-4 text-sm text-gray-500 mt-2">
-                                <span>By {selectedPost?.author}</span>
+                          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto bg-white">
+                            <DialogHeader className="border-b pb-6 mb-8">
+                              <div className="mb-4">
+                                <Badge variant="secondary" className="bg-blue-100 text-blue-700 mb-4">
+                                  {selectedPost?.category}
+                                </Badge>
+                              </div>
+                              <DialogTitle className="text-4xl font-bold leading-tight mb-4 text-gray-900">
+                                {selectedPost?.title}
+                              </DialogTitle>
+                              <div className="flex items-center gap-4 text-base text-gray-600">
+                                <div className="flex items-center gap-2">
+                                  <User className="w-5 h-5" />
+                                  <span className="font-medium">{selectedPost?.author}</span>
+                                </div>
                                 <span>•</span>
-                                <span>{selectedPost && formatDate(selectedPost.date)}</span>
-                                <span>•</span>
-                                <Badge variant="secondary">{selectedPost?.category}</Badge>
+                                <div className="flex items-center gap-2">
+                                  <Calendar className="w-5 h-5" />
+                                  <span>{selectedPost && formatDate(selectedPost.date)}</span>
+                                </div>
                               </div>
                             </DialogHeader>
-                            <div className="mt-4">
+                            <article className="px-2">
                               {(selectedPost?.image_url || selectedPost?.image_urls?.[0]) && (
                                 <img 
                                   src={selectedPost?.image_url || selectedPost?.image_urls?.[0]} 
-                                  alt={selectedPost?.title || 'Blog image'}
-                                  className="w-full rounded-lg mb-6"
+                                  alt={selectedPost?.title || "Blog image"}
+                                  className="w-full rounded-xl mb-10 shadow-lg"
                                 />
                               )}
-                              <div className="prose prose-lg max-w-none text-gray-700">
+                              <div className="prose prose-xl max-w-none">
+                                <style>
+                                  {`
+                                    .prose {
+                                      color: #374151;
+                                    }
+                                    .prose p {
+                                      margin-bottom: 1.75rem;
+                                      line-height: 1.9;
+                                      font-size: 1.125rem;
+                                    }
+                                    .prose h1, .prose h2, .prose h3 {
+                                      color: #111827;
+                                      font-weight: 700;
+                                      margin-top: 2.5rem;
+                                      margin-bottom: 1.25rem;
+                                      line-height: 1.3;
+                                    }
+                                    .prose h1 {
+                                      font-size: 2.25rem;
+                                    }
+                                    .prose h2 {
+                                      font-size: 1.875rem;
+                                    }
+                                    .prose h3 {
+                                      font-size: 1.5rem;
+                                    }
+                                    .prose strong {
+                                      color: #1f2937;
+                                      font-weight: 600;
+                                    }
+                                    .prose a {
+                                      color: #2563eb;
+                                      text-decoration: underline;
+                                    }
+                                    .prose a:hover {
+                                      color: #1d4ed8;
+                                    }
+                                    .prose ul, .prose ol {
+                                      margin-top: 1.5rem;
+                                      margin-bottom: 1.5rem;
+                                      padding-left: 1.75rem;
+                                    }
+                                    .prose li {
+                                      margin-bottom: 0.75rem;
+                                      line-height: 1.8;
+                                    }
+                                    .prose blockquote {
+                                      border-left: 4px solid #e5e7eb;
+                                      padding-left: 1.5rem;
+                                      font-style: italic;
+                                      color: #6b7280;
+                                      margin: 2rem 0;
+                                    }
+                                    .prose code {
+                                      background-color: #f3f4f6;
+                                      padding: 0.2rem 0.4rem;
+                                      border-radius: 0.25rem;
+                                      font-size: 0.9em;
+                                    }
+                                  `}
+                                </style>
                                 <ReactMarkdown 
                                   remarkPlugins={[remarkGfm]}
                                   components={{
                                     img: ({node, ...props}) => (
-                                      <img {...props} className="rounded-lg my-4 w-full" />
+                                      <img {...props} className="rounded-xl my-8 w-full shadow-md" />
+                                    ),
+                                    p: ({node, ...props}) => (
+                                      <p {...props} className="mb-6 leading-relaxed text-lg text-gray-700" />
+                                    ),
+                                    h1: ({node, ...props}) => (
+                                      <h1 {...props} className="text-4xl font-bold mt-10 mb-6 text-gray-900" />
+                                    ),
+                                    h2: ({node, ...props}) => (
+                                      <h2 {...props} className="text-3xl font-bold mt-8 mb-5 text-gray-900" />
+                                    ),
+                                    h3: ({node, ...props}) => (
+                                      <h3 {...props} className="text-2xl font-semibold mt-6 mb-4 text-gray-900" />
                                     ),
                                   }}
                                 >
-                                  {selectedPost?.content || ''}
+                                  {selectedPost?.content || ""}
                                 </ReactMarkdown>
                               </div>
                               {selectedPost?.image_urls && selectedPost.image_urls.filter((url) => url !== (selectedPost?.image_url || selectedPost?.image_urls?.[0])).length > 0 && (
-                                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                  {selectedPost.image_urls
-                                    .filter((url) => url !== (selectedPost?.image_url || selectedPost?.image_urls?.[0]))
-                                    .map((url, idx) => (
-                                      <img key={idx} src={url} alt={`Blog image ${idx + 1}`} className="w-full rounded-lg" />
-                                    ))}
+                                <div className="mt-12 mb-6">
+                                  <h3 className="text-2xl font-bold mb-6 text-gray-900">Gallery</h3>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {selectedPost.image_urls
+                                      .filter((url) => url !== (selectedPost?.image_url || selectedPost?.image_urls?.[0]))
+                                      .map((url, idx) => (
+                                        <img key={idx} src={url} alt={`Blog image ${idx + 1}`} className="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow" />
+                                      ))}
+                                  </div>
                                 </div>
                               )}
-                            </div>
+                            </article>
                           </DialogContent>
                         </Dialog>
                       </div>
