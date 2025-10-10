@@ -214,7 +214,7 @@ const BlogManagement = () => {
         description: "Blog post added successfully!",
       });
 
-      setNewPost({ title: '', content: '', author: '', category: '', image_url: '' });
+      setNewPost({ title: '', content: '', author: '', category: '', image_url: '', image_urls: [] });
       setShowAddPost(false);
       fetchBlogPosts();
     } catch (error) {

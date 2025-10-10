@@ -19,6 +19,7 @@ interface BlogPost {
   date: string;
   category: string;
   image_url?: string;
+  image_urls?: string[];
 }
 
 const Blog = () => {
