@@ -17,18 +17,20 @@ interface BlogPost {
   author: string;
   date: string;
   category: string;
+  image_url?: string;
 }
 
 const BlogManagement = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '' });
+  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '', image_url: '' });
   const [isLoading, setIsLoading] = useState(true);
   const [showReadMore, setShowReadMore] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
   const [showEditPost, setShowEditPost] = useState(false);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const { toast } = useToast();
 
   // Fetch blog posts on component mount
@@ -60,6 +62,69 @@ const BlogManagement = () => {
     }
   };
 
+  // Handle image upload
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>, isEditing: boolean = false) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Error",
+        description: "Please upload an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "Error",
+        description: "Image size should be less than 5MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('blog-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-images')
+        .getPublicUrl(filePath);
+
+      if (isEditing && editingPost) {
+        setEditingPost({ ...editingPost, image_url: publicUrl });
+      } else {
+        setNewPost({ ...newPost, image_url: publicUrl });
+      }
+
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully!",
+      });
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
   // Add new blog post
   const handleAddPost = async () => {
     if (!newPost.title || !newPost.content || !newPost.author || !newPost.category) {
@@ -79,6 +144,7 @@ const BlogManagement = () => {
           content: newPost.content,
           author: newPost.author,
           category: newPost.category,
+          image_url: newPost.image_url || null,
         }]);
 
       if (error) throw error;
@@ -88,7 +154,7 @@ const BlogManagement = () => {
         description: "Blog post added successfully!",
       });
 
-      setNewPost({ title: '', content: '', author: '', category: '' });
+      setNewPost({ title: '', content: '', author: '', category: '', image_url: '' });
       setShowAddPost(false);
       fetchBlogPosts();
     } catch (error) {
@@ -139,6 +205,7 @@ const BlogManagement = () => {
           content: editingPost.content,
           author: editingPost.author,
           category: editingPost.category,
+          image_url: editingPost.image_url || null,
         })
         .eq('id', editingPost.id);
 
@@ -270,6 +337,19 @@ const BlogManagement = () => {
                         value={newPost.category}
                         onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
                       />
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Featured Image</label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleImageUpload(e, false)}
+                          disabled={uploadingImage}
+                        />
+                        {uploadingImage && <p className="text-sm text-gray-500">Uploading image...</p>}
+                        {newPost.image_url && (
+                          <img src={newPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
+                        )}
+                      </div>
                       <Textarea
                         placeholder="Post Content"
                         value={newPost.content}
@@ -280,7 +360,7 @@ const BlogManagement = () => {
                         <Button variant="outline" onClick={() => setShowAddPost(false)}>
                           Cancel
                         </Button>
-                        <Button onClick={handleAddPost}>
+                        <Button onClick={handleAddPost} disabled={uploadingImage}>
                           Add Post
                         </Button>
                       </div>
@@ -308,7 +388,14 @@ const BlogManagement = () => {
           ) : (
             blogPosts.map((post) => (
               <div key={post.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between gap-4">
+                  {post.image_url && (
+                    <img 
+                      src={post.image_url} 
+                      alt={post.title}
+                      className="w-24 h-24 object-cover rounded flex-shrink-0"
+                    />
+                  )}
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="secondary" className="bg-blue-50 text-blue-700">
@@ -393,6 +480,19 @@ const BlogManagement = () => {
                             value={editingPost?.category || ''}
                             onChange={(e) => setEditingPost(editingPost ? { ...editingPost, category: e.target.value } : null)}
                           />
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Featured Image</label>
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleImageUpload(e, true)}
+                              disabled={uploadingImage}
+                            />
+                            {uploadingImage && <p className="text-sm text-gray-500">Uploading image...</p>}
+                            {editingPost?.image_url && (
+                              <img src={editingPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
+                            )}
+                          </div>
                           <Textarea
                             placeholder="Post Content"
                             value={editingPost?.content || ''}
@@ -403,7 +503,7 @@ const BlogManagement = () => {
                             <Button variant="outline" onClick={() => setShowEditPost(false)}>
                               Cancel
                             </Button>
-                            <Button onClick={handleEditPost}>
+                            <Button onClick={handleEditPost} disabled={uploadingImage}>
                               Update Post
                             </Button>
                           </div>
