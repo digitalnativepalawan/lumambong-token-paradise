@@ -8,7 +8,8 @@ import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import type { RealtimeChannel } from "@supabase/supabase-js";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogPost {
   id: string;
@@ -17,6 +18,7 @@ interface BlogPost {
   author: string;
   date: string;
   category: string;
+  image_url?: string;
 }
 
 const Blog = () => {
@@ -104,7 +106,7 @@ const Blog = () => {
               blogPosts.map((post, index) => (
                 <Card key={post.id} className={`group hover:shadow-lg transition-all duration-300 ${
                   index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                } md:flex bg-white border-gray-200`}>
+                } md:flex bg-white border-gray-200 overflow-hidden`}>
                   <div className="md:w-2/3">
                     <CardHeader className="pb-4">
                       <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -157,23 +159,49 @@ const Blog = () => {
                               </div>
                             </DialogHeader>
                             <div className="mt-4">
-                              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-                                {selectedPost?.content}
-                              </p>
+                              {selectedPost?.image_url && (
+                                <img 
+                                  src={selectedPost.image_url} 
+                                  alt={selectedPost.title}
+                                  className="w-full h-64 object-cover rounded-lg mb-6"
+                                />
+                              )}
+                              <div className="prose prose-lg max-w-none text-gray-700">
+                                <ReactMarkdown 
+                                  remarkPlugins={[remarkGfm]}
+                                  components={{
+                                    img: ({node, ...props}) => (
+                                      <img {...props} className="rounded-lg my-4 w-full" />
+                                    ),
+                                  }}
+                                >
+                                  {selectedPost?.content || ''}
+                                </ReactMarkdown>
+                              </div>
                             </div>
                           </DialogContent>
                         </Dialog>
                       </div>
                     </CardContent>
                   </div>
-                  <div className="md:w-1/3 bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-8">
-                    <div className="text-center">
-                      <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Calendar className="w-12 h-12 text-blue-600" />
+                  <div className="md:w-1/3 relative">
+                    {post.image_url ? (
+                      <img 
+                        src={post.image_url} 
+                        alt={post.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-8 h-full">
+                        <div className="text-center">
+                          <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Calendar className="w-12 h-12 text-blue-600" />
+                          </div>
+                          <p className="text-sm text-gray-600 font-medium">Published</p>
+                          <p className="text-lg font-semibold text-gray-800">{formatDate(post.date)}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600 font-medium">Published</p>
-                      <p className="text-lg font-semibold text-gray-800">{formatDate(post.date)}</p>
-                    </div>
+                    )}
                   </div>
                 </Card>
               ))

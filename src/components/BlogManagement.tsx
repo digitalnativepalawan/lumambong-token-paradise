@@ -350,12 +350,18 @@ const BlogManagement = () => {
                           <img src={newPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
                         )}
                       </div>
-                      <Textarea
-                        placeholder="Post Content"
-                        value={newPost.content}
-                        onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                        rows={12}
-                      />
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Post Content</label>
+                        <p className="text-xs text-gray-500">
+                          Tip: Use markdown for formatting. Add images throughout your content with: ![Image description](image-url)
+                        </p>
+                        <Textarea
+                          placeholder="Post Content - You can use markdown syntax and embed images using ![alt text](image-url)"
+                          value={newPost.content}
+                          onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                          rows={12}
+                        />
+                      </div>
                       <div className="flex gap-2 justify-end">
                         <Button variant="outline" onClick={() => setShowAddPost(false)}>
                           Cancel
@@ -493,12 +499,18 @@ const BlogManagement = () => {
                               <img src={editingPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
                             )}
                           </div>
-                          <Textarea
-                            placeholder="Post Content"
-                            value={editingPost?.content || ''}
-                            onChange={(e) => setEditingPost(editingPost ? { ...editingPost, content: e.target.value } : null)}
-                            rows={8}
-                          />
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Post Content</label>
+                            <p className="text-xs text-gray-500">
+                              Tip: Use markdown for formatting. Add images throughout your content with: ![Image description](image-url)
+                            </p>
+                            <Textarea
+                              placeholder="Post Content - You can use markdown syntax and embed images using ![alt text](image-url)"
+                              value={editingPost?.content || ''}
+                              onChange={(e) => setEditingPost(editingPost ? { ...editingPost, content: e.target.value } : null)}
+                              rows={8}
+                            />
+                          </div>
                           <div className="flex gap-2 justify-end">
                             <Button variant="outline" onClick={() => setShowEditPost(false)}>
                               Cancel
