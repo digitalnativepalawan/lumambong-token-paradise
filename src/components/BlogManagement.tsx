@@ -18,13 +18,14 @@ interface BlogPost {
   date: string;
   category: string;
   image_url?: string;
+  image_urls?: string[];
 }
 
 const BlogManagement = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '', image_url: '' });
+  const [newPost, setNewPost] = useState({ title: '', content: '', author: '', category: '', image_url: '', image_urls: [] as string[] });
   const [isLoading, setIsLoading] = useState(true);
   const [showReadMore, setShowReadMore] = useState(false);
   const [showAddPost, setShowAddPost] = useState(false);
@@ -125,6 +126,64 @@ const BlogManagement = () => {
     }
   };
 
+  // Gallery Images Upload (up to 6)
+  const handleGalleryUpload = async (event: React.ChangeEvent<HTMLInputElement>, isEditing: boolean = false) => {
+    const files = Array.from(event.target.files || []);
+    if (files.length === 0) return;
+
+    const existingCount = isEditing ? (editingPost?.image_urls?.length || 0) : (newPost.image_urls?.length || 0);
+    if (existingCount + files.length > 6) {
+      toast({
+        title: "Limit reached",
+        description: "You can upload up to 6 images per post",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setUploadingImage(true);
+      const uploadedUrls: string[] = [];
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) continue;
+        if (file.size > 5 * 1024 * 1024) continue;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('blog-images')
+          .upload(fileName, file);
+        if (uploadError) throw uploadError;
+        const { data: { publicUrl } } = supabase.storage
+          .from('blog-images')
+          .getPublicUrl(fileName);
+        uploadedUrls.push(publicUrl);
+      }
+
+      if (isEditing && editingPost) {
+        const next = [ ...(editingPost.image_urls || []), ...uploadedUrls ].slice(0,6);
+        setEditingPost({ ...editingPost, image_urls: next });
+      } else {
+        const next = [ ...(newPost.image_urls || []), ...uploadedUrls ].slice(0,6);
+        setNewPost({ ...newPost, image_urls: next });
+      }
+
+      toast({ title: "Success", description: "Images uploaded successfully!" });
+    } catch (error) {
+      console.error('Error uploading gallery images:', error);
+      toast({ title: "Error", description: "Failed to upload gallery images", variant: "destructive" });
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const removeGalleryImage = (url: string, isEditing: boolean = false) => {
+    if (isEditing && editingPost) {
+      setEditingPost({ ...editingPost, image_urls: (editingPost.image_urls || []).filter(u => u !== url) });
+    } else {
+      setNewPost({ ...newPost, image_urls: (newPost.image_urls || []).filter(u => u !== url) });
+    }
+  };
+
   // Add new blog post
   const handleAddPost = async () => {
     if (!newPost.title || !newPost.content || !newPost.author || !newPost.category) {
@@ -145,6 +204,7 @@ const BlogManagement = () => {
           author: newPost.author,
           category: newPost.category,
           image_url: newPost.image_url || null,
+          image_urls: newPost.image_urls || [],
         }]);
 
       if (error) throw error;
@@ -206,6 +266,7 @@ const BlogManagement = () => {
           author: editingPost.author,
           category: editingPost.category,
           image_url: editingPost.image_url || null,
+          image_urls: editingPost.image_urls || [],
         })
         .eq('id', editingPost.id);
 
@@ -306,7 +367,7 @@ const BlogManagement = () => {
                       <AIContentGenerator
                         contentType="blog_post"
                         onContentGenerated={(content) => {
-                          const lines = content.split('\n');
+                          const lines = content.split("\n");
                           const titleLine = lines.find(line => line.toLowerCase().includes('title') || line.startsWith('#'));
                           if (titleLine) {
                             const title = titleLine.replace(/^#\s*/, '').replace(/title:\s*/i, '').trim();
@@ -348,6 +409,33 @@ const BlogManagement = () => {
                         {uploadingImage && <p className="text-sm text-gray-500">Uploading image...</p>}
                         {newPost.image_url && (
                           <img src={newPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
+                        )}
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Gallery Images (up to 6)</label>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={(e) => handleGalleryUpload(e, false)}
+                          disabled={uploadingImage}
+                        />
+                        {uploadingImage && <p className="text-sm text-gray-500">Uploading images...</p>}
+                        {newPost.image_urls && newPost.image_urls.length > 0 && (
+                          <div className="grid grid-cols-3 gap-2">
+                            {newPost.image_urls.map((url) => (
+                              <div key={url} className="relative">
+                                <img src={url} alt="Gallery preview" className="w-full h-24 object-cover rounded" />
+                                <button
+                                  type="button"
+                                  className="absolute top-1 right-1 bg-white/80 text-red-600 text-xs px-2 py-0.5 rounded"
+                                  onClick={() => removeGalleryImage(url, false)}
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            ))}
+                          </div>
                         )}
                       </div>
                       <div className="space-y-2">
@@ -497,6 +585,33 @@ const BlogManagement = () => {
                             {uploadingImage && <p className="text-sm text-gray-500">Uploading image...</p>}
                             {editingPost?.image_url && (
                               <img src={editingPost.image_url} alt="Preview" className="w-full h-32 object-cover rounded" />
+                            )}
+                          </div>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Gallery Images (up to 6)</label>
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={(e) => handleGalleryUpload(e, true)}
+                              disabled={uploadingImage}
+                            />
+                            {uploadingImage && <p className="text-sm text-gray-500">Uploading images...</p>}
+                            {editingPost?.image_urls && editingPost.image_urls.length > 0 && (
+                              <div className="grid grid-cols-3 gap-2">
+                                {editingPost.image_urls.map((url) => (
+                                  <div key={url} className="relative">
+                                    <img src={url} alt="Gallery preview" className="w-full h-24 object-cover rounded" />
+                                    <button
+                                      type="button"
+                                      className="absolute top-1 right-1 bg-white/80 text-red-600 text-xs px-2 py-0.5 rounded"
+                                      onClick={() => removeGalleryImage(url, true)}
+                                    >
+                                      Remove
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
                             )}
                           </div>
                           <div className="space-y-2">

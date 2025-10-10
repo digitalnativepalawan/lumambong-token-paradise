@@ -159,10 +159,10 @@ const Blog = () => {
                               </div>
                             </DialogHeader>
                             <div className="mt-4">
-                              {selectedPost?.image_url && (
+                              {(selectedPost?.image_url || selectedPost?.image_urls?.[0]) && (
                                 <img 
-                                  src={selectedPost.image_url} 
-                                  alt={selectedPost.title}
+                                  src={selectedPost?.image_url || selectedPost?.image_urls?.[0]} 
+                                  alt={selectedPost?.title || 'Blog image'}
                                   className="w-full rounded-lg mb-6"
                                 />
                               )}
@@ -178,6 +178,15 @@ const Blog = () => {
                                   {selectedPost?.content || ''}
                                 </ReactMarkdown>
                               </div>
+                              {selectedPost?.image_urls && selectedPost.image_urls.filter((url) => url !== (selectedPost?.image_url || selectedPost?.image_urls?.[0])).length > 0 && (
+                                <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                  {selectedPost.image_urls
+                                    .filter((url) => url !== (selectedPost?.image_url || selectedPost?.image_urls?.[0]))
+                                    .map((url, idx) => (
+                                      <img key={idx} src={url} alt={`Blog image ${idx + 1}`} className="w-full rounded-lg" />
+                                    ))}
+                                </div>
+                              )}
                             </div>
                           </DialogContent>
                         </Dialog>
@@ -185,9 +194,9 @@ const Blog = () => {
                     </CardContent>
                   </div>
                   <div className="md:w-1/3 relative">
-                    {post.image_url ? (
+                    {(post.image_url || post.image_urls?.[0]) ? (
                       <img 
-                        src={post.image_url} 
+                        src={post.image_url || post.image_urls?.[0]} 
                         alt={post.title}
                         className="w-full h-full object-contain bg-gray-50"
                       />
